@@ -27,7 +27,7 @@
         <liferay-ui:search-container-column-text name="firstName" property="firstName"/>
         <liferay-ui:search-container-column-text name="patronymic" property="patronymic"/>
         <liferay-ui:search-container-column-text name="gender" property="gender"/>
-        <liferay-ui:search-container-column-text name="birthDate" property="birthDate"
+        <liferay-ui:search-container-column-text name="birthDate"
                                                  value="<%=dateFormat.format(employee.getBirthDate())%>"/>
         <liferay-ui:search-container-column-text name="positionId" property="positionId"/>
         <liferay-ui:search-container-column-text>

@@ -26,7 +26,7 @@
         <liferay-ui:search-container-column-text name="eTypeId" property="ETypeId"/>
         <liferay-ui:search-container-column-text name="employeeId" property="employeeId"/>
         <liferay-ui:search-container-column-text name="electroId" property="electroId"/>
-        <liferay-ui:search-container-column-text name="purchaseDate" property="purchaseDate"
+        <liferay-ui:search-container-column-text name="purchaseDate"
                                                  value="<%=dateFormat.format(purchase.getPurchaseDate())%>"/>
         <liferay-ui:search-container-column-text>
             <liferay-ui:icon-menu>
