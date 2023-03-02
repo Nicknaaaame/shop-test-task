@@ -1,11 +1,15 @@
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="shop.model.Employee" %>
 <%@ page import="shop.service.EmployeeLocalServiceUtil" %>
+<%@ page import="java.util.Calendar" %>
+<%@ page import="java.util.GregorianCalendar" %>
 <%@ include file="init.jsp" %>
 
 <%
     long id = ParamUtil.getLong(request, "id");
     Employee employee = EmployeeLocalServiceUtil.getEmployee(id);
+    Calendar birthCalendarDate = new GregorianCalendar();
+    birthCalendarDate.setTime(employee.getBirthDate());
 %>
 
 <portlet:renderURL var="viewEmployeeURL">
@@ -29,9 +33,9 @@
         </aui:select>
         <label>Birth date</label>
         <liferay-ui:input-date name="birthDate" required="true"
-                               yearValue="<%=employee.getBirthDate().getYear()%>"
-                               monthValue="<%=employee.getBirthDate().getMonth()%>"
-                               dayValue="<%=employee.getBirthDate().getDay()%>"/>
+                               yearValue="<%=birthCalendarDate.get(Calendar.YEAR)%>"
+                               monthValue="<%=birthCalendarDate.get(Calendar.MONTH)%>"
+                               dayValue="<%=birthCalendarDate.get(Calendar.DAY_OF_MONTH)%>"/>
         <aui:input label="Position id" name="positionId" required="true"/>
     </aui:fieldset>
 
