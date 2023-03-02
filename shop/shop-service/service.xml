@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.3.0//EN"
+        "http://www.liferay.com/dtd/liferay-service-builder_7_3_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="shop">
+    <namespace>SHOP</namespace>
+    <entity local-service="true" name="PurchaseType" remote-service="true">
+        <column name="id" primary="true" type="long"/>
+        <column name="name" type="String"/>
+        <order by="asc">
+            <order-column name="id"/>
+        </order>
+    </entity>
+
+    <entity local-service="true" name="PositionType" remote-service="true">
+        <column name="id" primary="true" type="long"/>
+        <column name="name" type="String"/>
+
+        <order by="asc">
+            <order-column name="id"/>
+        </order>
+    </entity>
+
+    <entity local-service="true" name="ElectroType" remote-service="true">
+        <column name="id" primary="true" type="long"/>
+        <column name="name" type="String"/>
+
+        <order by="asc">
+            <order-column name="id"/>
+        </order>
+    </entity>
+
+    <entity local-service="true" name="Employee" remote-service="true">
+        <column name="id" primary="true" type="long"/>
+        <column name="lastName" type="String"/>
+        <column name="firstName" type="String"/>
+        <column name="patronymic" type="String"/>
+        <column name="birthDate" type="Date"/>
+        <column name="gender" type="boolean"/>
+        <column name="positionId" type="long"/>
+
+        <order by="asc">
+            <order-column name="id"/>
+        </order>
+    </entity>
+
+    <entity local-service="true" name="Electronics" remote-service="true">
+        <column name="id" primary="true" type="long"/>
+        <column name="name" type="String"/>
+        <column name="eTypeId" type="long"/>
+        <column name="price" type="long"/>
+        <column name="count" type="int"/>
+        <column name="isInStock" type="boolean"/>
+        <column name="isArchive" type="boolean"/>
+        <column name="description" type="String"/>
+
+        <order by="asc">
+            <order-column name="id"/>
+        </order>
+    </entity>
+
+    <entity local-service="true" name="ElectroEmployee" remote-service="true">
+        <column name="employeeId" primary="true" type="long"/>
+        <column name="eTypeId" primary="true" type="long"/>
+    </entity>
+
+    <entity local-service="true" name="Purchase" remote-service="true">
+        <column name="id" primary="true" type="long"/>
+        <column name="purchaseDate" type="Date"/>
+        <column name="eTypeId" type="long"/>
+        <column name="employeeId" type="long"/>
+        <column name="electroId" type="long"/>
+
+        <order by="asc">
+            <order-column name="id"/>
+        </order>
+    </entity>
+</service-builder>

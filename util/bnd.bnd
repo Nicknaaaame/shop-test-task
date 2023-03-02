@@ -1,0 +1,8 @@
+Bundle-Name: util
+Bundle-SymbolicName: util
+Bundle-Version: 1.0.0
+Export-Package: util
+-consumer-policy: ${replacestring;${range;[==,==]};.*,(.*)];$1}
+-metatype: *
+-plugin.metatype: com.liferay.ant.bnd.metatype.MetatypePlugin
+-provider-policy: ${replacestring;${range;[==,==]};.*,(.*)];$1}
