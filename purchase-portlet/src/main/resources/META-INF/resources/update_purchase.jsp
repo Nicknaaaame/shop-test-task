@@ -29,7 +29,7 @@
         <aui:input label="Employee id" name="employeeId" value="<%=purchase.getEmployeeId()%>" required="true"
                    type="number"/>
         <aui:input label="Electronic product id" name="electroId" value="<%=purchase.getElectroId()%>" required="true"
-                   type="number"/>
+                   type="number" disabled="true"/>
         <label>Purchase date</label>
         <liferay-ui:input-date name="purchaseDate" required="true"
                                yearValue="<%=calendar.get(Calendar.YEAR)%>"

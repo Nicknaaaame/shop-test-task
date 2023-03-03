@@ -20,6 +20,7 @@
     <aui:button onClick="<%= addPurchaseURL %>" value='<%= "Add new purchase" %>'/>
 </aui:button-row>
 <liferay-ui:error key="<%=PurchasePortletKeys.EMPLOYEE_HAS_NO_ETYPE%>" message="purchase.error.employee_has_no_etype"/>
+<liferay-ui:error key="<%=PurchasePortletKeys.PRODUCT_IS_NOT_IN_STOCK%>" message="purchase.error.product_is_not_in_stock"/>
 <liferay-ui:header title='<%="Purchases list"%>'/>
 <liferay-ui:search-container emptyResultsMessage="No purchase found">
     <liferay-ui:search-container-results results="<%=purchases%>"/>
