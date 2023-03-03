@@ -1,3 +1,4 @@
+<%@ page import="purchase.portlet.constants.PurchasePortletKeys" %>
 <%@ page import="shop.model.Purchase" %>
 <%@ page import="shop.service.PurchaseLocalServiceUtil" %>
 <%@ page import="util.ShopProjectKeys" %>
@@ -18,6 +19,7 @@
 
     <aui:button onClick="<%= addPurchaseURL %>" value='<%= "Add new purchase" %>'/>
 </aui:button-row>
+<liferay-ui:error key="<%=PurchasePortletKeys.EMPLOYEE_HAS_NO_ETYPE%>" message="purchase.error.employee_has_no_etype"/>
 <liferay-ui:header title='<%="Purchases list"%>'/>
 <liferay-ui:search-container emptyResultsMessage="No purchase found">
     <liferay-ui:search-container-results results="<%=purchases%>"/>
@@ -31,7 +33,7 @@
         <liferay-ui:search-container-column-text>
             <liferay-ui:icon-menu>
                 <portlet:renderURL var="updatePurchaseURL">
-                    <portlet:param name="mvcPath" value="/update_employee.jsp"/>
+                    <portlet:param name="mvcPath" value="/update_purchase.jsp"/>
                     <portlet:param name="id" value="<%= String.valueOf(purchase.getId()) %>"/>
                 </portlet:renderURL>
                 <liferay-ui:icon image="edit" url="<%=updatePurchaseURL%>"/>

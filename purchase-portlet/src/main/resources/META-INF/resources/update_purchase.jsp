@@ -1,7 +1,6 @@
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="shop.model.Purchase" %>
 <%@ page import="shop.service.PurchaseLocalServiceUtil" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ include file="init.jsp" %>
@@ -39,7 +38,7 @@
     </aui:fieldset>
 
     <aui:button-row>
-        <aui:button type="submit"/>
+        <aui:button type="submit" />
         <aui:button onClick="<%= viewPurchaseURL %>" type="cancel"/>
     </aui:button-row>
 

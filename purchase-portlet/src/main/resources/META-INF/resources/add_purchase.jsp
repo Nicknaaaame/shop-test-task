@@ -1,6 +1,7 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.GregorianCalendar" %>
+<%@ page import="purchase.portlet.constants.PurchasePortletKeys" %>
 <%@ include file="init.jsp" %>
 
 <%
