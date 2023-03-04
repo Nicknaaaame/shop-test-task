@@ -4,6 +4,11 @@
 <%@ page import="util.ShopProjectKeys" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
+<%@ page import="java.util.Collections" %>
+<%@ page import="shop.model.PurchaseModel" %>
+<%@ page import="java.util.Comparator" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ include file="init.jsp" %>
 
 <%
@@ -20,16 +25,28 @@
     <aui:button onClick="<%= addPurchaseURL %>" value='<%= "Add new purchase" %>'/>
 </aui:button-row>
 <liferay-ui:error key="<%=PurchasePortletKeys.EMPLOYEE_HAS_NO_ETYPE%>" message="purchase.error.employee_has_no_etype"/>
-<liferay-ui:error key="<%=PurchasePortletKeys.PRODUCT_IS_NOT_IN_STOCK%>" message="purchase.error.product_is_not_in_stock"/>
+<liferay-ui:error key="<%=PurchasePortletKeys.PRODUCT_IS_NOT_IN_STOCK%>"
+                  message="purchase.error.product_is_not_in_stock"/>
 <liferay-ui:header title='<%="Purchases list"%>'/>
 <liferay-ui:search-container emptyResultsMessage="No purchase found">
+    <%
+        String orderByCol = ParamUtil.getString(request, "orderByCol");
+        String orderByType = ParamUtil.getString(request, "orderByType");
+        purchases = new ArrayList<>(purchases);
+        if ("purchaseDate".equals(orderByCol)) {
+            if ("asc".equals(orderByType))
+                Collections.sort(purchases, Comparator.comparing(PurchaseModel::getPurchaseDate));
+            else
+                Collections.sort(purchases, Comparator.comparing(PurchaseModel::getPurchaseDate).reversed());
+        }
+    %>
     <liferay-ui:search-container-results results="<%=purchases%>"/>
     <liferay-ui:search-container-row className="shop.model.Purchase" modelVar="purchase">
         <liferay-ui:search-container-column-text name="id" property="id"/>
         <liferay-ui:search-container-column-text name="eTypeId" property="ETypeId"/>
         <liferay-ui:search-container-column-text name="employeeId" property="employeeId"/>
         <liferay-ui:search-container-column-text name="electroId" property="electroId"/>
-        <liferay-ui:search-container-column-text name="purchaseDate"
+        <liferay-ui:search-container-column-text name="purchaseDate" orderable="true" orderableProperty="purchaseDate"
                                                  value="<%=dateFormat.format(purchase.getPurchaseDate())%>"/>
         <liferay-ui:search-container-column-text>
             <liferay-ui:icon-menu>
