@@ -13,7 +13,7 @@ public class EmployeeModelMapper {
         String firstName = ParamUtil.getString(request, "firstName");
         String patronymic = ParamUtil.getString(request, "patronymic");
         boolean gender = Boolean.parseBoolean(ParamUtil.getString(request, "gender"));
-        Date birthDate = ShopProjectUtil.parseDate(ParamUtil.getString(request, "birthDate"));
+        Date birthDate = ShopProjectUtil.parseDateFromRequest(ParamUtil.getString(request, "birthDate"));
         long positionId = ParamUtil.getLong(request, "positionId");
 
         employee.setLastName(lastName);

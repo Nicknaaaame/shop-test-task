@@ -8,7 +8,7 @@
 <%
     int employeeCount = EmployeeLocalServiceUtil.getEmployeesCount();
     List<Employee> employees = EmployeeLocalServiceUtil.getEmployees(0, employeeCount);
-    SimpleDateFormat dateFormat = new SimpleDateFormat(ShopProjectKeys.DATE_FORMAT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat(ShopProjectKeys.DATE_OUTPUT_FORMAT);
 %>
 
 <aui:button-row>

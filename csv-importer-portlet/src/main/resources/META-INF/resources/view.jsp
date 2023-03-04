@@ -1,5 +1,17 @@
-<%@ include file="/init.jsp" %>
+<%@ include file="init.jsp" %>
 
-<p>
-	<b><liferay-ui:message key="csvimporter.caption"/></b>
-</p>
+<portlet:actionURL name='importArchive' var="importArchiveURL" windowState="normal" />
+
+<aui:form action="<%= importArchiveURL %>" method="POST" name="fm" enctype="multipart/form-data">
+	<aui:fieldset>
+
+		<aui:input type="file" name="archive" label=".zip archive to import">
+			<aui:validator name="acceptFiles">'zip'</aui:validator>
+		</aui:input>
+
+		<aui:button-row>
+			<aui:button type="submit" />
+		</aui:button-row>
+
+	</aui:fieldset>
+</aui:form>

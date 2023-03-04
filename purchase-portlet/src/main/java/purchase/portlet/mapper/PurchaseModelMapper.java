@@ -12,7 +12,7 @@ public class PurchaseModelMapper {
         long eTypeId = ParamUtil.getLong(request, "eTypeId");
         long employeeId = ParamUtil.getLong(request, "employeeId");
         long electroId = ParamUtil.getLong(request, "electroId");
-        Date purchaseDate = ShopProjectUtil.parseDate(ParamUtil.getString(request, "purchaseDate"));
+        Date purchaseDate = ShopProjectUtil.parseDateFromRequest(ParamUtil.getString(request, "purchaseDate"));
 
         purchase.setETypeId(eTypeId);
         purchase.setEmployeeId(employeeId);

@@ -1,16 +1,17 @@
-package com.lapotko.impl;
+
+package csv.importer.portlet.impl;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import shop.model.Employee;
 import shop.service.EmployeeLocalServiceUtil;
+import util.ShopProjectUtil;
 
-import java.sql.Date;
 import java.util.HashMap;
 
 public class EmployeeCsvImporter extends BaseCsvImporterImpl<Employee> {
     public EmployeeCsvImporter() {
         columnSetterMap = new HashMap<>();
-        columnSetterMap.put("id", (employee, s) -> {
+        columnSetterMap.put("id_", (employee, s) -> {
             employee.setId(Long.parseLong(s));
         });
         columnSetterMap.put("lastname", (employee, s) -> {
@@ -23,7 +24,7 @@ public class EmployeeCsvImporter extends BaseCsvImporterImpl<Employee> {
             employee.setPatronymic(s);
         });
         columnSetterMap.put("birthdate", (employee, s) -> {
-            employee.setBirthDate(Date.valueOf(s));
+            employee.setBirthDate(ShopProjectUtil.parseDateFromDB(s));
         });
         columnSetterMap.put("gender", (employee, s) -> {
             employee.setGender(Boolean.parseBoolean(s));
@@ -40,6 +41,6 @@ public class EmployeeCsvImporter extends BaseCsvImporterImpl<Employee> {
 
     @Override
     protected void saveModel(Employee model) {
-        EmployeeLocalServiceUtil.addEmployee(model);
+        EmployeeLocalServiceUtil.addEmployee(model); //TODO handle exception when primary key already exists - BatchUpdateException
     }
 }

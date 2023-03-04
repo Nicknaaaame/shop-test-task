@@ -8,8 +8,16 @@ import java.util.Date;
  * @author dlyar
  */
 public class ShopProjectUtil {
-    public static Date parseDate(String date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(ShopProjectKeys.DATE_FORMAT);
+    public static Date parseDateFromRequest(String date) {
+        return parseDate(date, ShopProjectKeys.DATE_INPUT_FORMAT);
+    }
+
+    public static Date parseDateFromDB(String date) {
+        return parseDate(date, ShopProjectKeys.DATE_FROM_DB_FORMAT);
+    }
+
+    public static Date parseDate(String date, String format) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         try {
             return dateFormat.parse(date);
         } catch (ParseException e) {

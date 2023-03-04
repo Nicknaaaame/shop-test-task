@@ -14,7 +14,7 @@
 <%
     int purchaseCount = PurchaseLocalServiceUtil.getPurchasesCount();
     List<Purchase> purchases = PurchaseLocalServiceUtil.getPurchases(0, purchaseCount);
-    SimpleDateFormat dateFormat = new SimpleDateFormat(ShopProjectKeys.DATE_FORMAT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat(ShopProjectKeys.DATE_OUTPUT_FORMAT);
 %>
 
 <aui:button-row>
