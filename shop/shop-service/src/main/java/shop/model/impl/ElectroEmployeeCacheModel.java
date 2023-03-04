@@ -17,13 +17,15 @@ package shop.model.impl;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
-import shop.model.ElectroEmployee;
-import shop.service.persistence.ElectroEmployeePK;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+
+import shop.model.ElectroEmployee;
+
+import shop.service.persistence.ElectroEmployeePK;
 
 /**
  * The cache model class for representing ElectroEmployee in entity cache.
