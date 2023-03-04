@@ -13,6 +13,7 @@
         <module>electro-portlet</module>
         <module>purchase-portlet</module>
         <module>util</module>
+        <module>csv-importer-portlet</module>
     </modules>
     <properties>
         <liferay.repository.url>https://repository-cdn.liferay.com/nexus/content/groups/public/</liferay.repository.url>
