@@ -1,7 +1,7 @@
 package csv.importer.portlet;
 
 
-import csv.importer.portlet.impl.EmployeeCsvImporter;
+import csv.importer.portlet.impl.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +18,10 @@ public class ZipArchiveImporter {
     public ZipArchiveImporter() {
         tableToImporterMap = new HashMap<>();
         tableToImporterMap.put("shop_employee.csv", new EmployeeCsvImporter());
+        tableToImporterMap.put("shop_electronics.csv", new ElectronicsCsvImporter());
+        tableToImporterMap.put("shop_purchase.csv", new PurchaseCsvImporter());
+        tableToImporterMap.put("shop_positiontype.csv", new PositionTypeCsvImporter());
+        tableToImporterMap.put("shop_electrotype.csv", new ElectroTypeCsvImporter());
     }
 
     public void importFromZipArchive(File archive) throws IOException {

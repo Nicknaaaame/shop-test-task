@@ -18,6 +18,10 @@ public abstract class BaseCsvImporterImpl<T> implements CsvImporter {
     protected Map<String, BiConsumer<T, String>> columnSetterMap;
     private List<BiConsumer<T, String>> columnSetterList;
 
+    public BaseCsvImporterImpl() {
+        initColumnSetterMap();
+    }
+
     @Override
     public void importCsvFile(Reader reader) {
         try (BufferedReader buffReader = new BufferedReader(reader)) {
@@ -60,4 +64,6 @@ public abstract class BaseCsvImporterImpl<T> implements CsvImporter {
     protected abstract T createModel();
 
     protected abstract void saveModel(T model);
+
+    protected abstract void initColumnSetterMap();
 }

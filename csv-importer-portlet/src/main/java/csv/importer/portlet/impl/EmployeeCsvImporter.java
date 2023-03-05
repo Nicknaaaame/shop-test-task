@@ -9,7 +9,18 @@ import util.ShopProjectUtil;
 import java.util.HashMap;
 
 public class EmployeeCsvImporter extends BaseCsvImporterImpl<Employee> {
-    public EmployeeCsvImporter() {
+    @Override
+    protected Employee createModel() {
+        return EmployeeLocalServiceUtil.createEmployee(CounterLocalServiceUtil.increment());
+    }
+
+    @Override
+    protected void saveModel(Employee model) {
+        EmployeeLocalServiceUtil.addEmployee(model); //TODO handle exception when primary key already exists - BatchUpdateException
+    }
+
+    @Override
+    protected void initColumnSetterMap() {
         columnSetterMap = new HashMap<>();
         columnSetterMap.put("id_", (employee, s) -> {
             employee.setId(Long.parseLong(s));
@@ -32,15 +43,5 @@ public class EmployeeCsvImporter extends BaseCsvImporterImpl<Employee> {
         columnSetterMap.put("positionid", (employee, s) -> {
             employee.setPositionId(Long.parseLong(s));
         });
-    }
-
-    @Override
-    protected Employee createModel() {
-        return EmployeeLocalServiceUtil.createEmployee(CounterLocalServiceUtil.increment());
-    }
-
-    @Override
-    protected void saveModel(Employee model) {
-        EmployeeLocalServiceUtil.addEmployee(model); //TODO handle exception when primary key already exists - BatchUpdateException
     }
 }
