@@ -22,6 +22,7 @@ public class ZipArchiveImporter {
         tableToImporterMap.put("shop_purchase.csv", new PurchaseCsvImporter());
         tableToImporterMap.put("shop_positiontype.csv", new PositionTypeCsvImporter());
         tableToImporterMap.put("shop_electrotype.csv", new ElectroTypeCsvImporter());
+        tableToImporterMap.put("shop_electroemployee.csv", new ElectroEmployeeCsvImporter());
     }
 
     public void importFromZipArchive(File archive) throws IOException {
