@@ -9,11 +9,12 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import org.osgi.service.component.annotations.Component;
 import purchase.portlet.constants.PurchasePortletKeys;
 import purchase.portlet.mapper.PurchaseModelMapper;
+import shop.exception.NoSuchElectroTypeException;
+import shop.exception.NoSuchElectronicsException;
+import shop.exception.NoSuchEmployeeException;
 import shop.model.Electronics;
 import shop.model.Purchase;
-import shop.service.ElectroEmployeeLocalServiceUtil;
-import shop.service.ElectronicsLocalServiceUtil;
-import shop.service.PurchaseLocalServiceUtil;
+import shop.service.*;
 import shop.service.persistence.ElectroEmployeePK;
 
 import javax.portlet.ActionRequest;
@@ -52,6 +53,7 @@ public class PurchasePortlet extends MVCPortlet {
             SessionErrors.add(request, PurchasePortletKeys.PRODUCT_IS_NOT_IN_STOCK);
             return;
         }
+        checkForeignKeys(request, response, purchase);
         product.setCount(product.getCount() - 1);
         ElectronicsLocalServiceUtil.updateElectronics(product);
         PurchaseLocalServiceUtil.addPurchase(purchase);
@@ -73,6 +75,30 @@ public class PurchasePortlet extends MVCPortlet {
     public void deletePurchase(ActionRequest request, ActionResponse response) throws PortalException {
         long id = ParamUtil.getLong(request, "id");
         PurchaseLocalServiceUtil.deletePurchase(id);
+    }
+
+    private void checkForeignKeys(ActionRequest request, ActionResponse response, Purchase purchase)
+            throws NoSuchElectronicsException, NoSuchEmployeeException, NoSuchElectroTypeException {
+        if (ElectronicsLocalServiceUtil.fetchElectronics(purchase.getElectroId()) == null) {
+            String message = String.format("Product with id: %d does not exist", purchase.getElectroId());
+            response.setRenderParameter(PurchasePortletKeys.EXCEPTION_MESSAGE, message);
+            SessionErrors.add(request, NoSuchElectronicsException.class);
+            throw new NoSuchElectronicsException(message);
+        }
+
+        if (EmployeeLocalServiceUtil.fetchEmployee(purchase.getEmployeeId()) == null) {
+            String message = String.format("Employee with id: %d does not exist", purchase.getEmployeeId());
+            response.setRenderParameter(PurchasePortletKeys.EXCEPTION_MESSAGE, message);
+            SessionErrors.add(request, NoSuchEmployeeException.class);
+            throw new NoSuchEmployeeException(message);
+        }
+
+        if (ElectroTypeLocalServiceUtil.fetchElectroType(purchase.getETypeId()) == null) {
+            String message = String.format("Electro type with id: %d does not exist", purchase.getETypeId());
+            response.setRenderParameter(PurchasePortletKeys.EXCEPTION_MESSAGE, message);
+            SessionErrors.add(request, NoSuchElectroTypeException.class);
+            throw new NoSuchElectroTypeException(message);
+        }
     }
 
     private boolean checkIfEmployeeHasNoEType(Purchase purchase) {
