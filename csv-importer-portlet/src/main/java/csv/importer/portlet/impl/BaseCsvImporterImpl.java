@@ -23,7 +23,7 @@ public abstract class BaseCsvImporterImpl<T> implements CsvImporter {
     }
 
     @Override
-    public void importCsvFile(Reader reader) {
+    public void importCsvFile(Reader reader) throws WrongColumnNameException {
         try (BufferedReader buffReader = new BufferedReader(reader)) {
             initColumnSetterList(buffReader.readLine());
             String currentLine;
@@ -37,7 +37,7 @@ public abstract class BaseCsvImporterImpl<T> implements CsvImporter {
         }
     }
 
-    private void initColumnSetterList(String columnsLine) {
+    private void initColumnSetterList(String columnsLine) throws WrongColumnNameException {
         String[] columns = removeQuote(columnsLine).split(COMMA_DELIMITER);
         columnSetterList = new ArrayList<>();
         for (String column : columns) {

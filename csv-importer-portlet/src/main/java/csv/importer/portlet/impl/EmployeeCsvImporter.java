@@ -16,7 +16,7 @@ public class EmployeeCsvImporter extends BaseCsvImporterImpl<Employee> {
 
     @Override
     protected void saveModel(Employee model) {
-        EmployeeLocalServiceUtil.addEmployee(model); //TODO handle exception when primary key already exists - BatchUpdateException
+        EmployeeLocalServiceUtil.addEmployee(model);
     }
 
     @Override

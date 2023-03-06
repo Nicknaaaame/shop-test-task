@@ -1,6 +1,9 @@
+<%@ page import="csv.importer.portlet.exception.WrongColumnNameException" %>
 <%@ include file="init.jsp" %>
 
 <portlet:actionURL name='importArchive' var="importArchiveURL" windowState="normal" />
+
+<liferay-ui:error exception="<%=WrongColumnNameException.class%>" message='<%=request.getParameter("exceptionMessage")%>'/>
 
 <aui:form action="<%= importArchiveURL %>" method="POST" name="fm" enctype="multipart/form-data">
 	<aui:fieldset>
