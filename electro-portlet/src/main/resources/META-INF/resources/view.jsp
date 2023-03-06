@@ -1,5 +1,6 @@
 <%@ page import="shop.model.Electronics" %>
 <%@ page import="shop.service.ElectronicsLocalServiceUtil" %>
+<%@ page import="util.ShopProjectKeys" %>
 <%@ page import="java.util.List" %>
 <%@ include file="init.jsp" %>
 
@@ -15,6 +16,7 @@
 
     <aui:button onClick="<%= addElectroURL %>" value='<%= "Add new electronic product" %>'/>
 </aui:button-row>
+<liferay-ui:error key="<%=ShopProjectKeys.EXCEPTION_KEY%>" message='<%=request.getParameter(ShopProjectKeys.EXCEPTION_MESSAGE)%>'/>
 <liferay-ui:header title='<%="Electronics list"%>'/>
 <liferay-ui:search-container emptyResultsMessage="No products found">
     <liferay-ui:search-container-results results="<%=electronics%>"/>

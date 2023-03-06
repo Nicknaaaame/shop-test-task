@@ -11,6 +11,7 @@ import org.osgi.service.component.annotations.Component;
 import shop.model.Electronics;
 import shop.service.ElectronicsLocalServiceUtil;
 import shop.service.EmployeeLocalServiceUtil;
+import util.ShopProjectUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -42,15 +43,23 @@ public class ElectronicsPortlet extends MVCPortlet {
 		ElectronicsLocalServiceUtil.addElectronics(electronics);
 	}
 
-	public void updateElectronics(ActionRequest request, ActionResponse response) throws SystemException, PortalException {
+	public void updateElectronics(ActionRequest request, ActionResponse response) throws SystemException {
 		long id = ParamUtil.getLong(request, "id");
-		Electronics electronics = ElectronicsLocalServiceUtil.getElectronics(id);
-		ElectronicsModelMapper.map(request, electronics);
-		ElectronicsLocalServiceUtil.updateElectronics(electronics);
+		try {
+			Electronics electronics = ElectronicsLocalServiceUtil.getElectronics(id);
+			ElectronicsModelMapper.map(request, electronics);
+			ElectronicsLocalServiceUtil.updateElectronics(electronics);
+		} catch (PortalException e) {
+			ShopProjectUtil.handleException(request, response, e);
+		}
 	}
 
-	public void deleteElectronics(ActionRequest request, ActionResponse response) throws PortalException {
+	public void deleteElectronics(ActionRequest request, ActionResponse response) {
 		long id = ParamUtil.getLong(request, "id");
-		EmployeeLocalServiceUtil.deleteEmployee(id);
+		try {
+			EmployeeLocalServiceUtil.deleteEmployee(id);
+		} catch (PortalException e) {
+			ShopProjectUtil.handleException(request, response, e);
+		}
 	}
 }

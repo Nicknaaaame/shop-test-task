@@ -10,6 +10,7 @@ import employee.portlet.mapper.EmployeeModelMapper;
 import org.osgi.service.component.annotations.Component;
 import shop.model.Employee;
 import shop.service.EmployeeLocalServiceUtil;
+import util.ShopProjectUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -41,15 +42,23 @@ public class EmployeePortlet extends MVCPortlet {
         EmployeeLocalServiceUtil.addEmployee(employee);
     }
 
-    public void updateEmployee(ActionRequest request, ActionResponse response) throws SystemException, PortalException {
+    public void updateEmployee(ActionRequest request, ActionResponse response) throws SystemException {
         long id = ParamUtil.getLong(request, "id");
-        Employee employee = EmployeeLocalServiceUtil.getEmployee(id);
-        EmployeeModelMapper.map(request, employee);
-        EmployeeLocalServiceUtil.updateEmployee(employee);
+        try {
+            Employee employee = EmployeeLocalServiceUtil.getEmployee(id);
+            EmployeeModelMapper.map(request, employee);
+            EmployeeLocalServiceUtil.updateEmployee(employee);
+        } catch (PortalException e) {
+            ShopProjectUtil.handleException(request, response, e);
+        }
     }
 
-    public void deleteEmployee(ActionRequest request, ActionResponse response) throws PortalException {
+    public void deleteEmployee(ActionRequest request, ActionResponse response) {
         long id = ParamUtil.getLong(request, "id");
-        EmployeeLocalServiceUtil.deleteEmployee(id);
+        try {
+            EmployeeLocalServiceUtil.deleteEmployee(id);
+        } catch (PortalException e) {
+            ShopProjectUtil.handleException(request, response, e);
+        }
     }
 }
