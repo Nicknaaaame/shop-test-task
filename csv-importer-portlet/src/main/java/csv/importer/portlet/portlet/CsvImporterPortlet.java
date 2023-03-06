@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import csv.importer.portlet.ZipArchiveImporter;
 import csv.importer.portlet.constants.CsvImporterPortletKeys;
 import csv.importer.portlet.exception.WrongColumnNameException;
+import csv.importer.portlet.exception.WrongTableNameException;
 import org.osgi.service.component.annotations.Component;
 
 import javax.portlet.ActionRequest;
@@ -48,6 +49,9 @@ public class CsvImporterPortlet extends MVCPortlet {
         } catch (WrongColumnNameException e) {
             response.setRenderParameter("exceptionMessage", e.getMessage());
             SessionErrors.add(request, WrongColumnNameException.class);
+        } catch (WrongTableNameException e) {
+            response.setRenderParameter("exceptionMessage", e.getMessage());
+            SessionErrors.add(request, WrongTableNameException.class);
         }
     }
 }

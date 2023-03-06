@@ -2,6 +2,7 @@ package csv.importer.portlet;
 
 
 import csv.importer.portlet.exception.WrongColumnNameException;
+import csv.importer.portlet.exception.WrongTableNameException;
 import csv.importer.portlet.impl.*;
 
 import java.io.File;
@@ -26,13 +27,16 @@ public class ZipArchiveImporter {
         tableToImporterMap.put("shop_electroemployee.csv", new ElectroEmployeeCsvImporter());
     }
 
-    public void importFromZipArchive(File archive) throws IOException, WrongColumnNameException {
+    public void importFromZipArchive(File archive) throws IOException, WrongColumnNameException, WrongTableNameException {
         try (ZipFile zipFile = new ZipFile(archive)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry zipEntry = entries.nextElement();
                 try (InputStreamReader reader = new InputStreamReader(zipFile.getInputStream(zipEntry))) {
-                    tableToImporterMap.get(zipEntry.getName()).importCsvFile(reader);
+                    CsvImporter csvImporter = tableToImporterMap.get(zipEntry.getName());
+                    if (csvImporter == null)
+                        throw new WrongTableNameException(zipEntry.getName());
+                    csvImporter.importCsvFile(reader);
                 }
             }
         }
