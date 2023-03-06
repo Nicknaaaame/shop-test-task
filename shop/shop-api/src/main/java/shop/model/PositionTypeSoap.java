@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -15,7 +15,6 @@
 package shop.model;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,81 +28,80 @@ import java.util.List;
 @Deprecated
 public class PositionTypeSoap implements Serializable {
 
-	public static PositionTypeSoap toSoapModel(PositionType model) {
-		PositionTypeSoap soapModel = new PositionTypeSoap();
+    private long _id;
+    private String _name;
 
-		soapModel.setId(model.getId());
-		soapModel.setName(model.getName());
+    public PositionTypeSoap() {
+    }
 
-		return soapModel;
-	}
+    public static PositionTypeSoap toSoapModel(PositionType model) {
+        PositionTypeSoap soapModel = new PositionTypeSoap();
 
-	public static PositionTypeSoap[] toSoapModels(PositionType[] models) {
-		PositionTypeSoap[] soapModels = new PositionTypeSoap[models.length];
+        soapModel.setId(model.getId());
+        soapModel.setName(model.getName());
 
-		for (int i = 0; i < models.length; i++) {
-			soapModels[i] = toSoapModel(models[i]);
-		}
+        return soapModel;
+    }
 
-		return soapModels;
-	}
+    public static PositionTypeSoap[] toSoapModels(PositionType[] models) {
+        PositionTypeSoap[] soapModels = new PositionTypeSoap[models.length];
 
-	public static PositionTypeSoap[][] toSoapModels(PositionType[][] models) {
-		PositionTypeSoap[][] soapModels = null;
+        for (int i = 0; i < models.length; i++) {
+            soapModels[i] = toSoapModel(models[i]);
+        }
 
-		if (models.length > 0) {
-			soapModels = new PositionTypeSoap[models.length][models[0].length];
-		}
-		else {
-			soapModels = new PositionTypeSoap[0][0];
-		}
+        return soapModels;
+    }
 
-		for (int i = 0; i < models.length; i++) {
-			soapModels[i] = toSoapModels(models[i]);
-		}
+    public static PositionTypeSoap[][] toSoapModels(PositionType[][] models) {
+        PositionTypeSoap[][] soapModels = null;
 
-		return soapModels;
-	}
+        if (models.length > 0) {
+            soapModels = new PositionTypeSoap[models.length][models[0].length];
+        } else {
+            soapModels = new PositionTypeSoap[0][0];
+        }
 
-	public static PositionTypeSoap[] toSoapModels(List<PositionType> models) {
-		List<PositionTypeSoap> soapModels = new ArrayList<PositionTypeSoap>(
-			models.size());
+        for (int i = 0; i < models.length; i++) {
+            soapModels[i] = toSoapModels(models[i]);
+        }
 
-		for (PositionType model : models) {
-			soapModels.add(toSoapModel(model));
-		}
+        return soapModels;
+    }
 
-		return soapModels.toArray(new PositionTypeSoap[soapModels.size()]);
-	}
+    public static PositionTypeSoap[] toSoapModels(List<PositionType> models) {
+        List<PositionTypeSoap> soapModels = new ArrayList<PositionTypeSoap>(
+                models.size());
 
-	public PositionTypeSoap() {
-	}
+        for (PositionType model : models) {
+            soapModels.add(toSoapModel(model));
+        }
 
-	public long getPrimaryKey() {
-		return _id;
-	}
+        return soapModels.toArray(new PositionTypeSoap[soapModels.size()]);
+    }
 
-	public void setPrimaryKey(long pk) {
-		setId(pk);
-	}
+    public long getPrimaryKey() {
+        return _id;
+    }
 
-	public long getId() {
-		return _id;
-	}
+    public void setPrimaryKey(long pk) {
+        setId(pk);
+    }
 
-	public void setId(long id) {
-		_id = id;
-	}
+    public long getId() {
+        return _id;
+    }
 
-	public String getName() {
-		return _name;
-	}
+    public void setId(long id) {
+        _id = id;
+    }
 
-	public void setName(String name) {
-		_name = name;
-	}
+    public String getName() {
+        return _name;
+    }
 
-	private long _id;
-	private String _name;
+    public void setName(String name) {
+        _name = name;
+    }
 
 }

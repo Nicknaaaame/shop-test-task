@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -14,12 +14,11 @@
 
 package shop.model;
 
-import java.io.Serializable;
+import shop.service.persistence.ElectroEmployeePK;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import shop.service.persistence.ElectroEmployeePK;
 
 /**
  * This class is used by SOAP remote services, specifically {@link shop.service.http.ElectroEmployeeServiceSoap}.
@@ -31,88 +30,87 @@ import shop.service.persistence.ElectroEmployeePK;
 @Deprecated
 public class ElectroEmployeeSoap implements Serializable {
 
-	public static ElectroEmployeeSoap toSoapModel(ElectroEmployee model) {
-		ElectroEmployeeSoap soapModel = new ElectroEmployeeSoap();
+    private long _employeeId;
+    private long _eTypeId;
 
-		soapModel.setEmployeeId(model.getEmployeeId());
-		soapModel.setETypeId(model.getETypeId());
+    public ElectroEmployeeSoap() {
+    }
 
-		return soapModel;
-	}
+    public static ElectroEmployeeSoap toSoapModel(ElectroEmployee model) {
+        ElectroEmployeeSoap soapModel = new ElectroEmployeeSoap();
 
-	public static ElectroEmployeeSoap[] toSoapModels(ElectroEmployee[] models) {
-		ElectroEmployeeSoap[] soapModels =
-			new ElectroEmployeeSoap[models.length];
+        soapModel.setEmployeeId(model.getEmployeeId());
+        soapModel.setETypeId(model.getETypeId());
 
-		for (int i = 0; i < models.length; i++) {
-			soapModels[i] = toSoapModel(models[i]);
-		}
+        return soapModel;
+    }
 
-		return soapModels;
-	}
+    public static ElectroEmployeeSoap[] toSoapModels(ElectroEmployee[] models) {
+        ElectroEmployeeSoap[] soapModels =
+                new ElectroEmployeeSoap[models.length];
 
-	public static ElectroEmployeeSoap[][] toSoapModels(
-		ElectroEmployee[][] models) {
+        for (int i = 0; i < models.length; i++) {
+            soapModels[i] = toSoapModel(models[i]);
+        }
 
-		ElectroEmployeeSoap[][] soapModels = null;
+        return soapModels;
+    }
 
-		if (models.length > 0) {
-			soapModels =
-				new ElectroEmployeeSoap[models.length][models[0].length];
-		}
-		else {
-			soapModels = new ElectroEmployeeSoap[0][0];
-		}
+    public static ElectroEmployeeSoap[][] toSoapModels(
+            ElectroEmployee[][] models) {
 
-		for (int i = 0; i < models.length; i++) {
-			soapModels[i] = toSoapModels(models[i]);
-		}
+        ElectroEmployeeSoap[][] soapModels = null;
 
-		return soapModels;
-	}
+        if (models.length > 0) {
+            soapModels =
+                    new ElectroEmployeeSoap[models.length][models[0].length];
+        } else {
+            soapModels = new ElectroEmployeeSoap[0][0];
+        }
 
-	public static ElectroEmployeeSoap[] toSoapModels(
-		List<ElectroEmployee> models) {
+        for (int i = 0; i < models.length; i++) {
+            soapModels[i] = toSoapModels(models[i]);
+        }
 
-		List<ElectroEmployeeSoap> soapModels =
-			new ArrayList<ElectroEmployeeSoap>(models.size());
+        return soapModels;
+    }
 
-		for (ElectroEmployee model : models) {
-			soapModels.add(toSoapModel(model));
-		}
+    public static ElectroEmployeeSoap[] toSoapModels(
+            List<ElectroEmployee> models) {
 
-		return soapModels.toArray(new ElectroEmployeeSoap[soapModels.size()]);
-	}
+        List<ElectroEmployeeSoap> soapModels =
+                new ArrayList<ElectroEmployeeSoap>(models.size());
 
-	public ElectroEmployeeSoap() {
-	}
+        for (ElectroEmployee model : models) {
+            soapModels.add(toSoapModel(model));
+        }
 
-	public ElectroEmployeePK getPrimaryKey() {
-		return new ElectroEmployeePK(_employeeId, _eTypeId);
-	}
+        return soapModels.toArray(new ElectroEmployeeSoap[soapModels.size()]);
+    }
 
-	public void setPrimaryKey(ElectroEmployeePK pk) {
-		setEmployeeId(pk.employeeId);
-		setETypeId(pk.eTypeId);
-	}
+    public ElectroEmployeePK getPrimaryKey() {
+        return new ElectroEmployeePK(_employeeId, _eTypeId);
+    }
 
-	public long getEmployeeId() {
-		return _employeeId;
-	}
+    public void setPrimaryKey(ElectroEmployeePK pk) {
+        setEmployeeId(pk.employeeId);
+        setETypeId(pk.eTypeId);
+    }
 
-	public void setEmployeeId(long employeeId) {
-		_employeeId = employeeId;
-	}
+    public long getEmployeeId() {
+        return _employeeId;
+    }
 
-	public long getETypeId() {
-		return _eTypeId;
-	}
+    public void setEmployeeId(long employeeId) {
+        _employeeId = employeeId;
+    }
 
-	public void setETypeId(long eTypeId) {
-		_eTypeId = eTypeId;
-	}
+    public long getETypeId() {
+        return _eTypeId;
+    }
 
-	private long _employeeId;
-	private long _eTypeId;
+    public void setETypeId(long eTypeId) {
+        _eTypeId = eTypeId;
+    }
 
 }

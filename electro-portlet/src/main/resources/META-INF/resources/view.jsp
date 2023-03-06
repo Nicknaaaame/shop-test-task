@@ -16,7 +16,8 @@
 
     <aui:button onClick="<%= addElectroURL %>" value='<%= "Add new electronic product" %>'/>
 </aui:button-row>
-<liferay-ui:error key="<%=ShopProjectKeys.EXCEPTION_KEY%>" message='<%=request.getParameter(ShopProjectKeys.EXCEPTION_MESSAGE)%>'/>
+<liferay-ui:error key="<%=ShopProjectKeys.EXCEPTION_KEY%>"
+                  message='<%=request.getParameter(ShopProjectKeys.EXCEPTION_MESSAGE)%>'/>
 <liferay-ui:header title='<%="Electronics list"%>'/>
 <liferay-ui:search-container emptyResultsMessage="No products found">
     <liferay-ui:search-container-results results="<%=electronics%>"/>

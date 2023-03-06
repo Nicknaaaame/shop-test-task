@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -19,12 +19,7 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.Projection;
+import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -39,29 +34,17 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.io.Serializable;
-
-import java.lang.reflect.Field;
-
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-
 import shop.model.Purchase;
-
 import shop.service.PurchaseLocalService;
 import shop.service.PurchaseLocalServiceUtil;
-import shop.service.persistence.ElectroEmployeePersistence;
-import shop.service.persistence.ElectroTypePersistence;
-import shop.service.persistence.ElectronicsPersistence;
-import shop.service.persistence.EmployeePersistence;
-import shop.service.persistence.PositionTypePersistence;
-import shop.service.persistence.PurchasePersistence;
-import shop.service.persistence.PurchaseTypePersistence;
+import shop.service.persistence.*;
+
+import javax.sql.DataSource;
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Provides the base implementation for the purchase local service.
@@ -75,416 +58,402 @@ import shop.service.persistence.PurchaseTypePersistence;
  * @generated
  */
 public abstract class PurchaseLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements AopService, IdentifiableOSGiService, PurchaseLocalService {
-
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. Use <code>PurchaseLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PurchaseLocalServiceUtil</code>.
-	 */
-
-	/**
-	 * Adds the purchase to the database. Also notifies the appropriate model listeners.
-	 *
-	 * <p>
-	 * <strong>Important:</strong> Inspect PurchaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
-	 * </p>
-	 *
-	 * @param purchase the purchase
-	 * @return the purchase that was added
-	 */
-	@Indexable(type = IndexableType.REINDEX)
-	@Override
-	public Purchase addPurchase(Purchase purchase) {
-		purchase.setNew(true);
-
-		return purchasePersistence.update(purchase);
-	}
-
-	/**
-	 * Creates a new purchase with the primary key. Does not add the purchase to the database.
-	 *
-	 * @param id the primary key for the new purchase
-	 * @return the new purchase
-	 */
-	@Override
-	@Transactional(enabled = false)
-	public Purchase createPurchase(long id) {
-		return purchasePersistence.create(id);
-	}
-
-	/**
-	 * Deletes the purchase with the primary key from the database. Also notifies the appropriate model listeners.
-	 *
-	 * <p>
-	 * <strong>Important:</strong> Inspect PurchaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
-	 * </p>
-	 *
-	 * @param id the primary key of the purchase
-	 * @return the purchase that was removed
-	 * @throws PortalException if a purchase with the primary key could not be found
-	 */
-	@Indexable(type = IndexableType.DELETE)
-	@Override
-	public Purchase deletePurchase(long id) throws PortalException {
-		return purchasePersistence.remove(id);
-	}
-
-	/**
-	 * Deletes the purchase from the database. Also notifies the appropriate model listeners.
-	 *
-	 * <p>
-	 * <strong>Important:</strong> Inspect PurchaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
-	 * </p>
-	 *
-	 * @param purchase the purchase
-	 * @return the purchase that was removed
-	 */
-	@Indexable(type = IndexableType.DELETE)
-	@Override
-	public Purchase deletePurchase(Purchase purchase) {
-		return purchasePersistence.remove(purchase);
-	}
-
-	@Override
-	public DynamicQuery dynamicQuery() {
-		Class<?> clazz = getClass();
-
-		return DynamicQueryFactoryUtil.forClass(
-			Purchase.class, clazz.getClassLoader());
-	}
-
-	/**
-	 * Performs a dynamic query on the database and returns the matching rows.
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @return the matching rows
-	 */
-	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return purchasePersistence.findWithDynamicQuery(dynamicQuery);
-	}
-
-	/**
-	 * Performs a dynamic query on the database and returns a range of the matching rows.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>shop.model.impl.PurchaseModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @param start the lower bound of the range of model instances
-	 * @param end the upper bound of the range of model instances (not inclusive)
-	 * @return the range of matching rows
-	 */
-	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return purchasePersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
-	}
-
-	/**
-	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>shop.model.impl.PurchaseModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @param start the lower bound of the range of model instances
-	 * @param end the upper bound of the range of model instances (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching rows
-	 */
-	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return purchasePersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the number of rows matching the dynamic query.
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows matching the dynamic query
-	 */
-	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return purchasePersistence.countWithDynamicQuery(dynamicQuery);
-	}
-
-	/**
-	 * Returns the number of rows matching the dynamic query.
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @param projection the projection to apply to the query
-	 * @return the number of rows matching the dynamic query
-	 */
-	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return purchasePersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
-	}
-
-	@Override
-	public Purchase fetchPurchase(long id) {
-		return purchasePersistence.fetchByPrimaryKey(id);
-	}
-
-	/**
-	 * Returns the purchase with the primary key.
-	 *
-	 * @param id the primary key of the purchase
-	 * @return the purchase
-	 * @throws PortalException if a purchase with the primary key could not be found
-	 */
-	@Override
-	public Purchase getPurchase(long id) throws PortalException {
-		return purchasePersistence.findByPrimaryKey(id);
-	}
-
-	@Override
-	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
-
-		actionableDynamicQuery.setBaseLocalService(purchaseLocalService);
-		actionableDynamicQuery.setClassLoader(getClassLoader());
-		actionableDynamicQuery.setModelClass(Purchase.class);
-
-		actionableDynamicQuery.setPrimaryKeyPropertyName("id");
-
-		return actionableDynamicQuery;
-	}
-
-	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
-
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			purchaseLocalService);
-		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(Purchase.class);
-
-		indexableActionableDynamicQuery.setPrimaryKeyPropertyName("id");
-
-		return indexableActionableDynamicQuery;
-	}
-
-	protected void initActionableDynamicQuery(
-		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(purchaseLocalService);
-		actionableDynamicQuery.setClassLoader(getClassLoader());
-		actionableDynamicQuery.setModelClass(Purchase.class);
-
-		actionableDynamicQuery.setPrimaryKeyPropertyName("id");
-	}
-
-	/**
-	 * @throws PortalException
-	 */
-	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
-		throws PortalException {
-
-		return purchasePersistence.create(((Long)primaryKeyObj).longValue());
-	}
-
-	/**
-	 * @throws PortalException
-	 */
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException {
-
-		return purchaseLocalService.deletePurchase((Purchase)persistedModel);
-	}
-
-	public BasePersistence<Purchase> getBasePersistence() {
-		return purchasePersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
-	@Override
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException {
-
-		return purchasePersistence.findByPrimaryKey(primaryKeyObj);
-	}
-
-	/**
-	 * Returns a range of all the purchases.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>shop.model.impl.PurchaseModelImpl</code>.
-	 * </p>
-	 *
-	 * @param start the lower bound of the range of purchases
-	 * @param end the upper bound of the range of purchases (not inclusive)
-	 * @return the range of purchases
-	 */
-	@Override
-	public List<Purchase> getPurchases(int start, int end) {
-		return purchasePersistence.findAll(start, end);
-	}
-
-	/**
-	 * Returns the number of purchases.
-	 *
-	 * @return the number of purchases
-	 */
-	@Override
-	public int getPurchasesCount() {
-		return purchasePersistence.countAll();
-	}
-
-	/**
-	 * Updates the purchase in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	 *
-	 * <p>
-	 * <strong>Important:</strong> Inspect PurchaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
-	 * </p>
-	 *
-	 * @param purchase the purchase
-	 * @return the purchase that was updated
-	 */
-	@Indexable(type = IndexableType.REINDEX)
-	@Override
-	public Purchase updatePurchase(Purchase purchase) {
-		return purchasePersistence.update(purchase);
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
-	@Override
-	public Class<?>[] getAopInterfaces() {
-		return new Class<?>[] {
-			PurchaseLocalService.class, IdentifiableOSGiService.class,
-			PersistedModelLocalService.class
-		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		purchaseLocalService = (PurchaseLocalService)aopProxy;
-
-		_setLocalServiceUtilService(purchaseLocalService);
-	}
-
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	@Override
-	public String getOSGiServiceIdentifier() {
-		return PurchaseLocalService.class.getName();
-	}
-
-	protected Class<?> getModelClass() {
-		return Purchase.class;
-	}
-
-	protected String getModelClassName() {
-		return Purchase.class.getName();
-	}
-
-	/**
-	 * Performs a SQL query.
-	 *
-	 * @param sql the sql query
-	 */
-	protected void runSQL(String sql) {
-		try {
-			DataSource dataSource = purchasePersistence.getDataSource();
-
-			DB db = DBManagerUtil.getDB();
-
-			sql = db.buildSQL(sql);
-			sql = PortalUtil.transformSQL(sql);
-
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
-
-			sqlUpdate.update();
-		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		PurchaseLocalService purchaseLocalService) {
-
-		try {
-			Field field = PurchaseLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, purchaseLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
-	}
-
-	@Reference
-	protected ElectroEmployeePersistence electroEmployeePersistence;
-
-	@Reference
-	protected ElectronicsPersistence electronicsPersistence;
-
-	@Reference
-	protected ElectroTypePersistence electroTypePersistence;
-
-	@Reference
-	protected EmployeePersistence employeePersistence;
-
-	@Reference
-	protected PositionTypePersistence positionTypePersistence;
-
-	protected PurchaseLocalService purchaseLocalService;
-
-	@Reference
-	protected PurchasePersistence purchasePersistence;
-
-	@Reference
-	protected PurchaseTypePersistence purchaseTypePersistence;
-
-	@Reference
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@Reference
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
-	@Reference
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@Reference
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		PurchaseLocalServiceBaseImpl.class);
+        extends BaseLocalServiceImpl
+        implements AopService, IdentifiableOSGiService, PurchaseLocalService {
+
+    /*
+     * NOTE FOR DEVELOPERS:
+     *
+     * Never modify or reference this class directly. Use <code>PurchaseLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PurchaseLocalServiceUtil</code>.
+     */
+
+    private static final Log _log = LogFactoryUtil.getLog(
+            PurchaseLocalServiceBaseImpl.class);
+    @Reference
+    protected ElectroEmployeePersistence electroEmployeePersistence;
+    @Reference
+    protected ElectronicsPersistence electronicsPersistence;
+    @Reference
+    protected ElectroTypePersistence electroTypePersistence;
+    @Reference
+    protected EmployeePersistence employeePersistence;
+    @Reference
+    protected PositionTypePersistence positionTypePersistence;
+    protected PurchaseLocalService purchaseLocalService;
+    @Reference
+    protected PurchasePersistence purchasePersistence;
+    @Reference
+    protected PurchaseTypePersistence purchaseTypePersistence;
+    @Reference
+    protected com.liferay.counter.kernel.service.CounterLocalService
+            counterLocalService;
+    @Reference
+    protected com.liferay.portal.kernel.service.ClassNameLocalService
+            classNameLocalService;
+    @Reference
+    protected com.liferay.portal.kernel.service.ResourceLocalService
+            resourceLocalService;
+    @Reference
+    protected com.liferay.portal.kernel.service.UserLocalService
+            userLocalService;
+
+    /**
+     * Adds the purchase to the database. Also notifies the appropriate model listeners.
+     *
+     * <p>
+     * <strong>Important:</strong> Inspect PurchaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+     * </p>
+     *
+     * @param purchase the purchase
+     * @return the purchase that was added
+     */
+    @Indexable(type = IndexableType.REINDEX)
+    @Override
+    public Purchase addPurchase(Purchase purchase) {
+        purchase.setNew(true);
+
+        return purchasePersistence.update(purchase);
+    }
+
+    /**
+     * Creates a new purchase with the primary key. Does not add the purchase to the database.
+     *
+     * @param id the primary key for the new purchase
+     * @return the new purchase
+     */
+    @Override
+    @Transactional(enabled = false)
+    public Purchase createPurchase(long id) {
+        return purchasePersistence.create(id);
+    }
+
+    /**
+     * Deletes the purchase with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * <p>
+     * <strong>Important:</strong> Inspect PurchaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+     * </p>
+     *
+     * @param id the primary key of the purchase
+     * @return the purchase that was removed
+     * @throws PortalException if a purchase with the primary key could not be found
+     */
+    @Indexable(type = IndexableType.DELETE)
+    @Override
+    public Purchase deletePurchase(long id) throws PortalException {
+        return purchasePersistence.remove(id);
+    }
+
+    /**
+     * Deletes the purchase from the database. Also notifies the appropriate model listeners.
+     *
+     * <p>
+     * <strong>Important:</strong> Inspect PurchaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+     * </p>
+     *
+     * @param purchase the purchase
+     * @return the purchase that was removed
+     */
+    @Indexable(type = IndexableType.DELETE)
+    @Override
+    public Purchase deletePurchase(Purchase purchase) {
+        return purchasePersistence.remove(purchase);
+    }
+
+    @Override
+    public DynamicQuery dynamicQuery() {
+        Class<?> clazz = getClass();
+
+        return DynamicQueryFactoryUtil.forClass(
+                Purchase.class, clazz.getClassLoader());
+    }
+
+    /**
+     * Performs a dynamic query on the database and returns the matching rows.
+     *
+     * @param dynamicQuery the dynamic query
+     * @return the matching rows
+     */
+    @Override
+    public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
+        return purchasePersistence.findWithDynamicQuery(dynamicQuery);
+    }
+
+    /**
+     * Performs a dynamic query on the database and returns a range of the matching rows.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>shop.model.impl.PurchaseModelImpl</code>.
+     * </p>
+     *
+     * @param dynamicQuery the dynamic query
+     * @param start the lower bound of the range of model instances
+     * @param end the upper bound of the range of model instances (not inclusive)
+     * @return the range of matching rows
+     */
+    @Override
+    public <T> List<T> dynamicQuery(
+            DynamicQuery dynamicQuery, int start, int end) {
+
+        return purchasePersistence.findWithDynamicQuery(
+                dynamicQuery, start, end);
+    }
+
+    /**
+     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>shop.model.impl.PurchaseModelImpl</code>.
+     * </p>
+     *
+     * @param dynamicQuery the dynamic query
+     * @param start the lower bound of the range of model instances
+     * @param end the upper bound of the range of model instances (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching rows
+     */
+    @Override
+    public <T> List<T> dynamicQuery(
+            DynamicQuery dynamicQuery, int start, int end,
+            OrderByComparator<T> orderByComparator) {
+
+        return purchasePersistence.findWithDynamicQuery(
+                dynamicQuery, start, end, orderByComparator);
+    }
+
+    /**
+     * Returns the number of rows matching the dynamic query.
+     *
+     * @param dynamicQuery the dynamic query
+     * @return the number of rows matching the dynamic query
+     */
+    @Override
+    public long dynamicQueryCount(DynamicQuery dynamicQuery) {
+        return purchasePersistence.countWithDynamicQuery(dynamicQuery);
+    }
+
+    /**
+     * Returns the number of rows matching the dynamic query.
+     *
+     * @param dynamicQuery the dynamic query
+     * @param projection the projection to apply to the query
+     * @return the number of rows matching the dynamic query
+     */
+    @Override
+    public long dynamicQueryCount(
+            DynamicQuery dynamicQuery, Projection projection) {
+
+        return purchasePersistence.countWithDynamicQuery(
+                dynamicQuery, projection);
+    }
+
+    @Override
+    public Purchase fetchPurchase(long id) {
+        return purchasePersistence.fetchByPrimaryKey(id);
+    }
+
+    /**
+     * Returns the purchase with the primary key.
+     *
+     * @param id the primary key of the purchase
+     * @return the purchase
+     * @throws PortalException if a purchase with the primary key could not be found
+     */
+    @Override
+    public Purchase getPurchase(long id) throws PortalException {
+        return purchasePersistence.findByPrimaryKey(id);
+    }
+
+    @Override
+    public ActionableDynamicQuery getActionableDynamicQuery() {
+        ActionableDynamicQuery actionableDynamicQuery =
+                new DefaultActionableDynamicQuery();
+
+        actionableDynamicQuery.setBaseLocalService(purchaseLocalService);
+        actionableDynamicQuery.setClassLoader(getClassLoader());
+        actionableDynamicQuery.setModelClass(Purchase.class);
+
+        actionableDynamicQuery.setPrimaryKeyPropertyName("id");
+
+        return actionableDynamicQuery;
+    }
+
+    @Override
+    public IndexableActionableDynamicQuery
+    getIndexableActionableDynamicQuery() {
+
+        IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+                new IndexableActionableDynamicQuery();
+
+        indexableActionableDynamicQuery.setBaseLocalService(
+                purchaseLocalService);
+        indexableActionableDynamicQuery.setClassLoader(getClassLoader());
+        indexableActionableDynamicQuery.setModelClass(Purchase.class);
+
+        indexableActionableDynamicQuery.setPrimaryKeyPropertyName("id");
+
+        return indexableActionableDynamicQuery;
+    }
+
+    protected void initActionableDynamicQuery(
+            ActionableDynamicQuery actionableDynamicQuery) {
+
+        actionableDynamicQuery.setBaseLocalService(purchaseLocalService);
+        actionableDynamicQuery.setClassLoader(getClassLoader());
+        actionableDynamicQuery.setModelClass(Purchase.class);
+
+        actionableDynamicQuery.setPrimaryKeyPropertyName("id");
+    }
+
+    /**
+     * @throws PortalException
+     */
+    public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+            throws PortalException {
+
+        return purchasePersistence.create(((Long) primaryKeyObj).longValue());
+    }
+
+    /**
+     * @throws PortalException
+     */
+    @Override
+    public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+            throws PortalException {
+
+        return purchaseLocalService.deletePurchase((Purchase) persistedModel);
+    }
+
+    public BasePersistence<Purchase> getBasePersistence() {
+        return purchasePersistence;
+    }
+
+    /**
+     * @throws PortalException
+     */
+    @Override
+    public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+            throws PortalException {
+
+        return purchasePersistence.findByPrimaryKey(primaryKeyObj);
+    }
+
+    /**
+     * Returns a range of all the purchases.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>shop.model.impl.PurchaseModelImpl</code>.
+     * </p>
+     *
+     * @param start the lower bound of the range of purchases
+     * @param end the upper bound of the range of purchases (not inclusive)
+     * @return the range of purchases
+     */
+    @Override
+    public List<Purchase> getPurchases(int start, int end) {
+        return purchasePersistence.findAll(start, end);
+    }
+
+    /**
+     * Returns the number of purchases.
+     *
+     * @return the number of purchases
+     */
+    @Override
+    public int getPurchasesCount() {
+        return purchasePersistence.countAll();
+    }
+
+    /**
+     * Updates the purchase in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+     *
+     * <p>
+     * <strong>Important:</strong> Inspect PurchaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+     * </p>
+     *
+     * @param purchase the purchase
+     * @return the purchase that was updated
+     */
+    @Indexable(type = IndexableType.REINDEX)
+    @Override
+    public Purchase updatePurchase(Purchase purchase) {
+        return purchasePersistence.update(purchase);
+    }
+
+    @Deactivate
+    protected void deactivate() {
+        _setLocalServiceUtilService(null);
+    }
+
+    @Override
+    public Class<?>[] getAopInterfaces() {
+        return new Class<?>[]{
+                PurchaseLocalService.class, IdentifiableOSGiService.class,
+                PersistedModelLocalService.class
+        };
+    }
+
+    @Override
+    public void setAopProxy(Object aopProxy) {
+        purchaseLocalService = (PurchaseLocalService) aopProxy;
+
+        _setLocalServiceUtilService(purchaseLocalService);
+    }
+
+    /**
+     * Returns the OSGi service identifier.
+     *
+     * @return the OSGi service identifier
+     */
+    @Override
+    public String getOSGiServiceIdentifier() {
+        return PurchaseLocalService.class.getName();
+    }
+
+    protected Class<?> getModelClass() {
+        return Purchase.class;
+    }
+
+    protected String getModelClassName() {
+        return Purchase.class.getName();
+    }
+
+    /**
+     * Performs a SQL query.
+     *
+     * @param sql the sql query
+     */
+    protected void runSQL(String sql) {
+        try {
+            DataSource dataSource = purchasePersistence.getDataSource();
+
+            DB db = DBManagerUtil.getDB();
+
+            sql = db.buildSQL(sql);
+            sql = PortalUtil.transformSQL(sql);
+
+            SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+                    dataSource, sql);
+
+            sqlUpdate.update();
+        } catch (Exception exception) {
+            throw new SystemException(exception);
+        }
+    }
+
+    private void _setLocalServiceUtilService(
+            PurchaseLocalService purchaseLocalService) {
+
+        try {
+            Field field = PurchaseLocalServiceUtil.class.getDeclaredField(
+                    "_service");
+
+            field.setAccessible(true);
+
+            field.set(null, purchaseLocalService);
+        } catch (ReflectiveOperationException reflectiveOperationException) {
+            throw new RuntimeException(reflectiveOperationException);
+        }
+    }
 
 }

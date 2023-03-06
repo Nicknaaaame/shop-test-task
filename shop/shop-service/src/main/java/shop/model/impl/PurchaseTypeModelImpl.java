@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -25,28 +25,17 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-
-import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
-
-import java.sql.Blob;
-import java.sql.Types;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-
 import shop.model.PurchaseType;
 import shop.model.PurchaseTypeModel;
 import shop.model.PurchaseTypeSoap;
+
+import java.io.Serializable;
+import java.lang.reflect.InvocationHandler;
+import java.sql.Blob;
+import java.sql.Types;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the PurchaseType service. Represents a row in the &quot;SHOP_PurchaseType&quot; database table, with each column mapped to a property of this class.
@@ -61,561 +50,542 @@ import shop.model.PurchaseTypeSoap;
  */
 @JSON(strict = true)
 public class PurchaseTypeModelImpl
-	extends BaseModelImpl<PurchaseType> implements PurchaseTypeModel {
-
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a purchase type model instance should use the <code>PurchaseType</code> interface instead.
-	 */
-	public static final String TABLE_NAME = "SHOP_PurchaseType";
-
-	public static final Object[][] TABLE_COLUMNS = {
-		{"id_", Types.BIGINT}, {"name", Types.VARCHAR}
-	};
-
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
-		new HashMap<String, Integer>();
-
-	static {
-		TABLE_COLUMNS_MAP.put("id_", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
-	}
-
-	public static final String TABLE_SQL_CREATE =
-		"create table SHOP_PurchaseType (id_ LONG not null primary key,name VARCHAR(100) null)";
-
-	public static final String TABLE_SQL_DROP = "drop table SHOP_PurchaseType";
-
-	public static final String ORDER_BY_JPQL = " ORDER BY purchaseType.id ASC";
-
-	public static final String ORDER_BY_SQL =
-		" ORDER BY SHOP_PurchaseType.id_ ASC";
-
-	public static final String DATA_SOURCE = "liferayDataSource";
-
-	public static final String SESSION_FACTORY = "liferaySessionFactory";
-
-	public static final String TX_MANAGER = "liferayTransactionManager";
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
-	 *		#getColumnBitmask(String)}
-	 */
-	@Deprecated
-	public static final long ID_COLUMN_BITMASK = 1L;
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static void setFinderCacheEnabled(boolean finderCacheEnabled) {
-	}
-
-	/**
-	 * Converts the soap model instance into a normal model instance.
-	 *
-	 * @param soapModel the soap model instance to convert
-	 * @return the normal model instance
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static PurchaseType toModel(PurchaseTypeSoap soapModel) {
-		if (soapModel == null) {
-			return null;
-		}
-
-		PurchaseType model = new PurchaseTypeImpl();
-
-		model.setId(soapModel.getId());
-		model.setName(soapModel.getName());
-
-		return model;
-	}
-
-	/**
-	 * Converts the soap model instances into normal model instances.
-	 *
-	 * @param soapModels the soap model instances to convert
-	 * @return the normal model instances
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static List<PurchaseType> toModels(PurchaseTypeSoap[] soapModels) {
-		if (soapModels == null) {
-			return null;
-		}
-
-		List<PurchaseType> models = new ArrayList<PurchaseType>(
-			soapModels.length);
-
-		for (PurchaseTypeSoap soapModel : soapModels) {
-			models.add(toModel(soapModel));
-		}
-
-		return models;
-	}
-
-	public PurchaseTypeModelImpl() {
-	}
-
-	@Override
-	public long getPrimaryKey() {
-		return _id;
-	}
-
-	@Override
-	public void setPrimaryKey(long primaryKey) {
-		setId(primaryKey);
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _id;
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey(((Long)primaryKeyObj).longValue());
-	}
-
-	@Override
-	public Class<?> getModelClass() {
-		return PurchaseType.class;
-	}
-
-	@Override
-	public String getModelClassName() {
-		return PurchaseType.class.getName();
-	}
-
-	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		Map<String, Function<PurchaseType, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
-
-		for (Map.Entry<String, Function<PurchaseType, Object>> entry :
-				attributeGetterFunctions.entrySet()) {
-
-			String attributeName = entry.getKey();
-			Function<PurchaseType, Object> attributeGetterFunction =
-				entry.getValue();
-
-			attributes.put(
-				attributeName,
-				attributeGetterFunction.apply((PurchaseType)this));
-		}
-
-		return attributes;
-	}
-
-	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<PurchaseType, Object>>
-			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
-
-		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
-			String attributeName = entry.getKey();
-
-			BiConsumer<PurchaseType, Object> attributeSetterBiConsumer =
-				attributeSetterBiConsumers.get(attributeName);
-
-			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept(
-					(PurchaseType)this, entry.getValue());
-			}
-		}
-	}
-
-	public Map<String, Function<PurchaseType, Object>>
-		getAttributeGetterFunctions() {
-
-		return _attributeGetterFunctions;
-	}
-
-	public Map<String, BiConsumer<PurchaseType, Object>>
-		getAttributeSetterBiConsumers() {
-
-		return _attributeSetterBiConsumers;
-	}
-
-	private static final Map<String, Function<PurchaseType, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<PurchaseType, Object>>
-		_attributeSetterBiConsumers;
-
-	static {
-		Map<String, Function<PurchaseType, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<PurchaseType, Object>>();
-		Map<String, BiConsumer<PurchaseType, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<PurchaseType, ?>>();
-
-		attributeGetterFunctions.put("id", PurchaseType::getId);
-		attributeSetterBiConsumers.put(
-			"id", (BiConsumer<PurchaseType, Long>)PurchaseType::setId);
-		attributeGetterFunctions.put("name", PurchaseType::getName);
-		attributeSetterBiConsumers.put(
-			"name", (BiConsumer<PurchaseType, String>)PurchaseType::setName);
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
-	}
-
-	@JSON
-	@Override
-	public long getId() {
-		return _id;
-	}
-
-	@Override
-	public void setId(long id) {
-		if (_columnOriginalValues == Collections.EMPTY_MAP) {
-			_setColumnOriginalValues();
-		}
-
-		_id = id;
-	}
-
-	@JSON
-	@Override
-	public String getName() {
-		if (_name == null) {
-			return "";
-		}
-		else {
-			return _name;
-		}
-	}
-
-	@Override
-	public void setName(String name) {
-		if (_columnOriginalValues == Collections.EMPTY_MAP) {
-			_setColumnOriginalValues();
-		}
-
-		_name = name;
-	}
-
-	public long getColumnBitmask() {
-		if (_columnBitmask > 0) {
-			return _columnBitmask;
-		}
-
-		if ((_columnOriginalValues == null) ||
-			(_columnOriginalValues == Collections.EMPTY_MAP)) {
-
-			return 0;
-		}
-
-		for (Map.Entry<String, Object> entry :
-				_columnOriginalValues.entrySet()) {
-
-			if (!Objects.equals(
-					entry.getValue(), getColumnValue(entry.getKey()))) {
-
-				_columnBitmask |= _columnBitmasks.get(entry.getKey());
-			}
-		}
-
-		return _columnBitmask;
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(
-			0, PurchaseType.class.getName(), getPrimaryKey());
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		ExpandoBridge expandoBridge = getExpandoBridge();
-
-		expandoBridge.setAttributes(serviceContext);
-	}
-
-	@Override
-	public PurchaseType toEscapedModel() {
-		if (_escapedModel == null) {
-			Function<InvocationHandler, PurchaseType>
-				escapedModelProxyProviderFunction =
-					EscapedModelProxyProviderFunctionHolder.
-						_escapedModelProxyProviderFunction;
-
-			_escapedModel = escapedModelProxyProviderFunction.apply(
-				new AutoEscapeBeanHandler(this));
-		}
-
-		return _escapedModel;
-	}
-
-	@Override
-	public Object clone() {
-		PurchaseTypeImpl purchaseTypeImpl = new PurchaseTypeImpl();
-
-		purchaseTypeImpl.setId(getId());
-		purchaseTypeImpl.setName(getName());
-
-		purchaseTypeImpl.resetOriginalValues();
-
-		return purchaseTypeImpl;
-	}
-
-	@Override
-	public int compareTo(PurchaseType purchaseType) {
-		int value = 0;
-
-		if (getId() < purchaseType.getId()) {
-			value = -1;
-		}
-		else if (getId() > purchaseType.getId()) {
-			value = 1;
-		}
-		else {
-			value = 0;
-		}
-
-		if (value != 0) {
-			return value;
-		}
-
-		return 0;
-	}
-
-	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
-
-		if (!(object instanceof PurchaseType)) {
-			return false;
-		}
-
-		PurchaseType purchaseType = (PurchaseType)object;
-
-		long primaryKey = purchaseType.getPrimaryKey();
-
-		if (getPrimaryKey() == primaryKey) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public int hashCode() {
-		return (int)getPrimaryKey();
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return true;
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return true;
-	}
-
-	@Override
-	public void resetOriginalValues() {
-		_columnOriginalValues = Collections.emptyMap();
-
-		_columnBitmask = 0;
-	}
-
-	@Override
-	public CacheModel<PurchaseType> toCacheModel() {
-		PurchaseTypeCacheModel purchaseTypeCacheModel =
-			new PurchaseTypeCacheModel();
-
-		purchaseTypeCacheModel.id = getId();
-
-		purchaseTypeCacheModel.name = getName();
-
-		String name = purchaseTypeCacheModel.name;
-
-		if ((name != null) && (name.length() == 0)) {
-			purchaseTypeCacheModel.name = null;
-		}
-
-		return purchaseTypeCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		Map<String, Function<PurchaseType, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
-
-		StringBundler sb = new StringBundler(
-			(5 * attributeGetterFunctions.size()) + 2);
-
-		sb.append("{");
-
-		for (Map.Entry<String, Function<PurchaseType, Object>> entry :
-				attributeGetterFunctions.entrySet()) {
-
-			String attributeName = entry.getKey();
-			Function<PurchaseType, Object> attributeGetterFunction =
-				entry.getValue();
-
-			sb.append("\"");
-			sb.append(attributeName);
-			sb.append("\": ");
-
-			Object value = attributeGetterFunction.apply((PurchaseType)this);
-
-			if (value == null) {
-				sb.append("null");
-			}
-			else if (value instanceof Blob || value instanceof Date ||
-					 value instanceof Map || value instanceof String) {
-
-				sb.append(
-					"\"" + StringUtil.replace(value.toString(), "\"", "'") +
-						"\"");
-			}
-			else {
-				sb.append(value);
-			}
-
-			sb.append(", ");
-		}
-
-		if (sb.index() > 1) {
-			sb.setIndex(sb.index() - 1);
-		}
-
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		Map<String, Function<PurchaseType, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
-
-		StringBundler sb = new StringBundler(
-			(5 * attributeGetterFunctions.size()) + 4);
-
-		sb.append("<model><model-name>");
-		sb.append(getModelClassName());
-		sb.append("</model-name>");
-
-		for (Map.Entry<String, Function<PurchaseType, Object>> entry :
-				attributeGetterFunctions.entrySet()) {
-
-			String attributeName = entry.getKey();
-			Function<PurchaseType, Object> attributeGetterFunction =
-				entry.getValue();
-
-			sb.append("<column><column-name>");
-			sb.append(attributeName);
-			sb.append("</column-name><column-value><![CDATA[");
-			sb.append(attributeGetterFunction.apply((PurchaseType)this));
-			sb.append("]]></column-value></column>");
-		}
-
-		sb.append("</model>");
-
-		return sb.toString();
-	}
-
-	private static class EscapedModelProxyProviderFunctionHolder {
-
-		private static final Function<InvocationHandler, PurchaseType>
-			_escapedModelProxyProviderFunction =
-				ProxyUtil.getProxyProviderFunction(
-					PurchaseType.class, ModelWrapper.class);
-
-	}
-
-	private long _id;
-	private String _name;
-
-	public <T> T getColumnValue(String columnName) {
-		columnName = _attributeNames.getOrDefault(columnName, columnName);
-
-		Function<PurchaseType, Object> function = _attributeGetterFunctions.get(
-			columnName);
-
-		if (function == null) {
-			throw new IllegalArgumentException(
-				"No attribute getter function found for " + columnName);
-		}
-
-		return (T)function.apply((PurchaseType)this);
-	}
-
-	public <T> T getColumnOriginalValue(String columnName) {
-		if (_columnOriginalValues == null) {
-			return null;
-		}
-
-		if (_columnOriginalValues == Collections.EMPTY_MAP) {
-			_setColumnOriginalValues();
-		}
-
-		return (T)_columnOriginalValues.get(columnName);
-	}
-
-	private void _setColumnOriginalValues() {
-		_columnOriginalValues = new HashMap<String, Object>();
-
-		_columnOriginalValues.put("id_", _id);
-		_columnOriginalValues.put("name", _name);
-	}
-
-	private static final Map<String, String> _attributeNames;
-
-	static {
-		Map<String, String> attributeNames = new HashMap<>();
-
-		attributeNames.put("id_", "id");
-
-		_attributeNames = Collections.unmodifiableMap(attributeNames);
-	}
-
-	private transient Map<String, Object> _columnOriginalValues;
-
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
-	private static final Map<String, Long> _columnBitmasks;
-
-	static {
-		Map<String, Long> columnBitmasks = new HashMap<>();
-
-		columnBitmasks.put("id_", 1L);
-
-		columnBitmasks.put("name", 2L);
-
-		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
-	}
-
-	private long _columnBitmask;
-	private PurchaseType _escapedModel;
+        extends BaseModelImpl<PurchaseType> implements PurchaseTypeModel {
+
+    /*
+     * NOTE FOR DEVELOPERS:
+     *
+     * Never modify or reference this class directly. All methods that expect a purchase type model instance should use the <code>PurchaseType</code> interface instead.
+     */
+    public static final String TABLE_NAME = "SHOP_PurchaseType";
+
+    public static final Object[][] TABLE_COLUMNS = {
+            {"id_", Types.BIGINT}, {"name", Types.VARCHAR}
+    };
+
+    public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+            new HashMap<String, Integer>();
+    public static final String TABLE_SQL_CREATE =
+            "create table SHOP_PurchaseType (id_ LONG not null primary key,name VARCHAR(100) null)";
+    public static final String TABLE_SQL_DROP = "drop table SHOP_PurchaseType";
+    public static final String ORDER_BY_JPQL = " ORDER BY purchaseType.id ASC";
+    public static final String ORDER_BY_SQL =
+            " ORDER BY SHOP_PurchaseType.id_ ASC";
+    public static final String DATA_SOURCE = "liferayDataSource";
+    public static final String SESSION_FACTORY = "liferaySessionFactory";
+    public static final String TX_MANAGER = "liferayTransactionManager";
+    /**
+     * @deprecated As of Athanasius (7.3.x), replaced by {@link
+     *        #getColumnBitmask(String)}
+     */
+    @Deprecated
+    public static final long ID_COLUMN_BITMASK = 1L;
+    private static final Map<String, Function<PurchaseType, Object>>
+            _attributeGetterFunctions;
+    private static final Map<String, BiConsumer<PurchaseType, Object>>
+            _attributeSetterBiConsumers;
+    private static final Map<String, String> _attributeNames;
+    private static final Map<String, Long> _columnBitmasks;
+
+    static {
+        TABLE_COLUMNS_MAP.put("id_", Types.BIGINT);
+        TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
+    }
+
+    static {
+        Map<String, Function<PurchaseType, Object>> attributeGetterFunctions =
+                new LinkedHashMap<String, Function<PurchaseType, Object>>();
+        Map<String, BiConsumer<PurchaseType, ?>> attributeSetterBiConsumers =
+                new LinkedHashMap<String, BiConsumer<PurchaseType, ?>>();
+
+        attributeGetterFunctions.put("id", PurchaseType::getId);
+        attributeSetterBiConsumers.put(
+                "id", (BiConsumer<PurchaseType, Long>) PurchaseType::setId);
+        attributeGetterFunctions.put("name", PurchaseType::getName);
+        attributeSetterBiConsumers.put(
+                "name", (BiConsumer<PurchaseType, String>) PurchaseType::setName);
+
+        _attributeGetterFunctions = Collections.unmodifiableMap(
+                attributeGetterFunctions);
+        _attributeSetterBiConsumers = Collections.unmodifiableMap(
+                (Map) attributeSetterBiConsumers);
+    }
+
+    static {
+        Map<String, String> attributeNames = new HashMap<>();
+
+        attributeNames.put("id_", "id");
+
+        _attributeNames = Collections.unmodifiableMap(attributeNames);
+    }
+
+    static {
+        Map<String, Long> columnBitmasks = new HashMap<>();
+
+        columnBitmasks.put("id_", 1L);
+
+        columnBitmasks.put("name", 2L);
+
+        _columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+    }
+
+    private long _id;
+    private String _name;
+    private transient Map<String, Object> _columnOriginalValues;
+    private long _columnBitmask;
+    private PurchaseType _escapedModel;
+
+    public PurchaseTypeModelImpl() {
+    }
+
+    /**
+     * Converts the soap model instance into a normal model instance.
+     *
+     * @param soapModel the soap model instance to convert
+     * @return the normal model instance
+     * @deprecated As of Athanasius (7.3.x), with no direct replacement
+     */
+    @Deprecated
+    public static PurchaseType toModel(PurchaseTypeSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
+        PurchaseType model = new PurchaseTypeImpl();
+
+        model.setId(soapModel.getId());
+        model.setName(soapModel.getName());
+
+        return model;
+    }
+
+    /**
+     * Converts the soap model instances into normal model instances.
+     *
+     * @param soapModels the soap model instances to convert
+     * @return the normal model instances
+     * @deprecated As of Athanasius (7.3.x), with no direct replacement
+     */
+    @Deprecated
+    public static List<PurchaseType> toModels(PurchaseTypeSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
+        List<PurchaseType> models = new ArrayList<PurchaseType>(
+                soapModels.length);
+
+        for (PurchaseTypeSoap soapModel : soapModels) {
+            models.add(toModel(soapModel));
+        }
+
+        return models;
+    }
+
+    public static long getColumnBitmask(String columnName) {
+        return _columnBitmasks.get(columnName);
+    }
+
+    @Override
+    public long getPrimaryKey() {
+        return _id;
+    }
+
+    @Override
+    public void setPrimaryKey(long primaryKey) {
+        setId(primaryKey);
+    }
+
+    @Override
+    public Serializable getPrimaryKeyObj() {
+        return _id;
+    }
+
+    @Override
+    public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+        setPrimaryKey(((Long) primaryKeyObj).longValue());
+    }
+
+    @Override
+    public Class<?> getModelClass() {
+        return PurchaseType.class;
+    }
+
+    @Override
+    public String getModelClassName() {
+        return PurchaseType.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        Map<String, Function<PurchaseType, Object>> attributeGetterFunctions =
+                getAttributeGetterFunctions();
+
+        for (Map.Entry<String, Function<PurchaseType, Object>> entry :
+                attributeGetterFunctions.entrySet()) {
+
+            String attributeName = entry.getKey();
+            Function<PurchaseType, Object> attributeGetterFunction =
+                    entry.getValue();
+
+            attributes.put(
+                    attributeName,
+                    attributeGetterFunction.apply((PurchaseType) this));
+        }
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Map<String, BiConsumer<PurchaseType, Object>>
+                attributeSetterBiConsumers = getAttributeSetterBiConsumers();
+
+        for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+            String attributeName = entry.getKey();
+
+            BiConsumer<PurchaseType, Object> attributeSetterBiConsumer =
+                    attributeSetterBiConsumers.get(attributeName);
+
+            if (attributeSetterBiConsumer != null) {
+                attributeSetterBiConsumer.accept(
+                        (PurchaseType) this, entry.getValue());
+            }
+        }
+    }
+
+    public Map<String, Function<PurchaseType, Object>>
+    getAttributeGetterFunctions() {
+
+        return _attributeGetterFunctions;
+    }
+
+    public Map<String, BiConsumer<PurchaseType, Object>>
+    getAttributeSetterBiConsumers() {
+
+        return _attributeSetterBiConsumers;
+    }
+
+    @JSON
+    @Override
+    public long getId() {
+        return _id;
+    }
+
+    @Override
+    public void setId(long id) {
+        if (_columnOriginalValues == Collections.EMPTY_MAP) {
+            _setColumnOriginalValues();
+        }
+
+        _id = id;
+    }
+
+    @JSON
+    @Override
+    public String getName() {
+        if (_name == null) {
+            return "";
+        } else {
+            return _name;
+        }
+    }
+
+    @Override
+    public void setName(String name) {
+        if (_columnOriginalValues == Collections.EMPTY_MAP) {
+            _setColumnOriginalValues();
+        }
+
+        _name = name;
+    }
+
+    public long getColumnBitmask() {
+        if (_columnBitmask > 0) {
+            return _columnBitmask;
+        }
+
+        if ((_columnOriginalValues == null) ||
+                (_columnOriginalValues == Collections.EMPTY_MAP)) {
+
+            return 0;
+        }
+
+        for (Map.Entry<String, Object> entry :
+                _columnOriginalValues.entrySet()) {
+
+            if (!Objects.equals(
+                    entry.getValue(), getColumnValue(entry.getKey()))) {
+
+                _columnBitmask |= _columnBitmasks.get(entry.getKey());
+            }
+        }
+
+        return _columnBitmask;
+    }
+
+    @Override
+    public ExpandoBridge getExpandoBridge() {
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(
+                0, PurchaseType.class.getName(), getPrimaryKey());
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PurchaseType toEscapedModel() {
+        if (_escapedModel == null) {
+            Function<InvocationHandler, PurchaseType>
+                    escapedModelProxyProviderFunction =
+                    EscapedModelProxyProviderFunctionHolder.
+                            _escapedModelProxyProviderFunction;
+
+            _escapedModel = escapedModelProxyProviderFunction.apply(
+                    new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
+    }
+
+    @Override
+    public Object clone() {
+        PurchaseTypeImpl purchaseTypeImpl = new PurchaseTypeImpl();
+
+        purchaseTypeImpl.setId(getId());
+        purchaseTypeImpl.setName(getName());
+
+        purchaseTypeImpl.resetOriginalValues();
+
+        return purchaseTypeImpl;
+    }
+
+    @Override
+    public int compareTo(PurchaseType purchaseType) {
+        int value = 0;
+
+        if (getId() < purchaseType.getId()) {
+            value = -1;
+        } else if (getId() > purchaseType.getId()) {
+            value = 1;
+        } else {
+            value = 0;
+        }
+
+        if (value != 0) {
+            return value;
+        }
+
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (!(object instanceof PurchaseType)) {
+            return false;
+        }
+
+        PurchaseType purchaseType = (PurchaseType) object;
+
+        long primaryKey = purchaseType.getPrimaryKey();
+
+        if (getPrimaryKey() == primaryKey) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) getPrimaryKey();
+    }
+
+    /**
+     * @deprecated As of Athanasius (7.3.x), with no direct replacement
+     */
+    @Deprecated
+    @Override
+    public boolean isEntityCacheEnabled() {
+        return true;
+    }
+
+    /**
+     * @deprecated As of Athanasius (7.3.x), with no direct replacement
+     */
+    @Deprecated
+    public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
+    }
+
+    /**
+     * @deprecated As of Athanasius (7.3.x), with no direct replacement
+     */
+    @Deprecated
+    @Override
+    public boolean isFinderCacheEnabled() {
+        return true;
+    }
+
+    /**
+     * @deprecated As of Athanasius (7.3.x), with no direct replacement
+     */
+    @Deprecated
+    public static void setFinderCacheEnabled(boolean finderCacheEnabled) {
+    }
+
+    @Override
+    public void resetOriginalValues() {
+        _columnOriginalValues = Collections.emptyMap();
+
+        _columnBitmask = 0;
+    }
+
+    @Override
+    public CacheModel<PurchaseType> toCacheModel() {
+        PurchaseTypeCacheModel purchaseTypeCacheModel =
+                new PurchaseTypeCacheModel();
+
+        purchaseTypeCacheModel.id = getId();
+
+        purchaseTypeCacheModel.name = getName();
+
+        String name = purchaseTypeCacheModel.name;
+
+        if ((name != null) && (name.length() == 0)) {
+            purchaseTypeCacheModel.name = null;
+        }
+
+        return purchaseTypeCacheModel;
+    }
+
+    @Override
+    public String toString() {
+        Map<String, Function<PurchaseType, Object>> attributeGetterFunctions =
+                getAttributeGetterFunctions();
+
+        StringBundler sb = new StringBundler(
+                (5 * attributeGetterFunctions.size()) + 2);
+
+        sb.append("{");
+
+        for (Map.Entry<String, Function<PurchaseType, Object>> entry :
+                attributeGetterFunctions.entrySet()) {
+
+            String attributeName = entry.getKey();
+            Function<PurchaseType, Object> attributeGetterFunction =
+                    entry.getValue();
+
+            sb.append("\"");
+            sb.append(attributeName);
+            sb.append("\": ");
+
+            Object value = attributeGetterFunction.apply((PurchaseType) this);
+
+            if (value == null) {
+                sb.append("null");
+            } else if (value instanceof Blob || value instanceof Date ||
+                    value instanceof Map || value instanceof String) {
+
+                sb.append(
+                        "\"" + StringUtil.replace(value.toString(), "\"", "'") +
+                                "\"");
+            } else {
+                sb.append(value);
+            }
+
+            sb.append(", ");
+        }
+
+        if (sb.index() > 1) {
+            sb.setIndex(sb.index() - 1);
+        }
+
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    @Override
+    public String toXmlString() {
+        Map<String, Function<PurchaseType, Object>> attributeGetterFunctions =
+                getAttributeGetterFunctions();
+
+        StringBundler sb = new StringBundler(
+                (5 * attributeGetterFunctions.size()) + 4);
+
+        sb.append("<model><model-name>");
+        sb.append(getModelClassName());
+        sb.append("</model-name>");
+
+        for (Map.Entry<String, Function<PurchaseType, Object>> entry :
+                attributeGetterFunctions.entrySet()) {
+
+            String attributeName = entry.getKey();
+            Function<PurchaseType, Object> attributeGetterFunction =
+                    entry.getValue();
+
+            sb.append("<column><column-name>");
+            sb.append(attributeName);
+            sb.append("</column-name><column-value><![CDATA[");
+            sb.append(attributeGetterFunction.apply((PurchaseType) this));
+            sb.append("]]></column-value></column>");
+        }
+
+        sb.append("</model>");
+
+        return sb.toString();
+    }
+
+    public <T> T getColumnValue(String columnName) {
+        columnName = _attributeNames.getOrDefault(columnName, columnName);
+
+        Function<PurchaseType, Object> function = _attributeGetterFunctions.get(
+                columnName);
+
+        if (function == null) {
+            throw new IllegalArgumentException(
+                    "No attribute getter function found for " + columnName);
+        }
+
+        return (T) function.apply((PurchaseType) this);
+    }
+
+    public <T> T getColumnOriginalValue(String columnName) {
+        if (_columnOriginalValues == null) {
+            return null;
+        }
+
+        if (_columnOriginalValues == Collections.EMPTY_MAP) {
+            _setColumnOriginalValues();
+        }
+
+        return (T) _columnOriginalValues.get(columnName);
+    }
+
+    private void _setColumnOriginalValues() {
+        _columnOriginalValues = new HashMap<String, Object>();
+
+        _columnOriginalValues.put("id_", _id);
+        _columnOriginalValues.put("name", _name);
+    }
+
+    private static class EscapedModelProxyProviderFunctionHolder {
+
+        private static final Function<InvocationHandler, PurchaseType>
+                _escapedModelProxyProviderFunction =
+                ProxyUtil.getProxyProviderFunction(
+                        PurchaseType.class, ModelWrapper.class);
+
+    }
 
 }

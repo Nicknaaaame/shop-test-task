@@ -21,12 +21,14 @@
     <aui:fieldset>
         <aui:input name="id" value="<%=electronics.getId()%>" type="hidden"/>
         <aui:input label="Name" name="name" value="<%=electronics.getName()%>" required="true"/>
-        <aui:input label="Electro type id" name="eTypeId" value="<%=electronics.getETypeId()%>" required="true" type="number"/>
+        <aui:input label="Electro type id" name="eTypeId" value="<%=electronics.getETypeId()%>" required="true"
+                   type="number"/>
         <aui:input label="Price" name="price" value="<%=electronics.getPrice()%>" required="true" type="number"/>
         <aui:input label="Count" name="count" value="<%=electronics.getCount()%>" required="true" type="number"/>
         <aui:input label="Is in stock" name="isInStock" type="checkbox" value="<%=electronics.getIsInStock()%>"/>
         <aui:input label="Is archive" name="isArchive" type="checkbox" value="<%=electronics.getIsArchive()%>"/>
-        <aui:input label="Description" name="description" value="<%=electronics.getDescription()%>" required="true" type="textarea"/>
+        <aui:input label="Description" name="description" value="<%=electronics.getDescription()%>" required="true"
+                   type="textarea"/>
     </aui:fieldset>
 
     <aui:button-row>

@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -15,7 +15,6 @@
 package shop.model.impl;
 
 import shop.model.PurchaseType;
-
 import shop.service.PurchaseTypeLocalServiceUtil;
 
 /**
@@ -31,21 +30,20 @@ import shop.service.PurchaseTypeLocalServiceUtil;
  * @generated
  */
 public abstract class PurchaseTypeBaseImpl
-	extends PurchaseTypeModelImpl implements PurchaseType {
+        extends PurchaseTypeModelImpl implements PurchaseType {
 
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a purchase type model instance should use the <code>PurchaseType</code> interface instead.
-	 */
-	@Override
-	public void persist() {
-		if (this.isNew()) {
-			PurchaseTypeLocalServiceUtil.addPurchaseType(this);
-		}
-		else {
-			PurchaseTypeLocalServiceUtil.updatePurchaseType(this);
-		}
-	}
+    /*
+     * NOTE FOR DEVELOPERS:
+     *
+     * Never modify or reference this class directly. All methods that expect a purchase type model instance should use the <code>PurchaseType</code> interface instead.
+     */
+    @Override
+    public void persist() {
+        if (this.isNew()) {
+            PurchaseTypeLocalServiceUtil.addPurchaseType(this);
+        } else {
+            PurchaseTypeLocalServiceUtil.updatePurchaseType(this);
+        }
+    }
 
 }

@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -17,15 +17,13 @@ package shop.model.impl;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
+import shop.model.Employee;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-
 import java.util.Date;
-
-import shop.model.Employee;
 
 /**
  * The cache model class for representing Employee in entity cache.
@@ -34,148 +32,141 @@ import shop.model.Employee;
  * @generated
  */
 public class EmployeeCacheModel
-	implements CacheModel<Employee>, Externalizable {
+        implements CacheModel<Employee>, Externalizable {
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
+    public long id;
+    public String lastName;
+    public String firstName;
+    public String patronymic;
+    public long birthDate;
+    public boolean gender;
+    public long positionId;
 
-		if (!(object instanceof EmployeeCacheModel)) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
 
-		EmployeeCacheModel employeeCacheModel = (EmployeeCacheModel)object;
+        if (!(object instanceof EmployeeCacheModel)) {
+            return false;
+        }
 
-		if (id == employeeCacheModel.id) {
-			return true;
-		}
+        EmployeeCacheModel employeeCacheModel = (EmployeeCacheModel) object;
 
-		return false;
-	}
+        if (id == employeeCacheModel.id) {
+            return true;
+        }
 
-	@Override
-	public int hashCode() {
-		return HashUtil.hash(0, id);
-	}
+        return false;
+    }
 
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(15);
+    @Override
+    public int hashCode() {
+        return HashUtil.hash(0, id);
+    }
 
-		sb.append("{id=");
-		sb.append(id);
-		sb.append(", lastName=");
-		sb.append(lastName);
-		sb.append(", firstName=");
-		sb.append(firstName);
-		sb.append(", patronymic=");
-		sb.append(patronymic);
-		sb.append(", birthDate=");
-		sb.append(birthDate);
-		sb.append(", gender=");
-		sb.append(gender);
-		sb.append(", positionId=");
-		sb.append(positionId);
-		sb.append("}");
+    @Override
+    public String toString() {
+        StringBundler sb = new StringBundler(15);
 
-		return sb.toString();
-	}
+        sb.append("{id=");
+        sb.append(id);
+        sb.append(", lastName=");
+        sb.append(lastName);
+        sb.append(", firstName=");
+        sb.append(firstName);
+        sb.append(", patronymic=");
+        sb.append(patronymic);
+        sb.append(", birthDate=");
+        sb.append(birthDate);
+        sb.append(", gender=");
+        sb.append(gender);
+        sb.append(", positionId=");
+        sb.append(positionId);
+        sb.append("}");
 
-	@Override
-	public Employee toEntityModel() {
-		EmployeeImpl employeeImpl = new EmployeeImpl();
+        return sb.toString();
+    }
 
-		employeeImpl.setId(id);
+    @Override
+    public Employee toEntityModel() {
+        EmployeeImpl employeeImpl = new EmployeeImpl();
 
-		if (lastName == null) {
-			employeeImpl.setLastName("");
-		}
-		else {
-			employeeImpl.setLastName(lastName);
-		}
+        employeeImpl.setId(id);
 
-		if (firstName == null) {
-			employeeImpl.setFirstName("");
-		}
-		else {
-			employeeImpl.setFirstName(firstName);
-		}
+        if (lastName == null) {
+            employeeImpl.setLastName("");
+        } else {
+            employeeImpl.setLastName(lastName);
+        }
 
-		if (patronymic == null) {
-			employeeImpl.setPatronymic("");
-		}
-		else {
-			employeeImpl.setPatronymic(patronymic);
-		}
+        if (firstName == null) {
+            employeeImpl.setFirstName("");
+        } else {
+            employeeImpl.setFirstName(firstName);
+        }
 
-		if (birthDate == Long.MIN_VALUE) {
-			employeeImpl.setBirthDate(null);
-		}
-		else {
-			employeeImpl.setBirthDate(new Date(birthDate));
-		}
+        if (patronymic == null) {
+            employeeImpl.setPatronymic("");
+        } else {
+            employeeImpl.setPatronymic(patronymic);
+        }
 
-		employeeImpl.setGender(gender);
-		employeeImpl.setPositionId(positionId);
+        if (birthDate == Long.MIN_VALUE) {
+            employeeImpl.setBirthDate(null);
+        } else {
+            employeeImpl.setBirthDate(new Date(birthDate));
+        }
 
-		employeeImpl.resetOriginalValues();
+        employeeImpl.setGender(gender);
+        employeeImpl.setPositionId(positionId);
 
-		return employeeImpl;
-	}
+        employeeImpl.resetOriginalValues();
 
-	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
-		id = objectInput.readLong();
-		lastName = objectInput.readUTF();
-		firstName = objectInput.readUTF();
-		patronymic = objectInput.readUTF();
-		birthDate = objectInput.readLong();
+        return employeeImpl;
+    }
 
-		gender = objectInput.readBoolean();
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        lastName = objectInput.readUTF();
+        firstName = objectInput.readUTF();
+        patronymic = objectInput.readUTF();
+        birthDate = objectInput.readLong();
 
-		positionId = objectInput.readLong();
-	}
+        gender = objectInput.readBoolean();
 
-	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		objectOutput.writeLong(id);
+        positionId = objectInput.readLong();
+    }
 
-		if (lastName == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(lastName);
-		}
+    @Override
+    public void writeExternal(ObjectOutput objectOutput) throws IOException {
+        objectOutput.writeLong(id);
 
-		if (firstName == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(firstName);
-		}
+        if (lastName == null) {
+            objectOutput.writeUTF("");
+        } else {
+            objectOutput.writeUTF(lastName);
+        }
 
-		if (patronymic == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(patronymic);
-		}
+        if (firstName == null) {
+            objectOutput.writeUTF("");
+        } else {
+            objectOutput.writeUTF(firstName);
+        }
 
-		objectOutput.writeLong(birthDate);
+        if (patronymic == null) {
+            objectOutput.writeUTF("");
+        } else {
+            objectOutput.writeUTF(patronymic);
+        }
 
-		objectOutput.writeBoolean(gender);
+        objectOutput.writeLong(birthDate);
 
-		objectOutput.writeLong(positionId);
-	}
+        objectOutput.writeBoolean(gender);
 
-	public long id;
-	public String lastName;
-	public String firstName;
-	public String patronymic;
-	public long birthDate;
-	public boolean gender;
-	public long positionId;
+        objectOutput.writeLong(positionId);
+    }
 
 }

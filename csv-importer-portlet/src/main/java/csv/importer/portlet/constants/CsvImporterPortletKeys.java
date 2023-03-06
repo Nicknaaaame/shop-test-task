@@ -5,7 +5,7 @@ package csv.importer.portlet.constants;
  */
 public class CsvImporterPortletKeys {
 
-	public static final String CSVIMPORTER =
-		"csv_importer_portlet_CsvImporterPortlet";
+    public static final String CSVIMPORTER =
+            "csv_importer_portlet_CsvImporterPortlet";
 
 }

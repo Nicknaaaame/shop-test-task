@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -62,367 +62,366 @@ import shop.service.persistence.ElectronicsUtil;
 @RunWith(Arquillian.class)
 public class ElectronicsPersistenceTest {
 
-	@ClassRule
-	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED, "shop.service"));
+    @ClassRule
+    @Rule
+    public static final AggregateTestRule aggregateTestRule =
+            new AggregateTestRule(
+                    new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+                    new TransactionalTestRule(Propagation.REQUIRED, "shop.service"));
+    private List<Electronics> _electronicses = new ArrayList<Electronics>();
+    private ElectronicsPersistence _persistence;
+    private ClassLoader _dynamicQueryClassLoader;
 
-	@Before
-	public void setUp() {
-		_persistence = ElectronicsUtil.getPersistence();
+    @Before
+    public void setUp() {
+        _persistence = ElectronicsUtil.getPersistence();
 
-		Class<?> clazz = _persistence.getClass();
+        Class<?> clazz = _persistence.getClass();
 
-		_dynamicQueryClassLoader = clazz.getClassLoader();
-	}
+        _dynamicQueryClassLoader = clazz.getClassLoader();
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		Iterator<Electronics> iterator = _electronicses.iterator();
+    @After
+    public void tearDown() throws Exception {
+        Iterator<Electronics> iterator = _electronicses.iterator();
 
-		while (iterator.hasNext()) {
-			_persistence.remove(iterator.next());
+        while (iterator.hasNext()) {
+            _persistence.remove(iterator.next());
 
-			iterator.remove();
-		}
-	}
+            iterator.remove();
+        }
+    }
 
-	@Test
-	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test
+    public void testCreate() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		Electronics electronics = _persistence.create(pk);
+        Electronics electronics = _persistence.create(pk);
 
-		Assert.assertNotNull(electronics);
+        Assert.assertNotNull(electronics);
 
-		Assert.assertEquals(electronics.getPrimaryKey(), pk);
-	}
+        Assert.assertEquals(electronics.getPrimaryKey(), pk);
+    }
 
-	@Test
-	public void testRemove() throws Exception {
-		Electronics newElectronics = addElectronics();
+    @Test
+    public void testRemove() throws Exception {
+        Electronics newElectronics = addElectronics();
 
-		_persistence.remove(newElectronics);
+        _persistence.remove(newElectronics);
 
-		Electronics existingElectronics = _persistence.fetchByPrimaryKey(
-			newElectronics.getPrimaryKey());
+        Electronics existingElectronics = _persistence.fetchByPrimaryKey(
+                newElectronics.getPrimaryKey());
 
-		Assert.assertNull(existingElectronics);
-	}
+        Assert.assertNull(existingElectronics);
+    }
 
-	@Test
-	public void testUpdateNew() throws Exception {
-		addElectronics();
-	}
+    @Test
+    public void testUpdateNew() throws Exception {
+        addElectronics();
+    }
 
-	@Test
-	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test
+    public void testUpdateExisting() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		Electronics newElectronics = _persistence.create(pk);
+        Electronics newElectronics = _persistence.create(pk);
 
-		newElectronics.setName(RandomTestUtil.randomString());
+        newElectronics.setName(RandomTestUtil.randomString());
 
-		newElectronics.setETypeId(RandomTestUtil.nextLong());
+        newElectronics.setETypeId(RandomTestUtil.nextLong());
 
-		newElectronics.setPrice(RandomTestUtil.nextLong());
+        newElectronics.setPrice(RandomTestUtil.nextLong());
 
-		newElectronics.setCount(RandomTestUtil.nextInt());
+        newElectronics.setCount(RandomTestUtil.nextInt());
 
-		newElectronics.setIsInStock(RandomTestUtil.randomBoolean());
+        newElectronics.setIsInStock(RandomTestUtil.randomBoolean());
 
-		newElectronics.setIsArchive(RandomTestUtil.randomBoolean());
+        newElectronics.setIsArchive(RandomTestUtil.randomBoolean());
 
-		newElectronics.setDescription(RandomTestUtil.randomString());
+        newElectronics.setDescription(RandomTestUtil.randomString());
 
-		_electronicses.add(_persistence.update(newElectronics));
+        _electronicses.add(_persistence.update(newElectronics));
 
-		Electronics existingElectronics = _persistence.findByPrimaryKey(
-			newElectronics.getPrimaryKey());
+        Electronics existingElectronics = _persistence.findByPrimaryKey(
+                newElectronics.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingElectronics.getId(), newElectronics.getId());
-		Assert.assertEquals(
-			existingElectronics.getName(), newElectronics.getName());
-		Assert.assertEquals(
-			existingElectronics.getETypeId(), newElectronics.getETypeId());
-		Assert.assertEquals(
-			existingElectronics.getPrice(), newElectronics.getPrice());
-		Assert.assertEquals(
-			existingElectronics.getCount(), newElectronics.getCount());
-		Assert.assertEquals(
-			existingElectronics.isIsInStock(), newElectronics.isIsInStock());
-		Assert.assertEquals(
-			existingElectronics.isIsArchive(), newElectronics.isIsArchive());
-		Assert.assertEquals(
-			existingElectronics.getDescription(),
-			newElectronics.getDescription());
-	}
+        Assert.assertEquals(
+                existingElectronics.getId(), newElectronics.getId());
+        Assert.assertEquals(
+                existingElectronics.getName(), newElectronics.getName());
+        Assert.assertEquals(
+                existingElectronics.getETypeId(), newElectronics.getETypeId());
+        Assert.assertEquals(
+                existingElectronics.getPrice(), newElectronics.getPrice());
+        Assert.assertEquals(
+                existingElectronics.getCount(), newElectronics.getCount());
+        Assert.assertEquals(
+                existingElectronics.isIsInStock(), newElectronics.isIsInStock());
+        Assert.assertEquals(
+                existingElectronics.isIsArchive(), newElectronics.isIsArchive());
+        Assert.assertEquals(
+                existingElectronics.getDescription(),
+                newElectronics.getDescription());
+    }
 
-	@Test
-	public void testFindByPrimaryKeyExisting() throws Exception {
-		Electronics newElectronics = addElectronics();
+    @Test
+    public void testFindByPrimaryKeyExisting() throws Exception {
+        Electronics newElectronics = addElectronics();
 
-		Electronics existingElectronics = _persistence.findByPrimaryKey(
-			newElectronics.getPrimaryKey());
+        Electronics existingElectronics = _persistence.findByPrimaryKey(
+                newElectronics.getPrimaryKey());
 
-		Assert.assertEquals(existingElectronics, newElectronics);
-	}
+        Assert.assertEquals(existingElectronics, newElectronics);
+    }
 
-	@Test(expected = NoSuchElectronicsException.class)
-	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test(expected = NoSuchElectronicsException.class)
+    public void testFindByPrimaryKeyMissing() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		_persistence.findByPrimaryKey(pk);
-	}
+        _persistence.findByPrimaryKey(pk);
+    }
 
-	@Test
-	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
-	}
+    @Test
+    public void testFindAll() throws Exception {
+        _persistence.findAll(
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+    }
 
-	protected OrderByComparator<Electronics> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"SHOP_Electronics", "id", true, "name", true, "eTypeId", true,
-			"price", true, "count", true, "isInStock", true, "isArchive", true,
-			"description", true);
-	}
+    protected OrderByComparator<Electronics> getOrderByComparator() {
+        return OrderByComparatorFactoryUtil.create(
+                "SHOP_Electronics", "id", true, "name", true, "eTypeId", true,
+                "price", true, "count", true, "isInStock", true, "isArchive", true,
+                "description", true);
+    }
 
-	@Test
-	public void testFetchByPrimaryKeyExisting() throws Exception {
-		Electronics newElectronics = addElectronics();
+    @Test
+    public void testFetchByPrimaryKeyExisting() throws Exception {
+        Electronics newElectronics = addElectronics();
 
-		Electronics existingElectronics = _persistence.fetchByPrimaryKey(
-			newElectronics.getPrimaryKey());
+        Electronics existingElectronics = _persistence.fetchByPrimaryKey(
+                newElectronics.getPrimaryKey());
 
-		Assert.assertEquals(existingElectronics, newElectronics);
-	}
+        Assert.assertEquals(existingElectronics, newElectronics);
+    }
 
-	@Test
-	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test
+    public void testFetchByPrimaryKeyMissing() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		Electronics missingElectronics = _persistence.fetchByPrimaryKey(pk);
+        Electronics missingElectronics = _persistence.fetchByPrimaryKey(pk);
 
-		Assert.assertNull(missingElectronics);
-	}
+        Assert.assertNull(missingElectronics);
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
-		throws Exception {
+    @Test
+    public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
+            throws Exception {
 
-		Electronics newElectronics1 = addElectronics();
-		Electronics newElectronics2 = addElectronics();
+        Electronics newElectronics1 = addElectronics();
+        Electronics newElectronics2 = addElectronics();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(newElectronics1.getPrimaryKey());
-		primaryKeys.add(newElectronics2.getPrimaryKey());
+        primaryKeys.add(newElectronics1.getPrimaryKey());
+        primaryKeys.add(newElectronics2.getPrimaryKey());
 
-		Map<Serializable, Electronics> electronicses =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+        Map<Serializable, Electronics> electronicses =
+                _persistence.fetchByPrimaryKeys(primaryKeys);
 
-		Assert.assertEquals(2, electronicses.size());
-		Assert.assertEquals(
-			newElectronics1,
-			electronicses.get(newElectronics1.getPrimaryKey()));
-		Assert.assertEquals(
-			newElectronics2,
-			electronicses.get(newElectronics2.getPrimaryKey()));
-	}
+        Assert.assertEquals(2, electronicses.size());
+        Assert.assertEquals(
+                newElectronics1,
+                electronicses.get(newElectronics1.getPrimaryKey()));
+        Assert.assertEquals(
+                newElectronics2,
+                electronicses.get(newElectronics2.getPrimaryKey()));
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
-		throws Exception {
+    @Test
+    public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
+            throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+        long pk1 = RandomTestUtil.nextLong();
 
-		long pk2 = RandomTestUtil.nextLong();
+        long pk2 = RandomTestUtil.nextLong();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(pk1);
-		primaryKeys.add(pk2);
+        primaryKeys.add(pk1);
+        primaryKeys.add(pk2);
 
-		Map<Serializable, Electronics> electronicses =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+        Map<Serializable, Electronics> electronicses =
+                _persistence.fetchByPrimaryKeys(primaryKeys);
 
-		Assert.assertTrue(electronicses.isEmpty());
-	}
+        Assert.assertTrue(electronicses.isEmpty());
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
-		throws Exception {
+    @Test
+    public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
+            throws Exception {
 
-		Electronics newElectronics = addElectronics();
+        Electronics newElectronics = addElectronics();
 
-		long pk = RandomTestUtil.nextLong();
+        long pk = RandomTestUtil.nextLong();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(newElectronics.getPrimaryKey());
-		primaryKeys.add(pk);
+        primaryKeys.add(newElectronics.getPrimaryKey());
+        primaryKeys.add(pk);
 
-		Map<Serializable, Electronics> electronicses =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+        Map<Serializable, Electronics> electronicses =
+                _persistence.fetchByPrimaryKeys(primaryKeys);
 
-		Assert.assertEquals(1, electronicses.size());
-		Assert.assertEquals(
-			newElectronics, electronicses.get(newElectronics.getPrimaryKey()));
-	}
+        Assert.assertEquals(1, electronicses.size());
+        Assert.assertEquals(
+                newElectronics, electronicses.get(newElectronics.getPrimaryKey()));
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+    @Test
+    public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, Electronics> electronicses =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+        Map<Serializable, Electronics> electronicses =
+                _persistence.fetchByPrimaryKeys(primaryKeys);
 
-		Assert.assertTrue(electronicses.isEmpty());
-	}
+        Assert.assertTrue(electronicses.isEmpty());
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
-		Electronics newElectronics = addElectronics();
+    @Test
+    public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+        Electronics newElectronics = addElectronics();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(newElectronics.getPrimaryKey());
+        primaryKeys.add(newElectronics.getPrimaryKey());
 
-		Map<Serializable, Electronics> electronicses =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+        Map<Serializable, Electronics> electronicses =
+                _persistence.fetchByPrimaryKeys(primaryKeys);
 
-		Assert.assertEquals(1, electronicses.size());
-		Assert.assertEquals(
-			newElectronics, electronicses.get(newElectronics.getPrimaryKey()));
-	}
+        Assert.assertEquals(1, electronicses.size());
+        Assert.assertEquals(
+                newElectronics, electronicses.get(newElectronics.getPrimaryKey()));
+    }
 
-	@Test
-	public void testActionableDynamicQuery() throws Exception {
-		final IntegerWrapper count = new IntegerWrapper();
+    @Test
+    public void testActionableDynamicQuery() throws Exception {
+        final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			ElectronicsLocalServiceUtil.getActionableDynamicQuery();
+        ActionableDynamicQuery actionableDynamicQuery =
+                ElectronicsLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Electronics>() {
+        actionableDynamicQuery.setPerformActionMethod(
+                new ActionableDynamicQuery.PerformActionMethod<Electronics>() {
 
-				@Override
-				public void performAction(Electronics electronics) {
-					Assert.assertNotNull(electronics);
+                    @Override
+                    public void performAction(Electronics electronics) {
+                        Assert.assertNotNull(electronics);
 
-					count.increment();
-				}
+                        count.increment();
+                    }
 
-			});
+                });
 
-		actionableDynamicQuery.performActions();
+        actionableDynamicQuery.performActions();
 
-		Assert.assertEquals(count.getValue(), _persistence.countAll());
-	}
+        Assert.assertEquals(count.getValue(), _persistence.countAll());
+    }
 
-	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
-		Electronics newElectronics = addElectronics();
+    @Test
+    public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+        Electronics newElectronics = addElectronics();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Electronics.class, _dynamicQueryClassLoader);
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                Electronics.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("id", newElectronics.getId()));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.eq("id", newElectronics.getId()));
 
-		List<Electronics> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+        List<Electronics> result = _persistence.findWithDynamicQuery(
+                dynamicQuery);
 
-		Assert.assertEquals(1, result.size());
+        Assert.assertEquals(1, result.size());
 
-		Electronics existingElectronics = result.get(0);
+        Electronics existingElectronics = result.get(0);
 
-		Assert.assertEquals(existingElectronics, newElectronics);
-	}
+        Assert.assertEquals(existingElectronics, newElectronics);
+    }
 
-	@Test
-	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Electronics.class, _dynamicQueryClassLoader);
+    @Test
+    public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                Electronics.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("id", RandomTestUtil.nextLong()));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.eq("id", RandomTestUtil.nextLong()));
 
-		List<Electronics> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+        List<Electronics> result = _persistence.findWithDynamicQuery(
+                dynamicQuery);
 
-		Assert.assertEquals(0, result.size());
-	}
+        Assert.assertEquals(0, result.size());
+    }
 
-	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
-		Electronics newElectronics = addElectronics();
+    @Test
+    public void testDynamicQueryByProjectionExisting() throws Exception {
+        Electronics newElectronics = addElectronics();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Electronics.class, _dynamicQueryClassLoader);
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                Electronics.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
+        dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
 
-		Object newId = newElectronics.getId();
+        Object newId = newElectronics.getId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in("id", new Object[] {newId}));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.in("id", new Object[]{newId}));
 
-		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
+        List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
-		Assert.assertEquals(1, result.size());
+        Assert.assertEquals(1, result.size());
 
-		Object existingId = result.get(0);
+        Object existingId = result.get(0);
 
-		Assert.assertEquals(existingId, newId);
-	}
+        Assert.assertEquals(existingId, newId);
+    }
 
-	@Test
-	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Electronics.class, _dynamicQueryClassLoader);
+    @Test
+    public void testDynamicQueryByProjectionMissing() throws Exception {
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                Electronics.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
+        dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"id", new Object[] {RandomTestUtil.nextLong()}));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.in(
+                        "id", new Object[]{RandomTestUtil.nextLong()}));
 
-		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
+        List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
-		Assert.assertEquals(0, result.size());
-	}
+        Assert.assertEquals(0, result.size());
+    }
 
-	protected Electronics addElectronics() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    protected Electronics addElectronics() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		Electronics electronics = _persistence.create(pk);
+        Electronics electronics = _persistence.create(pk);
 
-		electronics.setName(RandomTestUtil.randomString());
+        electronics.setName(RandomTestUtil.randomString());
 
-		electronics.setETypeId(RandomTestUtil.nextLong());
+        electronics.setETypeId(RandomTestUtil.nextLong());
 
-		electronics.setPrice(RandomTestUtil.nextLong());
+        electronics.setPrice(RandomTestUtil.nextLong());
 
-		electronics.setCount(RandomTestUtil.nextInt());
+        electronics.setCount(RandomTestUtil.nextInt());
 
-		electronics.setIsInStock(RandomTestUtil.randomBoolean());
+        electronics.setIsInStock(RandomTestUtil.randomBoolean());
 
-		electronics.setIsArchive(RandomTestUtil.randomBoolean());
+        electronics.setIsArchive(RandomTestUtil.randomBoolean());
 
-		electronics.setDescription(RandomTestUtil.randomString());
+        electronics.setDescription(RandomTestUtil.randomString());
 
-		_electronicses.add(_persistence.update(electronics));
+        _electronicses.add(_persistence.update(electronics));
 
-		return electronics;
-	}
-
-	private List<Electronics> _electronicses = new ArrayList<Electronics>();
-	private ElectronicsPersistence _persistence;
-	private ClassLoader _dynamicQueryClassLoader;
+        return electronics;
+    }
 
 }

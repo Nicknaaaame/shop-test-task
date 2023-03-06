@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -15,7 +15,6 @@
 package shop.model;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,111 +29,110 @@ import java.util.List;
 @Deprecated
 public class PurchaseSoap implements Serializable {
 
-	public static PurchaseSoap toSoapModel(Purchase model) {
-		PurchaseSoap soapModel = new PurchaseSoap();
+    private long _id;
+    private Date _purchaseDate;
+    private long _eTypeId;
+    private long _employeeId;
+    private long _electroId;
 
-		soapModel.setId(model.getId());
-		soapModel.setPurchaseDate(model.getPurchaseDate());
-		soapModel.setETypeId(model.getETypeId());
-		soapModel.setEmployeeId(model.getEmployeeId());
-		soapModel.setElectroId(model.getElectroId());
+    public PurchaseSoap() {
+    }
 
-		return soapModel;
-	}
+    public static PurchaseSoap toSoapModel(Purchase model) {
+        PurchaseSoap soapModel = new PurchaseSoap();
 
-	public static PurchaseSoap[] toSoapModels(Purchase[] models) {
-		PurchaseSoap[] soapModels = new PurchaseSoap[models.length];
+        soapModel.setId(model.getId());
+        soapModel.setPurchaseDate(model.getPurchaseDate());
+        soapModel.setETypeId(model.getETypeId());
+        soapModel.setEmployeeId(model.getEmployeeId());
+        soapModel.setElectroId(model.getElectroId());
 
-		for (int i = 0; i < models.length; i++) {
-			soapModels[i] = toSoapModel(models[i]);
-		}
+        return soapModel;
+    }
 
-		return soapModels;
-	}
+    public static PurchaseSoap[] toSoapModels(Purchase[] models) {
+        PurchaseSoap[] soapModels = new PurchaseSoap[models.length];
 
-	public static PurchaseSoap[][] toSoapModels(Purchase[][] models) {
-		PurchaseSoap[][] soapModels = null;
+        for (int i = 0; i < models.length; i++) {
+            soapModels[i] = toSoapModel(models[i]);
+        }
 
-		if (models.length > 0) {
-			soapModels = new PurchaseSoap[models.length][models[0].length];
-		}
-		else {
-			soapModels = new PurchaseSoap[0][0];
-		}
+        return soapModels;
+    }
 
-		for (int i = 0; i < models.length; i++) {
-			soapModels[i] = toSoapModels(models[i]);
-		}
+    public static PurchaseSoap[][] toSoapModels(Purchase[][] models) {
+        PurchaseSoap[][] soapModels = null;
 
-		return soapModels;
-	}
+        if (models.length > 0) {
+            soapModels = new PurchaseSoap[models.length][models[0].length];
+        } else {
+            soapModels = new PurchaseSoap[0][0];
+        }
 
-	public static PurchaseSoap[] toSoapModels(List<Purchase> models) {
-		List<PurchaseSoap> soapModels = new ArrayList<PurchaseSoap>(
-			models.size());
+        for (int i = 0; i < models.length; i++) {
+            soapModels[i] = toSoapModels(models[i]);
+        }
 
-		for (Purchase model : models) {
-			soapModels.add(toSoapModel(model));
-		}
+        return soapModels;
+    }
 
-		return soapModels.toArray(new PurchaseSoap[soapModels.size()]);
-	}
+    public static PurchaseSoap[] toSoapModels(List<Purchase> models) {
+        List<PurchaseSoap> soapModels = new ArrayList<PurchaseSoap>(
+                models.size());
 
-	public PurchaseSoap() {
-	}
+        for (Purchase model : models) {
+            soapModels.add(toSoapModel(model));
+        }
 
-	public long getPrimaryKey() {
-		return _id;
-	}
+        return soapModels.toArray(new PurchaseSoap[soapModels.size()]);
+    }
 
-	public void setPrimaryKey(long pk) {
-		setId(pk);
-	}
+    public long getPrimaryKey() {
+        return _id;
+    }
 
-	public long getId() {
-		return _id;
-	}
+    public void setPrimaryKey(long pk) {
+        setId(pk);
+    }
 
-	public void setId(long id) {
-		_id = id;
-	}
+    public long getId() {
+        return _id;
+    }
 
-	public Date getPurchaseDate() {
-		return _purchaseDate;
-	}
+    public void setId(long id) {
+        _id = id;
+    }
 
-	public void setPurchaseDate(Date purchaseDate) {
-		_purchaseDate = purchaseDate;
-	}
+    public Date getPurchaseDate() {
+        return _purchaseDate;
+    }
 
-	public long getETypeId() {
-		return _eTypeId;
-	}
+    public void setPurchaseDate(Date purchaseDate) {
+        _purchaseDate = purchaseDate;
+    }
 
-	public void setETypeId(long eTypeId) {
-		_eTypeId = eTypeId;
-	}
+    public long getETypeId() {
+        return _eTypeId;
+    }
 
-	public long getEmployeeId() {
-		return _employeeId;
-	}
+    public void setETypeId(long eTypeId) {
+        _eTypeId = eTypeId;
+    }
 
-	public void setEmployeeId(long employeeId) {
-		_employeeId = employeeId;
-	}
+    public long getEmployeeId() {
+        return _employeeId;
+    }
 
-	public long getElectroId() {
-		return _electroId;
-	}
+    public void setEmployeeId(long employeeId) {
+        _employeeId = employeeId;
+    }
 
-	public void setElectroId(long electroId) {
-		_electroId = electroId;
-	}
+    public long getElectroId() {
+        return _electroId;
+    }
 
-	private long _id;
-	private Date _purchaseDate;
-	private long _eTypeId;
-	private long _employeeId;
-	private long _electroId;
+    public void setElectroId(long electroId) {
+        _electroId = electroId;
+    }
 
 }

@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -30,106 +30,106 @@ import java.util.Map;
  * @generated
  */
 public class PositionTypeWrapper
-	extends BaseModelWrapper<PositionType>
-	implements ModelWrapper<PositionType>, PositionType {
+        extends BaseModelWrapper<PositionType>
+        implements ModelWrapper<PositionType>, PositionType {
 
-	public PositionTypeWrapper(PositionType positionType) {
-		super(positionType);
-	}
+    public PositionTypeWrapper(PositionType positionType) {
+        super(positionType);
+    }
 
-	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("id", getId());
-		attributes.put("name", getName());
+        attributes.put("id", getId());
+        attributes.put("name", getName());
 
-		return attributes;
-	}
+        return attributes;
+    }
 
-	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long id = (Long)attributes.get("id");
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
 
-		if (id != null) {
-			setId(id);
-		}
+        if (id != null) {
+            setId(id);
+        }
 
-		String name = (String)attributes.get("name");
+        String name = (String) attributes.get("name");
 
-		if (name != null) {
-			setName(name);
-		}
-	}
+        if (name != null) {
+            setName(name);
+        }
+    }
 
-	/**
-	 * Returns the ID of this position type.
-	 *
-	 * @return the ID of this position type
-	 */
-	@Override
-	public long getId() {
-		return model.getId();
-	}
+    /**
+     * Returns the ID of this position type.
+     *
+     * @return the ID of this position type
+     */
+    @Override
+    public long getId() {
+        return model.getId();
+    }
 
-	/**
-	 * Returns the name of this position type.
-	 *
-	 * @return the name of this position type
-	 */
-	@Override
-	public String getName() {
-		return model.getName();
-	}
+    /**
+     * Sets the ID of this position type.
+     *
+     * @param id the ID of this position type
+     */
+    @Override
+    public void setId(long id) {
+        model.setId(id);
+    }
 
-	/**
-	 * Returns the primary key of this position type.
-	 *
-	 * @return the primary key of this position type
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return model.getPrimaryKey();
-	}
+    /**
+     * Returns the name of this position type.
+     *
+     * @return the name of this position type
+     */
+    @Override
+    public String getName() {
+        return model.getName();
+    }
 
-	@Override
-	public void persist() {
-		model.persist();
-	}
+    /**
+     * Sets the name of this position type.
+     *
+     * @param name the name of this position type
+     */
+    @Override
+    public void setName(String name) {
+        model.setName(name);
+    }
 
-	/**
-	 * Sets the ID of this position type.
-	 *
-	 * @param id the ID of this position type
-	 */
-	@Override
-	public void setId(long id) {
-		model.setId(id);
-	}
+    /**
+     * Returns the primary key of this position type.
+     *
+     * @return the primary key of this position type
+     */
+    @Override
+    public long getPrimaryKey() {
+        return model.getPrimaryKey();
+    }
 
-	/**
-	 * Sets the name of this position type.
-	 *
-	 * @param name the name of this position type
-	 */
-	@Override
-	public void setName(String name) {
-		model.setName(name);
-	}
+    /**
+     * Sets the primary key of this position type.
+     *
+     * @param primaryKey the primary key of this position type
+     */
+    @Override
+    public void setPrimaryKey(long primaryKey) {
+        model.setPrimaryKey(primaryKey);
+    }
 
-	/**
-	 * Sets the primary key of this position type.
-	 *
-	 * @param primaryKey the primary key of this position type
-	 */
-	@Override
-	public void setPrimaryKey(long primaryKey) {
-		model.setPrimaryKey(primaryKey);
-	}
+    @Override
+    public void persist() {
+        model.persist();
+    }
 
-	@Override
-	protected PositionTypeWrapper wrap(PositionType positionType) {
-		return new PositionTypeWrapper(positionType);
-	}
+    @Override
+    protected PositionTypeWrapper wrap(PositionType positionType) {
+        return new PositionTypeWrapper(positionType);
+    }
 
 }

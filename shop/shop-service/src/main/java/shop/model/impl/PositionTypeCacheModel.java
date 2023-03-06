@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -17,13 +17,12 @@ package shop.model.impl;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
+import shop.model.PositionType;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-
-import shop.model.PositionType;
 
 /**
  * The cache model class for representing PositionType in entity cache.
@@ -32,83 +31,81 @@ import shop.model.PositionType;
  * @generated
  */
 public class PositionTypeCacheModel
-	implements CacheModel<PositionType>, Externalizable {
+        implements CacheModel<PositionType>, Externalizable {
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
+    public long id;
+    public String name;
 
-		if (!(object instanceof PositionTypeCacheModel)) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
 
-		PositionTypeCacheModel positionTypeCacheModel =
-			(PositionTypeCacheModel)object;
+        if (!(object instanceof PositionTypeCacheModel)) {
+            return false;
+        }
 
-		if (id == positionTypeCacheModel.id) {
-			return true;
-		}
+        PositionTypeCacheModel positionTypeCacheModel =
+                (PositionTypeCacheModel) object;
 
-		return false;
-	}
+        if (id == positionTypeCacheModel.id) {
+            return true;
+        }
 
-	@Override
-	public int hashCode() {
-		return HashUtil.hash(0, id);
-	}
+        return false;
+    }
 
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(5);
+    @Override
+    public int hashCode() {
+        return HashUtil.hash(0, id);
+    }
 
-		sb.append("{id=");
-		sb.append(id);
-		sb.append(", name=");
-		sb.append(name);
-		sb.append("}");
+    @Override
+    public String toString() {
+        StringBundler sb = new StringBundler(5);
 
-		return sb.toString();
-	}
+        sb.append("{id=");
+        sb.append(id);
+        sb.append(", name=");
+        sb.append(name);
+        sb.append("}");
 
-	@Override
-	public PositionType toEntityModel() {
-		PositionTypeImpl positionTypeImpl = new PositionTypeImpl();
+        return sb.toString();
+    }
 
-		positionTypeImpl.setId(id);
+    @Override
+    public PositionType toEntityModel() {
+        PositionTypeImpl positionTypeImpl = new PositionTypeImpl();
 
-		if (name == null) {
-			positionTypeImpl.setName("");
-		}
-		else {
-			positionTypeImpl.setName(name);
-		}
+        positionTypeImpl.setId(id);
 
-		positionTypeImpl.resetOriginalValues();
+        if (name == null) {
+            positionTypeImpl.setName("");
+        } else {
+            positionTypeImpl.setName(name);
+        }
 
-		return positionTypeImpl;
-	}
+        positionTypeImpl.resetOriginalValues();
 
-	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
-		id = objectInput.readLong();
-		name = objectInput.readUTF();
-	}
+        return positionTypeImpl;
+    }
 
-	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		objectOutput.writeLong(id);
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        name = objectInput.readUTF();
+    }
 
-		if (name == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(name);
-		}
-	}
+    @Override
+    public void writeExternal(ObjectOutput objectOutput) throws IOException {
+        objectOutput.writeLong(id);
 
-	public long id;
-	public String name;
+        if (name == null) {
+            objectOutput.writeUTF("");
+        } else {
+            objectOutput.writeUTF(name);
+        }
+    }
 
 }

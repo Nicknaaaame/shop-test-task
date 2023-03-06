@@ -38,7 +38,7 @@
     </aui:fieldset>
 
     <aui:button-row>
-        <aui:button type="submit" />
+        <aui:button type="submit"/>
         <aui:button onClick="<%= viewPurchaseURL %>" type="cancel"/>
     </aui:button-row>
 

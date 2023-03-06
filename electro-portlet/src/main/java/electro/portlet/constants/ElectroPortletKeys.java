@@ -5,7 +5,7 @@ package electro.portlet.constants;
  */
 public class ElectroPortletKeys {
 
-	public static final String ELECTRONICS =
-		"electro_portlet_ElectronicsPortlet";
+    public static final String ELECTRONICS =
+            "electro_portlet_ElectronicsPortlet";
 
 }

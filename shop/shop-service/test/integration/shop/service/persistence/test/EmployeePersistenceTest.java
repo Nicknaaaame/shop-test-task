@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -63,355 +63,354 @@ import shop.service.persistence.EmployeeUtil;
 @RunWith(Arquillian.class)
 public class EmployeePersistenceTest {
 
-	@ClassRule
-	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED, "shop.service"));
+    @ClassRule
+    @Rule
+    public static final AggregateTestRule aggregateTestRule =
+            new AggregateTestRule(
+                    new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+                    new TransactionalTestRule(Propagation.REQUIRED, "shop.service"));
+    private List<Employee> _employees = new ArrayList<Employee>();
+    private EmployeePersistence _persistence;
+    private ClassLoader _dynamicQueryClassLoader;
 
-	@Before
-	public void setUp() {
-		_persistence = EmployeeUtil.getPersistence();
+    @Before
+    public void setUp() {
+        _persistence = EmployeeUtil.getPersistence();
 
-		Class<?> clazz = _persistence.getClass();
+        Class<?> clazz = _persistence.getClass();
 
-		_dynamicQueryClassLoader = clazz.getClassLoader();
-	}
+        _dynamicQueryClassLoader = clazz.getClassLoader();
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		Iterator<Employee> iterator = _employees.iterator();
+    @After
+    public void tearDown() throws Exception {
+        Iterator<Employee> iterator = _employees.iterator();
 
-		while (iterator.hasNext()) {
-			_persistence.remove(iterator.next());
+        while (iterator.hasNext()) {
+            _persistence.remove(iterator.next());
 
-			iterator.remove();
-		}
-	}
+            iterator.remove();
+        }
+    }
 
-	@Test
-	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test
+    public void testCreate() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		Employee employee = _persistence.create(pk);
+        Employee employee = _persistence.create(pk);
 
-		Assert.assertNotNull(employee);
+        Assert.assertNotNull(employee);
 
-		Assert.assertEquals(employee.getPrimaryKey(), pk);
-	}
+        Assert.assertEquals(employee.getPrimaryKey(), pk);
+    }
 
-	@Test
-	public void testRemove() throws Exception {
-		Employee newEmployee = addEmployee();
+    @Test
+    public void testRemove() throws Exception {
+        Employee newEmployee = addEmployee();
 
-		_persistence.remove(newEmployee);
+        _persistence.remove(newEmployee);
 
-		Employee existingEmployee = _persistence.fetchByPrimaryKey(
-			newEmployee.getPrimaryKey());
+        Employee existingEmployee = _persistence.fetchByPrimaryKey(
+                newEmployee.getPrimaryKey());
 
-		Assert.assertNull(existingEmployee);
-	}
+        Assert.assertNull(existingEmployee);
+    }
 
-	@Test
-	public void testUpdateNew() throws Exception {
-		addEmployee();
-	}
+    @Test
+    public void testUpdateNew() throws Exception {
+        addEmployee();
+    }
 
-	@Test
-	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test
+    public void testUpdateExisting() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		Employee newEmployee = _persistence.create(pk);
+        Employee newEmployee = _persistence.create(pk);
 
-		newEmployee.setLastName(RandomTestUtil.randomString());
+        newEmployee.setLastName(RandomTestUtil.randomString());
 
-		newEmployee.setFirstName(RandomTestUtil.randomString());
+        newEmployee.setFirstName(RandomTestUtil.randomString());
 
-		newEmployee.setPatronymic(RandomTestUtil.randomString());
+        newEmployee.setPatronymic(RandomTestUtil.randomString());
 
-		newEmployee.setBirthDate(RandomTestUtil.nextDate());
+        newEmployee.setBirthDate(RandomTestUtil.nextDate());
 
-		newEmployee.setGender(RandomTestUtil.randomBoolean());
+        newEmployee.setGender(RandomTestUtil.randomBoolean());
 
-		newEmployee.setPositionId(RandomTestUtil.nextLong());
+        newEmployee.setPositionId(RandomTestUtil.nextLong());
 
-		_employees.add(_persistence.update(newEmployee));
+        _employees.add(_persistence.update(newEmployee));
 
-		Employee existingEmployee = _persistence.findByPrimaryKey(
-			newEmployee.getPrimaryKey());
+        Employee existingEmployee = _persistence.findByPrimaryKey(
+                newEmployee.getPrimaryKey());
 
-		Assert.assertEquals(existingEmployee.getId(), newEmployee.getId());
-		Assert.assertEquals(
-			existingEmployee.getLastName(), newEmployee.getLastName());
-		Assert.assertEquals(
-			existingEmployee.getFirstName(), newEmployee.getFirstName());
-		Assert.assertEquals(
-			existingEmployee.getPatronymic(), newEmployee.getPatronymic());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingEmployee.getBirthDate()),
-			Time.getShortTimestamp(newEmployee.getBirthDate()));
-		Assert.assertEquals(
-			existingEmployee.isGender(), newEmployee.isGender());
-		Assert.assertEquals(
-			existingEmployee.getPositionId(), newEmployee.getPositionId());
-	}
+        Assert.assertEquals(existingEmployee.getId(), newEmployee.getId());
+        Assert.assertEquals(
+                existingEmployee.getLastName(), newEmployee.getLastName());
+        Assert.assertEquals(
+                existingEmployee.getFirstName(), newEmployee.getFirstName());
+        Assert.assertEquals(
+                existingEmployee.getPatronymic(), newEmployee.getPatronymic());
+        Assert.assertEquals(
+                Time.getShortTimestamp(existingEmployee.getBirthDate()),
+                Time.getShortTimestamp(newEmployee.getBirthDate()));
+        Assert.assertEquals(
+                existingEmployee.isGender(), newEmployee.isGender());
+        Assert.assertEquals(
+                existingEmployee.getPositionId(), newEmployee.getPositionId());
+    }
 
-	@Test
-	public void testFindByPrimaryKeyExisting() throws Exception {
-		Employee newEmployee = addEmployee();
+    @Test
+    public void testFindByPrimaryKeyExisting() throws Exception {
+        Employee newEmployee = addEmployee();
 
-		Employee existingEmployee = _persistence.findByPrimaryKey(
-			newEmployee.getPrimaryKey());
+        Employee existingEmployee = _persistence.findByPrimaryKey(
+                newEmployee.getPrimaryKey());
 
-		Assert.assertEquals(existingEmployee, newEmployee);
-	}
+        Assert.assertEquals(existingEmployee, newEmployee);
+    }
 
-	@Test(expected = NoSuchEmployeeException.class)
-	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test(expected = NoSuchEmployeeException.class)
+    public void testFindByPrimaryKeyMissing() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		_persistence.findByPrimaryKey(pk);
-	}
+        _persistence.findByPrimaryKey(pk);
+    }
 
-	@Test
-	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
-	}
+    @Test
+    public void testFindAll() throws Exception {
+        _persistence.findAll(
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+    }
 
-	protected OrderByComparator<Employee> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"SHOP_Employee", "id", true, "lastName", true, "firstName", true,
-			"patronymic", true, "birthDate", true, "gender", true, "positionId",
-			true);
-	}
+    protected OrderByComparator<Employee> getOrderByComparator() {
+        return OrderByComparatorFactoryUtil.create(
+                "SHOP_Employee", "id", true, "lastName", true, "firstName", true,
+                "patronymic", true, "birthDate", true, "gender", true, "positionId",
+                true);
+    }
 
-	@Test
-	public void testFetchByPrimaryKeyExisting() throws Exception {
-		Employee newEmployee = addEmployee();
+    @Test
+    public void testFetchByPrimaryKeyExisting() throws Exception {
+        Employee newEmployee = addEmployee();
 
-		Employee existingEmployee = _persistence.fetchByPrimaryKey(
-			newEmployee.getPrimaryKey());
+        Employee existingEmployee = _persistence.fetchByPrimaryKey(
+                newEmployee.getPrimaryKey());
 
-		Assert.assertEquals(existingEmployee, newEmployee);
-	}
+        Assert.assertEquals(existingEmployee, newEmployee);
+    }
 
-	@Test
-	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test
+    public void testFetchByPrimaryKeyMissing() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		Employee missingEmployee = _persistence.fetchByPrimaryKey(pk);
+        Employee missingEmployee = _persistence.fetchByPrimaryKey(pk);
 
-		Assert.assertNull(missingEmployee);
-	}
+        Assert.assertNull(missingEmployee);
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
-		throws Exception {
+    @Test
+    public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
+            throws Exception {
 
-		Employee newEmployee1 = addEmployee();
-		Employee newEmployee2 = addEmployee();
+        Employee newEmployee1 = addEmployee();
+        Employee newEmployee2 = addEmployee();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(newEmployee1.getPrimaryKey());
-		primaryKeys.add(newEmployee2.getPrimaryKey());
+        primaryKeys.add(newEmployee1.getPrimaryKey());
+        primaryKeys.add(newEmployee2.getPrimaryKey());
 
-		Map<Serializable, Employee> employees = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+        Map<Serializable, Employee> employees = _persistence.fetchByPrimaryKeys(
+                primaryKeys);
 
-		Assert.assertEquals(2, employees.size());
-		Assert.assertEquals(
-			newEmployee1, employees.get(newEmployee1.getPrimaryKey()));
-		Assert.assertEquals(
-			newEmployee2, employees.get(newEmployee2.getPrimaryKey()));
-	}
+        Assert.assertEquals(2, employees.size());
+        Assert.assertEquals(
+                newEmployee1, employees.get(newEmployee1.getPrimaryKey()));
+        Assert.assertEquals(
+                newEmployee2, employees.get(newEmployee2.getPrimaryKey()));
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
-		throws Exception {
+    @Test
+    public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
+            throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+        long pk1 = RandomTestUtil.nextLong();
 
-		long pk2 = RandomTestUtil.nextLong();
+        long pk2 = RandomTestUtil.nextLong();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(pk1);
-		primaryKeys.add(pk2);
+        primaryKeys.add(pk1);
+        primaryKeys.add(pk2);
 
-		Map<Serializable, Employee> employees = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+        Map<Serializable, Employee> employees = _persistence.fetchByPrimaryKeys(
+                primaryKeys);
 
-		Assert.assertTrue(employees.isEmpty());
-	}
+        Assert.assertTrue(employees.isEmpty());
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
-		throws Exception {
+    @Test
+    public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
+            throws Exception {
 
-		Employee newEmployee = addEmployee();
+        Employee newEmployee = addEmployee();
 
-		long pk = RandomTestUtil.nextLong();
+        long pk = RandomTestUtil.nextLong();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(newEmployee.getPrimaryKey());
-		primaryKeys.add(pk);
+        primaryKeys.add(newEmployee.getPrimaryKey());
+        primaryKeys.add(pk);
 
-		Map<Serializable, Employee> employees = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+        Map<Serializable, Employee> employees = _persistence.fetchByPrimaryKeys(
+                primaryKeys);
 
-		Assert.assertEquals(1, employees.size());
-		Assert.assertEquals(
-			newEmployee, employees.get(newEmployee.getPrimaryKey()));
-	}
+        Assert.assertEquals(1, employees.size());
+        Assert.assertEquals(
+                newEmployee, employees.get(newEmployee.getPrimaryKey()));
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+    @Test
+    public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, Employee> employees = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+        Map<Serializable, Employee> employees = _persistence.fetchByPrimaryKeys(
+                primaryKeys);
 
-		Assert.assertTrue(employees.isEmpty());
-	}
+        Assert.assertTrue(employees.isEmpty());
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
-		Employee newEmployee = addEmployee();
+    @Test
+    public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+        Employee newEmployee = addEmployee();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(newEmployee.getPrimaryKey());
+        primaryKeys.add(newEmployee.getPrimaryKey());
 
-		Map<Serializable, Employee> employees = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+        Map<Serializable, Employee> employees = _persistence.fetchByPrimaryKeys(
+                primaryKeys);
 
-		Assert.assertEquals(1, employees.size());
-		Assert.assertEquals(
-			newEmployee, employees.get(newEmployee.getPrimaryKey()));
-	}
+        Assert.assertEquals(1, employees.size());
+        Assert.assertEquals(
+                newEmployee, employees.get(newEmployee.getPrimaryKey()));
+    }
 
-	@Test
-	public void testActionableDynamicQuery() throws Exception {
-		final IntegerWrapper count = new IntegerWrapper();
+    @Test
+    public void testActionableDynamicQuery() throws Exception {
+        final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			EmployeeLocalServiceUtil.getActionableDynamicQuery();
+        ActionableDynamicQuery actionableDynamicQuery =
+                EmployeeLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Employee>() {
+        actionableDynamicQuery.setPerformActionMethod(
+                new ActionableDynamicQuery.PerformActionMethod<Employee>() {
 
-				@Override
-				public void performAction(Employee employee) {
-					Assert.assertNotNull(employee);
+                    @Override
+                    public void performAction(Employee employee) {
+                        Assert.assertNotNull(employee);
 
-					count.increment();
-				}
+                        count.increment();
+                    }
 
-			});
+                });
 
-		actionableDynamicQuery.performActions();
+        actionableDynamicQuery.performActions();
 
-		Assert.assertEquals(count.getValue(), _persistence.countAll());
-	}
+        Assert.assertEquals(count.getValue(), _persistence.countAll());
+    }
 
-	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
-		Employee newEmployee = addEmployee();
+    @Test
+    public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+        Employee newEmployee = addEmployee();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Employee.class, _dynamicQueryClassLoader);
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                Employee.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("id", newEmployee.getId()));
+        dynamicQuery.add(RestrictionsFactoryUtil.eq("id", newEmployee.getId()));
 
-		List<Employee> result = _persistence.findWithDynamicQuery(dynamicQuery);
+        List<Employee> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
-		Assert.assertEquals(1, result.size());
+        Assert.assertEquals(1, result.size());
 
-		Employee existingEmployee = result.get(0);
+        Employee existingEmployee = result.get(0);
 
-		Assert.assertEquals(existingEmployee, newEmployee);
-	}
+        Assert.assertEquals(existingEmployee, newEmployee);
+    }
 
-	@Test
-	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Employee.class, _dynamicQueryClassLoader);
+    @Test
+    public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                Employee.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("id", RandomTestUtil.nextLong()));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.eq("id", RandomTestUtil.nextLong()));
 
-		List<Employee> result = _persistence.findWithDynamicQuery(dynamicQuery);
+        List<Employee> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
-		Assert.assertEquals(0, result.size());
-	}
+        Assert.assertEquals(0, result.size());
+    }
 
-	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
-		Employee newEmployee = addEmployee();
+    @Test
+    public void testDynamicQueryByProjectionExisting() throws Exception {
+        Employee newEmployee = addEmployee();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Employee.class, _dynamicQueryClassLoader);
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                Employee.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
+        dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
 
-		Object newId = newEmployee.getId();
+        Object newId = newEmployee.getId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in("id", new Object[] {newId}));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.in("id", new Object[]{newId}));
 
-		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
+        List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
-		Assert.assertEquals(1, result.size());
+        Assert.assertEquals(1, result.size());
 
-		Object existingId = result.get(0);
+        Object existingId = result.get(0);
 
-		Assert.assertEquals(existingId, newId);
-	}
+        Assert.assertEquals(existingId, newId);
+    }
 
-	@Test
-	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Employee.class, _dynamicQueryClassLoader);
+    @Test
+    public void testDynamicQueryByProjectionMissing() throws Exception {
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                Employee.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
+        dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"id", new Object[] {RandomTestUtil.nextLong()}));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.in(
+                        "id", new Object[]{RandomTestUtil.nextLong()}));
 
-		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
+        List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
-		Assert.assertEquals(0, result.size());
-	}
+        Assert.assertEquals(0, result.size());
+    }
 
-	protected Employee addEmployee() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    protected Employee addEmployee() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		Employee employee = _persistence.create(pk);
+        Employee employee = _persistence.create(pk);
 
-		employee.setLastName(RandomTestUtil.randomString());
+        employee.setLastName(RandomTestUtil.randomString());
 
-		employee.setFirstName(RandomTestUtil.randomString());
+        employee.setFirstName(RandomTestUtil.randomString());
 
-		employee.setPatronymic(RandomTestUtil.randomString());
+        employee.setPatronymic(RandomTestUtil.randomString());
 
-		employee.setBirthDate(RandomTestUtil.nextDate());
+        employee.setBirthDate(RandomTestUtil.nextDate());
 
-		employee.setGender(RandomTestUtil.randomBoolean());
+        employee.setGender(RandomTestUtil.randomBoolean());
 
-		employee.setPositionId(RandomTestUtil.nextLong());
+        employee.setPositionId(RandomTestUtil.nextLong());
 
-		_employees.add(_persistence.update(employee));
+        _employees.add(_persistence.update(employee));
 
-		return employee;
-	}
-
-	private List<Employee> _employees = new ArrayList<Employee>();
-	private EmployeePersistence _persistence;
-	private ClassLoader _dynamicQueryClassLoader;
+        return employee;
+    }
 
 }

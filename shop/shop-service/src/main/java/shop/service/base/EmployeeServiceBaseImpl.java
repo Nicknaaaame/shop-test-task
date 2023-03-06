@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -25,25 +25,15 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
-
-import javax.sql.DataSource;
-
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-
 import shop.model.Employee;
-
 import shop.service.EmployeeService;
 import shop.service.EmployeeServiceUtil;
-import shop.service.persistence.ElectroEmployeePersistence;
-import shop.service.persistence.ElectroTypePersistence;
-import shop.service.persistence.ElectronicsPersistence;
-import shop.service.persistence.EmployeePersistence;
-import shop.service.persistence.PositionTypePersistence;
-import shop.service.persistence.PurchasePersistence;
-import shop.service.persistence.PurchaseTypePersistence;
+import shop.service.persistence.*;
+
+import javax.sql.DataSource;
+import java.lang.reflect.Field;
 
 /**
  * Provides the base implementation for the employee remote service.
@@ -57,139 +47,122 @@ import shop.service.persistence.PurchaseTypePersistence;
  * @generated
  */
 public abstract class EmployeeServiceBaseImpl
-	extends BaseServiceImpl
-	implements AopService, EmployeeService, IdentifiableOSGiService {
+        extends BaseServiceImpl
+        implements AopService, EmployeeService, IdentifiableOSGiService {
 
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. Use <code>EmployeeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>EmployeeServiceUtil</code>.
-	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
+    private static final Log _log = LogFactoryUtil.getLog(
+            EmployeeServiceBaseImpl.class);
+    @Reference
+    protected ElectroEmployeePersistence electroEmployeePersistence;
+    @Reference
+    protected ElectronicsPersistence electronicsPersistence;
+    @Reference
+    protected ElectroTypePersistence electroTypePersistence;
+    @Reference
+    protected shop.service.EmployeeLocalService employeeLocalService;
+    protected EmployeeService employeeService;
+    @Reference
+    protected EmployeePersistence employeePersistence;
+    @Reference
+    protected PositionTypePersistence positionTypePersistence;
+    @Reference
+    protected PurchasePersistence purchasePersistence;
+    @Reference
+    protected PurchaseTypePersistence purchaseTypePersistence;
+    @Reference
+    protected com.liferay.counter.kernel.service.CounterLocalService
+            counterLocalService;
+    @Reference
+    protected com.liferay.portal.kernel.service.ClassNameLocalService
+            classNameLocalService;
+    @Reference
+    protected com.liferay.portal.kernel.service.ClassNameService
+            classNameService;
+    @Reference
+    protected com.liferay.portal.kernel.service.ResourceLocalService
+            resourceLocalService;
+    @Reference
+    protected com.liferay.portal.kernel.service.UserLocalService
+            userLocalService;
+    @Reference
+    protected com.liferay.portal.kernel.service.UserService userService;
 
-	@Override
-	public Class<?>[] getAopInterfaces() {
-		return new Class<?>[] {
-			EmployeeService.class, IdentifiableOSGiService.class
-		};
-	}
+    /*
+     * NOTE FOR DEVELOPERS:
+     *
+     * Never modify or reference this class directly. Use <code>EmployeeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>EmployeeServiceUtil</code>.
+     */
+    @Deactivate
+    protected void deactivate() {
+        _setServiceUtilService(null);
+    }
 
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		employeeService = (EmployeeService)aopProxy;
+    @Override
+    public Class<?>[] getAopInterfaces() {
+        return new Class<?>[]{
+                EmployeeService.class, IdentifiableOSGiService.class
+        };
+    }
 
-		_setServiceUtilService(employeeService);
-	}
+    @Override
+    public void setAopProxy(Object aopProxy) {
+        employeeService = (EmployeeService) aopProxy;
 
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	@Override
-	public String getOSGiServiceIdentifier() {
-		return EmployeeService.class.getName();
-	}
+        _setServiceUtilService(employeeService);
+    }
 
-	protected Class<?> getModelClass() {
-		return Employee.class;
-	}
+    /**
+     * Returns the OSGi service identifier.
+     *
+     * @return the OSGi service identifier
+     */
+    @Override
+    public String getOSGiServiceIdentifier() {
+        return EmployeeService.class.getName();
+    }
 
-	protected String getModelClassName() {
-		return Employee.class.getName();
-	}
+    protected Class<?> getModelClass() {
+        return Employee.class;
+    }
 
-	/**
-	 * Performs a SQL query.
-	 *
-	 * @param sql the sql query
-	 */
-	protected void runSQL(String sql) {
-		try {
-			DataSource dataSource = employeePersistence.getDataSource();
+    protected String getModelClassName() {
+        return Employee.class.getName();
+    }
 
-			DB db = DBManagerUtil.getDB();
+    /**
+     * Performs a SQL query.
+     *
+     * @param sql the sql query
+     */
+    protected void runSQL(String sql) {
+        try {
+            DataSource dataSource = employeePersistence.getDataSource();
 
-			sql = db.buildSQL(sql);
-			sql = PortalUtil.transformSQL(sql);
+            DB db = DBManagerUtil.getDB();
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+            sql = db.buildSQL(sql);
+            sql = PortalUtil.transformSQL(sql);
 
-			sqlUpdate.update();
-		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
-		}
-	}
+            SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+                    dataSource, sql);
 
-	private void _setServiceUtilService(EmployeeService employeeService) {
-		try {
-			Field field = EmployeeServiceUtil.class.getDeclaredField(
-				"_service");
+            sqlUpdate.update();
+        } catch (Exception exception) {
+            throw new SystemException(exception);
+        }
+    }
 
-			field.setAccessible(true);
+    private void _setServiceUtilService(EmployeeService employeeService) {
+        try {
+            Field field = EmployeeServiceUtil.class.getDeclaredField(
+                    "_service");
 
-			field.set(null, employeeService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
-	}
+            field.setAccessible(true);
 
-	@Reference
-	protected ElectroEmployeePersistence electroEmployeePersistence;
-
-	@Reference
-	protected ElectronicsPersistence electronicsPersistence;
-
-	@Reference
-	protected ElectroTypePersistence electroTypePersistence;
-
-	@Reference
-	protected shop.service.EmployeeLocalService employeeLocalService;
-
-	protected EmployeeService employeeService;
-
-	@Reference
-	protected EmployeePersistence employeePersistence;
-
-	@Reference
-	protected PositionTypePersistence positionTypePersistence;
-
-	@Reference
-	protected PurchasePersistence purchasePersistence;
-
-	@Reference
-	protected PurchaseTypePersistence purchaseTypePersistence;
-
-	@Reference
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@Reference
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
-	@Reference
-	protected com.liferay.portal.kernel.service.ClassNameService
-		classNameService;
-
-	@Reference
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@Reference
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
-	@Reference
-	protected com.liferay.portal.kernel.service.UserService userService;
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		EmployeeServiceBaseImpl.class);
+            field.set(null, employeeService);
+        } catch (ReflectiveOperationException reflectiveOperationException) {
+            throw new RuntimeException(reflectiveOperationException);
+        }
+    }
 
 }

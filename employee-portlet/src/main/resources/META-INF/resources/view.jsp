@@ -19,7 +19,8 @@
     <aui:button onClick="<%= addEmployeeURL %>" value='<%= "Add new employee" %>'/>
 </aui:button-row>
 <liferay-ui:header title='<%="Employees list"%>'/>
-<liferay-ui:error key="<%=ShopProjectKeys.EXCEPTION_KEY%>" message='<%=request.getParameter(ShopProjectKeys.EXCEPTION_MESSAGE)%>'/>
+<liferay-ui:error key="<%=ShopProjectKeys.EXCEPTION_KEY%>"
+                  message='<%=request.getParameter(ShopProjectKeys.EXCEPTION_MESSAGE)%>'/>
 <liferay-ui:search-container emptyResultsMessage="No employee found">
     <liferay-ui:search-container-results results="<%=employees%>"/>
     <liferay-ui:search-container-row className="shop.model.Employee" modelVar="employee">

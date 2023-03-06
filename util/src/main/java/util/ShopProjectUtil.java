@@ -15,6 +15,7 @@ import java.util.Date;
  */
 public class ShopProjectUtil {
     private static final Log _log = LogFactoryUtil.getLog(ShopProjectUtil.class);
+
     public static Date parseDateFromRequest(String date) {
         return parseDate(date, ShopProjectKeys.DATE_INPUT_FORMAT);
     }

@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -17,13 +17,12 @@ package shop.model.impl;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
+import shop.model.ElectroType;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-
-import shop.model.ElectroType;
 
 /**
  * The cache model class for representing ElectroType in entity cache.
@@ -32,83 +31,81 @@ import shop.model.ElectroType;
  * @generated
  */
 public class ElectroTypeCacheModel
-	implements CacheModel<ElectroType>, Externalizable {
+        implements CacheModel<ElectroType>, Externalizable {
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
+    public long id;
+    public String name;
 
-		if (!(object instanceof ElectroTypeCacheModel)) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
 
-		ElectroTypeCacheModel electroTypeCacheModel =
-			(ElectroTypeCacheModel)object;
+        if (!(object instanceof ElectroTypeCacheModel)) {
+            return false;
+        }
 
-		if (id == electroTypeCacheModel.id) {
-			return true;
-		}
+        ElectroTypeCacheModel electroTypeCacheModel =
+                (ElectroTypeCacheModel) object;
 
-		return false;
-	}
+        if (id == electroTypeCacheModel.id) {
+            return true;
+        }
 
-	@Override
-	public int hashCode() {
-		return HashUtil.hash(0, id);
-	}
+        return false;
+    }
 
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(5);
+    @Override
+    public int hashCode() {
+        return HashUtil.hash(0, id);
+    }
 
-		sb.append("{id=");
-		sb.append(id);
-		sb.append(", name=");
-		sb.append(name);
-		sb.append("}");
+    @Override
+    public String toString() {
+        StringBundler sb = new StringBundler(5);
 
-		return sb.toString();
-	}
+        sb.append("{id=");
+        sb.append(id);
+        sb.append(", name=");
+        sb.append(name);
+        sb.append("}");
 
-	@Override
-	public ElectroType toEntityModel() {
-		ElectroTypeImpl electroTypeImpl = new ElectroTypeImpl();
+        return sb.toString();
+    }
 
-		electroTypeImpl.setId(id);
+    @Override
+    public ElectroType toEntityModel() {
+        ElectroTypeImpl electroTypeImpl = new ElectroTypeImpl();
 
-		if (name == null) {
-			electroTypeImpl.setName("");
-		}
-		else {
-			electroTypeImpl.setName(name);
-		}
+        electroTypeImpl.setId(id);
 
-		electroTypeImpl.resetOriginalValues();
+        if (name == null) {
+            electroTypeImpl.setName("");
+        } else {
+            electroTypeImpl.setName(name);
+        }
 
-		return electroTypeImpl;
-	}
+        electroTypeImpl.resetOriginalValues();
 
-	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
-		id = objectInput.readLong();
-		name = objectInput.readUTF();
-	}
+        return electroTypeImpl;
+    }
 
-	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		objectOutput.writeLong(id);
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        name = objectInput.readUTF();
+    }
 
-		if (name == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(name);
-		}
-	}
+    @Override
+    public void writeExternal(ObjectOutput objectOutput) throws IOException {
+        objectOutput.writeLong(id);
 
-	public long id;
-	public String name;
+        if (name == null) {
+            objectOutput.writeUTF("");
+        } else {
+            objectOutput.writeUTF(name);
+        }
+    }
 
 }

@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -62,330 +62,329 @@ import shop.service.persistence.PurchaseTypeUtil;
 @RunWith(Arquillian.class)
 public class PurchaseTypePersistenceTest {
 
-	@ClassRule
-	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED, "shop.service"));
+    @ClassRule
+    @Rule
+    public static final AggregateTestRule aggregateTestRule =
+            new AggregateTestRule(
+                    new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+                    new TransactionalTestRule(Propagation.REQUIRED, "shop.service"));
+    private List<PurchaseType> _purchaseTypes = new ArrayList<PurchaseType>();
+    private PurchaseTypePersistence _persistence;
+    private ClassLoader _dynamicQueryClassLoader;
 
-	@Before
-	public void setUp() {
-		_persistence = PurchaseTypeUtil.getPersistence();
+    @Before
+    public void setUp() {
+        _persistence = PurchaseTypeUtil.getPersistence();
 
-		Class<?> clazz = _persistence.getClass();
+        Class<?> clazz = _persistence.getClass();
 
-		_dynamicQueryClassLoader = clazz.getClassLoader();
-	}
+        _dynamicQueryClassLoader = clazz.getClassLoader();
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		Iterator<PurchaseType> iterator = _purchaseTypes.iterator();
+    @After
+    public void tearDown() throws Exception {
+        Iterator<PurchaseType> iterator = _purchaseTypes.iterator();
 
-		while (iterator.hasNext()) {
-			_persistence.remove(iterator.next());
+        while (iterator.hasNext()) {
+            _persistence.remove(iterator.next());
 
-			iterator.remove();
-		}
-	}
+            iterator.remove();
+        }
+    }
 
-	@Test
-	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test
+    public void testCreate() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		PurchaseType purchaseType = _persistence.create(pk);
+        PurchaseType purchaseType = _persistence.create(pk);
 
-		Assert.assertNotNull(purchaseType);
+        Assert.assertNotNull(purchaseType);
 
-		Assert.assertEquals(purchaseType.getPrimaryKey(), pk);
-	}
+        Assert.assertEquals(purchaseType.getPrimaryKey(), pk);
+    }
 
-	@Test
-	public void testRemove() throws Exception {
-		PurchaseType newPurchaseType = addPurchaseType();
+    @Test
+    public void testRemove() throws Exception {
+        PurchaseType newPurchaseType = addPurchaseType();
 
-		_persistence.remove(newPurchaseType);
+        _persistence.remove(newPurchaseType);
 
-		PurchaseType existingPurchaseType = _persistence.fetchByPrimaryKey(
-			newPurchaseType.getPrimaryKey());
+        PurchaseType existingPurchaseType = _persistence.fetchByPrimaryKey(
+                newPurchaseType.getPrimaryKey());
 
-		Assert.assertNull(existingPurchaseType);
-	}
+        Assert.assertNull(existingPurchaseType);
+    }
 
-	@Test
-	public void testUpdateNew() throws Exception {
-		addPurchaseType();
-	}
+    @Test
+    public void testUpdateNew() throws Exception {
+        addPurchaseType();
+    }
 
-	@Test
-	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test
+    public void testUpdateExisting() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		PurchaseType newPurchaseType = _persistence.create(pk);
+        PurchaseType newPurchaseType = _persistence.create(pk);
 
-		newPurchaseType.setName(RandomTestUtil.randomString());
+        newPurchaseType.setName(RandomTestUtil.randomString());
 
-		_purchaseTypes.add(_persistence.update(newPurchaseType));
+        _purchaseTypes.add(_persistence.update(newPurchaseType));
 
-		PurchaseType existingPurchaseType = _persistence.findByPrimaryKey(
-			newPurchaseType.getPrimaryKey());
+        PurchaseType existingPurchaseType = _persistence.findByPrimaryKey(
+                newPurchaseType.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingPurchaseType.getId(), newPurchaseType.getId());
-		Assert.assertEquals(
-			existingPurchaseType.getName(), newPurchaseType.getName());
-	}
+        Assert.assertEquals(
+                existingPurchaseType.getId(), newPurchaseType.getId());
+        Assert.assertEquals(
+                existingPurchaseType.getName(), newPurchaseType.getName());
+    }
 
-	@Test
-	public void testFindByPrimaryKeyExisting() throws Exception {
-		PurchaseType newPurchaseType = addPurchaseType();
+    @Test
+    public void testFindByPrimaryKeyExisting() throws Exception {
+        PurchaseType newPurchaseType = addPurchaseType();
 
-		PurchaseType existingPurchaseType = _persistence.findByPrimaryKey(
-			newPurchaseType.getPrimaryKey());
+        PurchaseType existingPurchaseType = _persistence.findByPrimaryKey(
+                newPurchaseType.getPrimaryKey());
 
-		Assert.assertEquals(existingPurchaseType, newPurchaseType);
-	}
+        Assert.assertEquals(existingPurchaseType, newPurchaseType);
+    }
 
-	@Test(expected = NoSuchPurchaseTypeException.class)
-	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test(expected = NoSuchPurchaseTypeException.class)
+    public void testFindByPrimaryKeyMissing() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		_persistence.findByPrimaryKey(pk);
-	}
+        _persistence.findByPrimaryKey(pk);
+    }
 
-	@Test
-	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
-	}
+    @Test
+    public void testFindAll() throws Exception {
+        _persistence.findAll(
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+    }
 
-	protected OrderByComparator<PurchaseType> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"SHOP_PurchaseType", "id", true, "name", true);
-	}
+    protected OrderByComparator<PurchaseType> getOrderByComparator() {
+        return OrderByComparatorFactoryUtil.create(
+                "SHOP_PurchaseType", "id", true, "name", true);
+    }
 
-	@Test
-	public void testFetchByPrimaryKeyExisting() throws Exception {
-		PurchaseType newPurchaseType = addPurchaseType();
+    @Test
+    public void testFetchByPrimaryKeyExisting() throws Exception {
+        PurchaseType newPurchaseType = addPurchaseType();
 
-		PurchaseType existingPurchaseType = _persistence.fetchByPrimaryKey(
-			newPurchaseType.getPrimaryKey());
+        PurchaseType existingPurchaseType = _persistence.fetchByPrimaryKey(
+                newPurchaseType.getPrimaryKey());
 
-		Assert.assertEquals(existingPurchaseType, newPurchaseType);
-	}
+        Assert.assertEquals(existingPurchaseType, newPurchaseType);
+    }
 
-	@Test
-	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    @Test
+    public void testFetchByPrimaryKeyMissing() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		PurchaseType missingPurchaseType = _persistence.fetchByPrimaryKey(pk);
+        PurchaseType missingPurchaseType = _persistence.fetchByPrimaryKey(pk);
 
-		Assert.assertNull(missingPurchaseType);
-	}
+        Assert.assertNull(missingPurchaseType);
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
-		throws Exception {
+    @Test
+    public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
+            throws Exception {
 
-		PurchaseType newPurchaseType1 = addPurchaseType();
-		PurchaseType newPurchaseType2 = addPurchaseType();
+        PurchaseType newPurchaseType1 = addPurchaseType();
+        PurchaseType newPurchaseType2 = addPurchaseType();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(newPurchaseType1.getPrimaryKey());
-		primaryKeys.add(newPurchaseType2.getPrimaryKey());
+        primaryKeys.add(newPurchaseType1.getPrimaryKey());
+        primaryKeys.add(newPurchaseType2.getPrimaryKey());
 
-		Map<Serializable, PurchaseType> purchaseTypes =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+        Map<Serializable, PurchaseType> purchaseTypes =
+                _persistence.fetchByPrimaryKeys(primaryKeys);
 
-		Assert.assertEquals(2, purchaseTypes.size());
-		Assert.assertEquals(
-			newPurchaseType1,
-			purchaseTypes.get(newPurchaseType1.getPrimaryKey()));
-		Assert.assertEquals(
-			newPurchaseType2,
-			purchaseTypes.get(newPurchaseType2.getPrimaryKey()));
-	}
+        Assert.assertEquals(2, purchaseTypes.size());
+        Assert.assertEquals(
+                newPurchaseType1,
+                purchaseTypes.get(newPurchaseType1.getPrimaryKey()));
+        Assert.assertEquals(
+                newPurchaseType2,
+                purchaseTypes.get(newPurchaseType2.getPrimaryKey()));
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
-		throws Exception {
+    @Test
+    public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
+            throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+        long pk1 = RandomTestUtil.nextLong();
 
-		long pk2 = RandomTestUtil.nextLong();
+        long pk2 = RandomTestUtil.nextLong();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(pk1);
-		primaryKeys.add(pk2);
+        primaryKeys.add(pk1);
+        primaryKeys.add(pk2);
 
-		Map<Serializable, PurchaseType> purchaseTypes =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+        Map<Serializable, PurchaseType> purchaseTypes =
+                _persistence.fetchByPrimaryKeys(primaryKeys);
 
-		Assert.assertTrue(purchaseTypes.isEmpty());
-	}
+        Assert.assertTrue(purchaseTypes.isEmpty());
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
-		throws Exception {
+    @Test
+    public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
+            throws Exception {
 
-		PurchaseType newPurchaseType = addPurchaseType();
+        PurchaseType newPurchaseType = addPurchaseType();
 
-		long pk = RandomTestUtil.nextLong();
+        long pk = RandomTestUtil.nextLong();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(newPurchaseType.getPrimaryKey());
-		primaryKeys.add(pk);
+        primaryKeys.add(newPurchaseType.getPrimaryKey());
+        primaryKeys.add(pk);
 
-		Map<Serializable, PurchaseType> purchaseTypes =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+        Map<Serializable, PurchaseType> purchaseTypes =
+                _persistence.fetchByPrimaryKeys(primaryKeys);
 
-		Assert.assertEquals(1, purchaseTypes.size());
-		Assert.assertEquals(
-			newPurchaseType,
-			purchaseTypes.get(newPurchaseType.getPrimaryKey()));
-	}
+        Assert.assertEquals(1, purchaseTypes.size());
+        Assert.assertEquals(
+                newPurchaseType,
+                purchaseTypes.get(newPurchaseType.getPrimaryKey()));
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+    @Test
+    public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, PurchaseType> purchaseTypes =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+        Map<Serializable, PurchaseType> purchaseTypes =
+                _persistence.fetchByPrimaryKeys(primaryKeys);
 
-		Assert.assertTrue(purchaseTypes.isEmpty());
-	}
+        Assert.assertTrue(purchaseTypes.isEmpty());
+    }
 
-	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
-		PurchaseType newPurchaseType = addPurchaseType();
+    @Test
+    public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+        PurchaseType newPurchaseType = addPurchaseType();
 
-		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+        Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		primaryKeys.add(newPurchaseType.getPrimaryKey());
+        primaryKeys.add(newPurchaseType.getPrimaryKey());
 
-		Map<Serializable, PurchaseType> purchaseTypes =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+        Map<Serializable, PurchaseType> purchaseTypes =
+                _persistence.fetchByPrimaryKeys(primaryKeys);
 
-		Assert.assertEquals(1, purchaseTypes.size());
-		Assert.assertEquals(
-			newPurchaseType,
-			purchaseTypes.get(newPurchaseType.getPrimaryKey()));
-	}
+        Assert.assertEquals(1, purchaseTypes.size());
+        Assert.assertEquals(
+                newPurchaseType,
+                purchaseTypes.get(newPurchaseType.getPrimaryKey()));
+    }
 
-	@Test
-	public void testActionableDynamicQuery() throws Exception {
-		final IntegerWrapper count = new IntegerWrapper();
+    @Test
+    public void testActionableDynamicQuery() throws Exception {
+        final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			PurchaseTypeLocalServiceUtil.getActionableDynamicQuery();
+        ActionableDynamicQuery actionableDynamicQuery =
+                PurchaseTypeLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<PurchaseType>() {
+        actionableDynamicQuery.setPerformActionMethod(
+                new ActionableDynamicQuery.PerformActionMethod<PurchaseType>() {
 
-				@Override
-				public void performAction(PurchaseType purchaseType) {
-					Assert.assertNotNull(purchaseType);
+                    @Override
+                    public void performAction(PurchaseType purchaseType) {
+                        Assert.assertNotNull(purchaseType);
 
-					count.increment();
-				}
+                        count.increment();
+                    }
 
-			});
+                });
 
-		actionableDynamicQuery.performActions();
+        actionableDynamicQuery.performActions();
 
-		Assert.assertEquals(count.getValue(), _persistence.countAll());
-	}
+        Assert.assertEquals(count.getValue(), _persistence.countAll());
+    }
 
-	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
-		PurchaseType newPurchaseType = addPurchaseType();
+    @Test
+    public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+        PurchaseType newPurchaseType = addPurchaseType();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			PurchaseType.class, _dynamicQueryClassLoader);
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                PurchaseType.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("id", newPurchaseType.getId()));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.eq("id", newPurchaseType.getId()));
 
-		List<PurchaseType> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+        List<PurchaseType> result = _persistence.findWithDynamicQuery(
+                dynamicQuery);
 
-		Assert.assertEquals(1, result.size());
+        Assert.assertEquals(1, result.size());
 
-		PurchaseType existingPurchaseType = result.get(0);
+        PurchaseType existingPurchaseType = result.get(0);
 
-		Assert.assertEquals(existingPurchaseType, newPurchaseType);
-	}
+        Assert.assertEquals(existingPurchaseType, newPurchaseType);
+    }
 
-	@Test
-	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			PurchaseType.class, _dynamicQueryClassLoader);
+    @Test
+    public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                PurchaseType.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("id", RandomTestUtil.nextLong()));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.eq("id", RandomTestUtil.nextLong()));
 
-		List<PurchaseType> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+        List<PurchaseType> result = _persistence.findWithDynamicQuery(
+                dynamicQuery);
 
-		Assert.assertEquals(0, result.size());
-	}
+        Assert.assertEquals(0, result.size());
+    }
 
-	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
-		PurchaseType newPurchaseType = addPurchaseType();
+    @Test
+    public void testDynamicQueryByProjectionExisting() throws Exception {
+        PurchaseType newPurchaseType = addPurchaseType();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			PurchaseType.class, _dynamicQueryClassLoader);
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                PurchaseType.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
+        dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
 
-		Object newId = newPurchaseType.getId();
+        Object newId = newPurchaseType.getId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in("id", new Object[] {newId}));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.in("id", new Object[]{newId}));
 
-		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
+        List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
-		Assert.assertEquals(1, result.size());
+        Assert.assertEquals(1, result.size());
 
-		Object existingId = result.get(0);
+        Object existingId = result.get(0);
 
-		Assert.assertEquals(existingId, newId);
-	}
+        Assert.assertEquals(existingId, newId);
+    }
 
-	@Test
-	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			PurchaseType.class, _dynamicQueryClassLoader);
+    @Test
+    public void testDynamicQueryByProjectionMissing() throws Exception {
+        DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+                PurchaseType.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
+        dynamicQuery.setProjection(ProjectionFactoryUtil.property("id"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"id", new Object[] {RandomTestUtil.nextLong()}));
+        dynamicQuery.add(
+                RestrictionsFactoryUtil.in(
+                        "id", new Object[]{RandomTestUtil.nextLong()}));
 
-		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
+        List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
-		Assert.assertEquals(0, result.size());
-	}
+        Assert.assertEquals(0, result.size());
+    }
 
-	protected PurchaseType addPurchaseType() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+    protected PurchaseType addPurchaseType() throws Exception {
+        long pk = RandomTestUtil.nextLong();
 
-		PurchaseType purchaseType = _persistence.create(pk);
+        PurchaseType purchaseType = _persistence.create(pk);
 
-		purchaseType.setName(RandomTestUtil.randomString());
+        purchaseType.setName(RandomTestUtil.randomString());
 
-		_purchaseTypes.add(_persistence.update(purchaseType));
+        _purchaseTypes.add(_persistence.update(purchaseType));
 
-		return purchaseType;
-	}
-
-	private List<PurchaseType> _purchaseTypes = new ArrayList<PurchaseType>();
-	private PurchaseTypePersistence _persistence;
-	private ClassLoader _dynamicQueryClassLoader;
+        return purchaseType;
+    }
 
 }

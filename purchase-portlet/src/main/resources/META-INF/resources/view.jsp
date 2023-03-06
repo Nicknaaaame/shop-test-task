@@ -1,14 +1,13 @@
-<%@ page import="purchase.portlet.constants.PurchasePortletKeys" %>
+<%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="shop.model.Purchase" %>
+<%@ page import="shop.model.PurchaseModel" %>
 <%@ page import="shop.service.PurchaseLocalServiceUtil" %>
 <%@ page import="util.ShopProjectKeys" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
-<%@ page import="java.util.Collections" %>
-<%@ page import="shop.model.PurchaseModel" %>
-<%@ page import="java.util.Comparator" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.util.Comparator" %>
+<%@ page import="java.util.List" %>
 <%@ include file="init.jsp" %>
 
 <%
@@ -24,7 +23,8 @@
 
     <aui:button onClick="<%= addPurchaseURL %>" value='<%= "Add new purchase" %>'/>
 </aui:button-row>
-<liferay-ui:error key="<%=ShopProjectKeys.EXCEPTION_KEY%>" message='<%=request.getParameter(ShopProjectKeys.EXCEPTION_MESSAGE)%>'/>
+<liferay-ui:error key="<%=ShopProjectKeys.EXCEPTION_KEY%>"
+                  message='<%=request.getParameter(ShopProjectKeys.EXCEPTION_MESSAGE)%>'/>
 <liferay-ui:header title='<%="Purchases list"%>'/>
 <liferay-ui:search-container emptyResultsMessage="No purchase found">
     <%
