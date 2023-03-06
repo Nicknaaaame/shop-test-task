@@ -8,8 +8,10 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import employee.portlet.constants.EmployeePortletKeys;
 import employee.portlet.mapper.EmployeeModelMapper;
 import org.osgi.service.component.annotations.Component;
+import shop.exception.NoSuchPositionTypeException;
 import shop.model.Employee;
 import shop.service.EmployeeLocalServiceUtil;
+import shop.service.PositionTypeLocalServiceUtil;
 import util.ShopProjectUtil;
 
 import javax.portlet.ActionRequest;
@@ -37,9 +39,14 @@ import javax.portlet.Portlet;
 public class EmployeePortlet extends MVCPortlet {
     public void addEmployee(ActionRequest request, ActionResponse response) throws SystemException {
         long id = CounterLocalServiceUtil.increment();
-        Employee employee = EmployeeLocalServiceUtil.createEmployee(id);
-        EmployeeModelMapper.map(request, employee);
-        EmployeeLocalServiceUtil.addEmployee(employee);
+        try {
+            Employee employee = EmployeeLocalServiceUtil.createEmployee(id);
+            EmployeeModelMapper.map(request, employee);
+            checkForeignKeys(employee);
+            EmployeeLocalServiceUtil.addEmployee(employee);
+        } catch (NoSuchPositionTypeException e) {
+            ShopProjectUtil.handleException(request, response, e);
+        }
     }
 
     public void updateEmployee(ActionRequest request, ActionResponse response) throws SystemException {
@@ -47,6 +54,7 @@ public class EmployeePortlet extends MVCPortlet {
         try {
             Employee employee = EmployeeLocalServiceUtil.getEmployee(id);
             EmployeeModelMapper.map(request, employee);
+            checkForeignKeys(employee);
             EmployeeLocalServiceUtil.updateEmployee(employee);
         } catch (PortalException e) {
             ShopProjectUtil.handleException(request, response, e);
@@ -60,5 +68,10 @@ public class EmployeePortlet extends MVCPortlet {
         } catch (PortalException e) {
             ShopProjectUtil.handleException(request, response, e);
         }
+    }
+
+    private void checkForeignKeys(Employee employee) throws NoSuchPositionTypeException {
+        if (PositionTypeLocalServiceUtil.fetchPositionType(employee.getPositionId()) == null)
+            throw new NoSuchPositionTypeException(employee.getPositionId());
     }
 }
