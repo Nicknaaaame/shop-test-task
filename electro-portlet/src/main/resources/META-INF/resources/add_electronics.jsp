@@ -10,13 +10,17 @@
 <aui:form method="POST" name="fm" action="<%=addElectronicsURL%>">
 
     <aui:fieldset>
-        <aui:input label="Name" name="name" required="true"/>
+        <aui:input label="Name" name="name" required="true">
+            <aui:validator name="maxLength">150</aui:validator>
+        </aui:input>
         <aui:input label="Electro type id" name="eTypeId" required="true"/>
         <aui:input label="Price" name="price" required="true"/>
         <aui:input label="Count" name="count" required="true"/>
         <aui:input label="Is in stock" name="isInStock" type="checkbox" checked="true"/>
         <aui:input label="Is archive" name="isArchive" type="checkbox" checked="false"/>
-        <aui:input label="Description" name="description" required="true" type="textarea"/>
+        <aui:input label="Description" name="description" required="true" type="textarea">
+            <aui:validator name="maxLength">5000</aui:validator>
+        </aui:input>
     </aui:fieldset>
 
     <aui:button-row>
