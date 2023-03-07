@@ -67,7 +67,7 @@
     <entity local-service="true" name="Purchase" remote-service="true">
         <column name="id" primary="true" type="long"/>
         <column name="purchaseDate" type="Date"/>
-        <column name="eTypeId" type="long"/>
+        <column name="type" type="long"/>
         <column name="employeeId" type="long"/>
         <column name="electroId" type="long"/>
 

@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- * <p>
+ *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- * <p>
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -16,6 +16,7 @@ package shop.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -32,152 +33,152 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface ElectronicsModel extends BaseModel<Electronics> {
 
-    /*
-     * NOTE FOR DEVELOPERS:
-     *
-     * Never modify or reference this interface directly. All methods that expect a electronics model instance should use the {@link Electronics} interface instead.
-     */
+	/*
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this interface directly. All methods that expect a electronics model instance should use the {@link Electronics} interface instead.
+	 */
 
-    /**
-     * Returns the primary key of this electronics.
-     *
-     * @return the primary key of this electronics
-     */
-    public long getPrimaryKey();
+	/**
+	 * Returns the primary key of this electronics.
+	 *
+	 * @return the primary key of this electronics
+	 */
+	public long getPrimaryKey();
 
-    /**
-     * Sets the primary key of this electronics.
-     *
-     * @param primaryKey the primary key of this electronics
-     */
-    public void setPrimaryKey(long primaryKey);
+	/**
+	 * Sets the primary key of this electronics.
+	 *
+	 * @param primaryKey the primary key of this electronics
+	 */
+	public void setPrimaryKey(long primaryKey);
 
-    /**
-     * Returns the ID of this electronics.
-     *
-     * @return the ID of this electronics
-     */
-    public long getId();
+	/**
+	 * Returns the ID of this electronics.
+	 *
+	 * @return the ID of this electronics
+	 */
+	public long getId();
 
-    /**
-     * Sets the ID of this electronics.
-     *
-     * @param id the ID of this electronics
-     */
-    public void setId(long id);
+	/**
+	 * Sets the ID of this electronics.
+	 *
+	 * @param id the ID of this electronics
+	 */
+	public void setId(long id);
 
-    /**
-     * Returns the name of this electronics.
-     *
-     * @return the name of this electronics
-     */
-    @AutoEscape
-    public String getName();
+	/**
+	 * Returns the name of this electronics.
+	 *
+	 * @return the name of this electronics
+	 */
+	@AutoEscape
+	public String getName();
 
-    /**
-     * Sets the name of this electronics.
-     *
-     * @param name the name of this electronics
-     */
-    public void setName(String name);
+	/**
+	 * Sets the name of this electronics.
+	 *
+	 * @param name the name of this electronics
+	 */
+	public void setName(String name);
 
-    /**
-     * Returns the e type ID of this electronics.
-     *
-     * @return the e type ID of this electronics
-     */
-    public long getETypeId();
+	/**
+	 * Returns the e type ID of this electronics.
+	 *
+	 * @return the e type ID of this electronics
+	 */
+	public long getETypeId();
 
-    /**
-     * Sets the e type ID of this electronics.
-     *
-     * @param eTypeId the e type ID of this electronics
-     */
-    public void setETypeId(long eTypeId);
+	/**
+	 * Sets the e type ID of this electronics.
+	 *
+	 * @param eTypeId the e type ID of this electronics
+	 */
+	public void setETypeId(long eTypeId);
 
-    /**
-     * Returns the price of this electronics.
-     *
-     * @return the price of this electronics
-     */
-    public long getPrice();
+	/**
+	 * Returns the price of this electronics.
+	 *
+	 * @return the price of this electronics
+	 */
+	public long getPrice();
 
-    /**
-     * Sets the price of this electronics.
-     *
-     * @param price the price of this electronics
-     */
-    public void setPrice(long price);
+	/**
+	 * Sets the price of this electronics.
+	 *
+	 * @param price the price of this electronics
+	 */
+	public void setPrice(long price);
 
-    /**
-     * Returns the count of this electronics.
-     *
-     * @return the count of this electronics
-     */
-    public int getCount();
+	/**
+	 * Returns the count of this electronics.
+	 *
+	 * @return the count of this electronics
+	 */
+	public int getCount();
 
-    /**
-     * Sets the count of this electronics.
-     *
-     * @param count the count of this electronics
-     */
-    public void setCount(int count);
+	/**
+	 * Sets the count of this electronics.
+	 *
+	 * @param count the count of this electronics
+	 */
+	public void setCount(int count);
 
-    /**
-     * Returns the is in stock of this electronics.
-     *
-     * @return the is in stock of this electronics
-     */
-    public boolean getIsInStock();
+	/**
+	 * Returns the is in stock of this electronics.
+	 *
+	 * @return the is in stock of this electronics
+	 */
+	public boolean getIsInStock();
 
-    /**
-     * Returns <code>true</code> if this electronics is is in stock.
-     *
-     * @return <code>true</code> if this electronics is is in stock; <code>false</code> otherwise
-     */
-    public boolean isIsInStock();
+	/**
+	 * Returns <code>true</code> if this electronics is is in stock.
+	 *
+	 * @return <code>true</code> if this electronics is is in stock; <code>false</code> otherwise
+	 */
+	public boolean isIsInStock();
 
-    /**
-     * Sets whether this electronics is is in stock.
-     *
-     * @param isInStock the is in stock of this electronics
-     */
-    public void setIsInStock(boolean isInStock);
+	/**
+	 * Sets whether this electronics is is in stock.
+	 *
+	 * @param isInStock the is in stock of this electronics
+	 */
+	public void setIsInStock(boolean isInStock);
 
-    /**
-     * Returns the is archive of this electronics.
-     *
-     * @return the is archive of this electronics
-     */
-    public boolean getIsArchive();
+	/**
+	 * Returns the is archive of this electronics.
+	 *
+	 * @return the is archive of this electronics
+	 */
+	public boolean getIsArchive();
 
-    /**
-     * Returns <code>true</code> if this electronics is is archive.
-     *
-     * @return <code>true</code> if this electronics is is archive; <code>false</code> otherwise
-     */
-    public boolean isIsArchive();
+	/**
+	 * Returns <code>true</code> if this electronics is is archive.
+	 *
+	 * @return <code>true</code> if this electronics is is archive; <code>false</code> otherwise
+	 */
+	public boolean isIsArchive();
 
-    /**
-     * Sets whether this electronics is is archive.
-     *
-     * @param isArchive the is archive of this electronics
-     */
-    public void setIsArchive(boolean isArchive);
+	/**
+	 * Sets whether this electronics is is archive.
+	 *
+	 * @param isArchive the is archive of this electronics
+	 */
+	public void setIsArchive(boolean isArchive);
 
-    /**
-     * Returns the description of this electronics.
-     *
-     * @return the description of this electronics
-     */
-    @AutoEscape
-    public String getDescription();
+	/**
+	 * Returns the description of this electronics.
+	 *
+	 * @return the description of this electronics
+	 */
+	@AutoEscape
+	public String getDescription();
 
-    /**
-     * Sets the description of this electronics.
-     *
-     * @param description the description of this electronics
-     */
-    public void setDescription(String description);
+	/**
+	 * Sets the description of this electronics.
+	 *
+	 * @param description the description of this electronics
+	 */
+	public void setDescription(String description);
 
 }

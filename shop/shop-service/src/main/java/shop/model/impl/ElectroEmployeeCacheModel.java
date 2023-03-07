@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- * <p>
+ *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- * <p>
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -17,13 +17,15 @@ package shop.model.impl;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
-import shop.model.ElectroEmployee;
-import shop.service.persistence.ElectroEmployeePK;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+
+import shop.model.ElectroEmployee;
+
+import shop.service.persistence.ElectroEmployeePK;
 
 /**
  * The cache model class for representing ElectroEmployee in entity cache.
@@ -32,78 +34,78 @@ import java.io.ObjectOutput;
  * @generated
  */
 public class ElectroEmployeeCacheModel
-        implements CacheModel<ElectroEmployee>, Externalizable {
+	implements CacheModel<ElectroEmployee>, Externalizable {
 
-    public long employeeId;
-    public long eTypeId;
-    public transient ElectroEmployeePK electroEmployeePK;
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
+			return true;
+		}
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
+		if (!(object instanceof ElectroEmployeeCacheModel)) {
+			return false;
+		}
 
-        if (!(object instanceof ElectroEmployeeCacheModel)) {
-            return false;
-        }
+		ElectroEmployeeCacheModel electroEmployeeCacheModel =
+			(ElectroEmployeeCacheModel)object;
 
-        ElectroEmployeeCacheModel electroEmployeeCacheModel =
-                (ElectroEmployeeCacheModel) object;
+		if (electroEmployeePK.equals(
+				electroEmployeeCacheModel.electroEmployeePK)) {
 
-        if (electroEmployeePK.equals(
-                electroEmployeeCacheModel.electroEmployeePK)) {
+			return true;
+		}
 
-            return true;
-        }
+		return false;
+	}
 
-        return false;
-    }
+	@Override
+	public int hashCode() {
+		return HashUtil.hash(0, electroEmployeePK);
+	}
 
-    @Override
-    public int hashCode() {
-        return HashUtil.hash(0, electroEmployeePK);
-    }
+	@Override
+	public String toString() {
+		StringBundler sb = new StringBundler(5);
 
-    @Override
-    public String toString() {
-        StringBundler sb = new StringBundler(5);
+		sb.append("{employeeId=");
+		sb.append(employeeId);
+		sb.append(", eTypeId=");
+		sb.append(eTypeId);
+		sb.append("}");
 
-        sb.append("{employeeId=");
-        sb.append(employeeId);
-        sb.append(", eTypeId=");
-        sb.append(eTypeId);
-        sb.append("}");
+		return sb.toString();
+	}
 
-        return sb.toString();
-    }
+	@Override
+	public ElectroEmployee toEntityModel() {
+		ElectroEmployeeImpl electroEmployeeImpl = new ElectroEmployeeImpl();
 
-    @Override
-    public ElectroEmployee toEntityModel() {
-        ElectroEmployeeImpl electroEmployeeImpl = new ElectroEmployeeImpl();
+		electroEmployeeImpl.setEmployeeId(employeeId);
+		electroEmployeeImpl.setETypeId(eTypeId);
 
-        electroEmployeeImpl.setEmployeeId(employeeId);
-        electroEmployeeImpl.setETypeId(eTypeId);
+		electroEmployeeImpl.resetOriginalValues();
 
-        electroEmployeeImpl.resetOriginalValues();
+		return electroEmployeeImpl;
+	}
 
-        return electroEmployeeImpl;
-    }
+	@Override
+	public void readExternal(ObjectInput objectInput) throws IOException {
+		employeeId = objectInput.readLong();
 
-    @Override
-    public void readExternal(ObjectInput objectInput) throws IOException {
-        employeeId = objectInput.readLong();
+		eTypeId = objectInput.readLong();
 
-        eTypeId = objectInput.readLong();
+		electroEmployeePK = new ElectroEmployeePK(employeeId, eTypeId);
+	}
 
-        electroEmployeePK = new ElectroEmployeePK(employeeId, eTypeId);
-    }
+	@Override
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+		objectOutput.writeLong(employeeId);
 
-    @Override
-    public void writeExternal(ObjectOutput objectOutput) throws IOException {
-        objectOutput.writeLong(employeeId);
+		objectOutput.writeLong(eTypeId);
+	}
 
-        objectOutput.writeLong(eTypeId);
-    }
+	public long employeeId;
+	public long eTypeId;
+	public transient ElectroEmployeePK electroEmployeePK;
 
 }

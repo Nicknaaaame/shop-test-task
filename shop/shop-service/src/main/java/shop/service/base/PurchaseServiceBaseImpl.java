@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- * <p>
+ *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- * <p>
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -25,15 +25,25 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import shop.model.Purchase;
-import shop.service.PurchaseService;
-import shop.service.PurchaseServiceUtil;
-import shop.service.persistence.*;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
-import java.lang.reflect.Field;
+
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+
+import shop.model.Purchase;
+
+import shop.service.PurchaseService;
+import shop.service.PurchaseServiceUtil;
+import shop.service.persistence.ElectroEmployeePersistence;
+import shop.service.persistence.ElectroTypePersistence;
+import shop.service.persistence.ElectronicsPersistence;
+import shop.service.persistence.EmployeePersistence;
+import shop.service.persistence.PositionTypePersistence;
+import shop.service.persistence.PurchasePersistence;
+import shop.service.persistence.PurchaseTypePersistence;
 
 /**
  * Provides the base implementation for the purchase remote service.
@@ -47,122 +57,139 @@ import java.lang.reflect.Field;
  * @generated
  */
 public abstract class PurchaseServiceBaseImpl
-        extends BaseServiceImpl
-        implements AopService, IdentifiableOSGiService, PurchaseService {
+	extends BaseServiceImpl
+	implements AopService, IdentifiableOSGiService, PurchaseService {
 
-    private static final Log _log = LogFactoryUtil.getLog(
-            PurchaseServiceBaseImpl.class);
-    @Reference
-    protected ElectroEmployeePersistence electroEmployeePersistence;
-    @Reference
-    protected ElectronicsPersistence electronicsPersistence;
-    @Reference
-    protected ElectroTypePersistence electroTypePersistence;
-    @Reference
-    protected EmployeePersistence employeePersistence;
-    @Reference
-    protected PositionTypePersistence positionTypePersistence;
-    @Reference
-    protected shop.service.PurchaseLocalService purchaseLocalService;
-    protected PurchaseService purchaseService;
-    @Reference
-    protected PurchasePersistence purchasePersistence;
-    @Reference
-    protected PurchaseTypePersistence purchaseTypePersistence;
-    @Reference
-    protected com.liferay.counter.kernel.service.CounterLocalService
-            counterLocalService;
-    @Reference
-    protected com.liferay.portal.kernel.service.ClassNameLocalService
-            classNameLocalService;
-    @Reference
-    protected com.liferay.portal.kernel.service.ClassNameService
-            classNameService;
-    @Reference
-    protected com.liferay.portal.kernel.service.ResourceLocalService
-            resourceLocalService;
-    @Reference
-    protected com.liferay.portal.kernel.service.UserLocalService
-            userLocalService;
-    @Reference
-    protected com.liferay.portal.kernel.service.UserService userService;
+	/*
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. Use <code>PurchaseService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PurchaseServiceUtil</code>.
+	 */
+	@Deactivate
+	protected void deactivate() {
+		_setServiceUtilService(null);
+	}
 
-    /*
-     * NOTE FOR DEVELOPERS:
-     *
-     * Never modify or reference this class directly. Use <code>PurchaseService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PurchaseServiceUtil</code>.
-     */
-    @Deactivate
-    protected void deactivate() {
-        _setServiceUtilService(null);
-    }
+	@Override
+	public Class<?>[] getAopInterfaces() {
+		return new Class<?>[] {
+			PurchaseService.class, IdentifiableOSGiService.class
+		};
+	}
 
-    @Override
-    public Class<?>[] getAopInterfaces() {
-        return new Class<?>[]{
-                PurchaseService.class, IdentifiableOSGiService.class
-        };
-    }
+	@Override
+	public void setAopProxy(Object aopProxy) {
+		purchaseService = (PurchaseService)aopProxy;
 
-    @Override
-    public void setAopProxy(Object aopProxy) {
-        purchaseService = (PurchaseService) aopProxy;
+		_setServiceUtilService(purchaseService);
+	}
 
-        _setServiceUtilService(purchaseService);
-    }
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return PurchaseService.class.getName();
+	}
 
-    /**
-     * Returns the OSGi service identifier.
-     *
-     * @return the OSGi service identifier
-     */
-    @Override
-    public String getOSGiServiceIdentifier() {
-        return PurchaseService.class.getName();
-    }
+	protected Class<?> getModelClass() {
+		return Purchase.class;
+	}
 
-    protected Class<?> getModelClass() {
-        return Purchase.class;
-    }
+	protected String getModelClassName() {
+		return Purchase.class.getName();
+	}
 
-    protected String getModelClassName() {
-        return Purchase.class.getName();
-    }
+	/**
+	 * Performs a SQL query.
+	 *
+	 * @param sql the sql query
+	 */
+	protected void runSQL(String sql) {
+		try {
+			DataSource dataSource = purchasePersistence.getDataSource();
 
-    /**
-     * Performs a SQL query.
-     *
-     * @param sql the sql query
-     */
-    protected void runSQL(String sql) {
-        try {
-            DataSource dataSource = purchasePersistence.getDataSource();
+			DB db = DBManagerUtil.getDB();
 
-            DB db = DBManagerUtil.getDB();
+			sql = db.buildSQL(sql);
+			sql = PortalUtil.transformSQL(sql);
 
-            sql = db.buildSQL(sql);
-            sql = PortalUtil.transformSQL(sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
-            SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-                    dataSource, sql);
+			sqlUpdate.update();
+		}
+		catch (Exception exception) {
+			throw new SystemException(exception);
+		}
+	}
 
-            sqlUpdate.update();
-        } catch (Exception exception) {
-            throw new SystemException(exception);
-        }
-    }
+	private void _setServiceUtilService(PurchaseService purchaseService) {
+		try {
+			Field field = PurchaseServiceUtil.class.getDeclaredField(
+				"_service");
 
-    private void _setServiceUtilService(PurchaseService purchaseService) {
-        try {
-            Field field = PurchaseServiceUtil.class.getDeclaredField(
-                    "_service");
+			field.setAccessible(true);
 
-            field.setAccessible(true);
+			field.set(null, purchaseService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
+	}
 
-            field.set(null, purchaseService);
-        } catch (ReflectiveOperationException reflectiveOperationException) {
-            throw new RuntimeException(reflectiveOperationException);
-        }
-    }
+	@Reference
+	protected ElectroEmployeePersistence electroEmployeePersistence;
+
+	@Reference
+	protected ElectronicsPersistence electronicsPersistence;
+
+	@Reference
+	protected ElectroTypePersistence electroTypePersistence;
+
+	@Reference
+	protected EmployeePersistence employeePersistence;
+
+	@Reference
+	protected PositionTypePersistence positionTypePersistence;
+
+	@Reference
+	protected shop.service.PurchaseLocalService purchaseLocalService;
+
+	protected PurchaseService purchaseService;
+
+	@Reference
+	protected PurchasePersistence purchasePersistence;
+
+	@Reference
+	protected PurchaseTypePersistence purchaseTypePersistence;
+
+	@Reference
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@Reference
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
+	@Reference
+	protected com.liferay.portal.kernel.service.ClassNameService
+		classNameService;
+
+	@Reference
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@Reference
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
+	@Reference
+	protected com.liferay.portal.kernel.service.UserService userService;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PurchaseServiceBaseImpl.class);
 
 }

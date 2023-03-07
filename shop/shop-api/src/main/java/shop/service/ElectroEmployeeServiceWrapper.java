@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- * <p>
+ *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- * <p>
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -24,36 +24,36 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @generated
  */
 public class ElectroEmployeeServiceWrapper
-        implements ElectroEmployeeService, ServiceWrapper<ElectroEmployeeService> {
+	implements ElectroEmployeeService, ServiceWrapper<ElectroEmployeeService> {
 
-    private ElectroEmployeeService _electroEmployeeService;
+	public ElectroEmployeeServiceWrapper(
+		ElectroEmployeeService electroEmployeeService) {
 
-    public ElectroEmployeeServiceWrapper(
-            ElectroEmployeeService electroEmployeeService) {
+		_electroEmployeeService = electroEmployeeService;
+	}
 
-        _electroEmployeeService = electroEmployeeService;
-    }
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return _electroEmployeeService.getOSGiServiceIdentifier();
+	}
 
-    /**
-     * Returns the OSGi service identifier.
-     *
-     * @return the OSGi service identifier
-     */
-    @Override
-    public String getOSGiServiceIdentifier() {
-        return _electroEmployeeService.getOSGiServiceIdentifier();
-    }
+	@Override
+	public ElectroEmployeeService getWrappedService() {
+		return _electroEmployeeService;
+	}
 
-    @Override
-    public ElectroEmployeeService getWrappedService() {
-        return _electroEmployeeService;
-    }
+	@Override
+	public void setWrappedService(
+		ElectroEmployeeService electroEmployeeService) {
 
-    @Override
-    public void setWrappedService(
-            ElectroEmployeeService electroEmployeeService) {
+		_electroEmployeeService = electroEmployeeService;
+	}
 
-        _electroEmployeeService = electroEmployeeService;
-    }
+	private ElectroEmployeeService _electroEmployeeService;
 
 }

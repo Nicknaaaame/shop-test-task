@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- * <p>
+ *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- * <p>
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -17,13 +17,15 @@ package shop.model.impl;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
-import shop.model.Purchase;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+
 import java.util.Date;
+
+import shop.model.Purchase;
 
 /**
  * The cache model class for representing Purchase in entity cache.
@@ -32,100 +34,101 @@ import java.util.Date;
  * @generated
  */
 public class PurchaseCacheModel
-        implements CacheModel<Purchase>, Externalizable {
+	implements CacheModel<Purchase>, Externalizable {
 
-    public long id;
-    public long purchaseDate;
-    public long eTypeId;
-    public long employeeId;
-    public long electroId;
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
+			return true;
+		}
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
+		if (!(object instanceof PurchaseCacheModel)) {
+			return false;
+		}
 
-        if (!(object instanceof PurchaseCacheModel)) {
-            return false;
-        }
+		PurchaseCacheModel purchaseCacheModel = (PurchaseCacheModel)object;
 
-        PurchaseCacheModel purchaseCacheModel = (PurchaseCacheModel) object;
+		if (id == purchaseCacheModel.id) {
+			return true;
+		}
 
-        if (id == purchaseCacheModel.id) {
-            return true;
-        }
+		return false;
+	}
 
-        return false;
-    }
+	@Override
+	public int hashCode() {
+		return HashUtil.hash(0, id);
+	}
 
-    @Override
-    public int hashCode() {
-        return HashUtil.hash(0, id);
-    }
+	@Override
+	public String toString() {
+		StringBundler sb = new StringBundler(11);
 
-    @Override
-    public String toString() {
-        StringBundler sb = new StringBundler(11);
+		sb.append("{id=");
+		sb.append(id);
+		sb.append(", purchaseDate=");
+		sb.append(purchaseDate);
+		sb.append(", type=");
+		sb.append(type);
+		sb.append(", employeeId=");
+		sb.append(employeeId);
+		sb.append(", electroId=");
+		sb.append(electroId);
+		sb.append("}");
 
-        sb.append("{id=");
-        sb.append(id);
-        sb.append(", purchaseDate=");
-        sb.append(purchaseDate);
-        sb.append(", eTypeId=");
-        sb.append(eTypeId);
-        sb.append(", employeeId=");
-        sb.append(employeeId);
-        sb.append(", electroId=");
-        sb.append(electroId);
-        sb.append("}");
+		return sb.toString();
+	}
 
-        return sb.toString();
-    }
+	@Override
+	public Purchase toEntityModel() {
+		PurchaseImpl purchaseImpl = new PurchaseImpl();
 
-    @Override
-    public Purchase toEntityModel() {
-        PurchaseImpl purchaseImpl = new PurchaseImpl();
+		purchaseImpl.setId(id);
 
-        purchaseImpl.setId(id);
+		if (purchaseDate == Long.MIN_VALUE) {
+			purchaseImpl.setPurchaseDate(null);
+		}
+		else {
+			purchaseImpl.setPurchaseDate(new Date(purchaseDate));
+		}
 
-        if (purchaseDate == Long.MIN_VALUE) {
-            purchaseImpl.setPurchaseDate(null);
-        } else {
-            purchaseImpl.setPurchaseDate(new Date(purchaseDate));
-        }
+		purchaseImpl.setType(type);
+		purchaseImpl.setEmployeeId(employeeId);
+		purchaseImpl.setElectroId(electroId);
 
-        purchaseImpl.setETypeId(eTypeId);
-        purchaseImpl.setEmployeeId(employeeId);
-        purchaseImpl.setElectroId(electroId);
+		purchaseImpl.resetOriginalValues();
 
-        purchaseImpl.resetOriginalValues();
+		return purchaseImpl;
+	}
 
-        return purchaseImpl;
-    }
+	@Override
+	public void readExternal(ObjectInput objectInput) throws IOException {
+		id = objectInput.readLong();
+		purchaseDate = objectInput.readLong();
 
-    @Override
-    public void readExternal(ObjectInput objectInput) throws IOException {
-        id = objectInput.readLong();
-        purchaseDate = objectInput.readLong();
+		type = objectInput.readLong();
 
-        eTypeId = objectInput.readLong();
+		employeeId = objectInput.readLong();
 
-        employeeId = objectInput.readLong();
+		electroId = objectInput.readLong();
+	}
 
-        electroId = objectInput.readLong();
-    }
+	@Override
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+		objectOutput.writeLong(id);
+		objectOutput.writeLong(purchaseDate);
 
-    @Override
-    public void writeExternal(ObjectOutput objectOutput) throws IOException {
-        objectOutput.writeLong(id);
-        objectOutput.writeLong(purchaseDate);
+		objectOutput.writeLong(type);
 
-        objectOutput.writeLong(eTypeId);
+		objectOutput.writeLong(employeeId);
 
-        objectOutput.writeLong(employeeId);
+		objectOutput.writeLong(electroId);
+	}
 
-        objectOutput.writeLong(electroId);
-    }
+	public long id;
+	public long purchaseDate;
+	public long type;
+	public long employeeId;
+	public long electroId;
 
 }

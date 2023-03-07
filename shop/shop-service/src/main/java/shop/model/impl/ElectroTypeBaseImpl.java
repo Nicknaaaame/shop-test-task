@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- * <p>
+ *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- * <p>
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -15,6 +15,7 @@
 package shop.model.impl;
 
 import shop.model.ElectroType;
+
 import shop.service.ElectroTypeLocalServiceUtil;
 
 /**
@@ -30,20 +31,21 @@ import shop.service.ElectroTypeLocalServiceUtil;
  * @generated
  */
 public abstract class ElectroTypeBaseImpl
-        extends ElectroTypeModelImpl implements ElectroType {
+	extends ElectroTypeModelImpl implements ElectroType {
 
-    /*
-     * NOTE FOR DEVELOPERS:
-     *
-     * Never modify or reference this class directly. All methods that expect a electro type model instance should use the <code>ElectroType</code> interface instead.
-     */
-    @Override
-    public void persist() {
-        if (this.isNew()) {
-            ElectroTypeLocalServiceUtil.addElectroType(this);
-        } else {
-            ElectroTypeLocalServiceUtil.updateElectroType(this);
-        }
-    }
+	/*
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a electro type model instance should use the <code>ElectroType</code> interface instead.
+	 */
+	@Override
+	public void persist() {
+		if (this.isNew()) {
+			ElectroTypeLocalServiceUtil.addElectroType(this);
+		}
+		else {
+			ElectroTypeLocalServiceUtil.updateElectroType(this);
+		}
+	}
 
 }
