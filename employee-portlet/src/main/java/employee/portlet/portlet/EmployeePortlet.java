@@ -43,8 +43,9 @@ public class EmployeePortlet extends MVCPortlet {
             Employee employee = EmployeeLocalServiceUtil.createEmployee(id);
             EmployeeModelMapper.map(request, employee);
             checkForeignKeys(employee);
+            ShopProjectUtil.validateDate(employee.getBirthDate());
             EmployeeLocalServiceUtil.addEmployee(employee);
-        } catch (NoSuchPositionTypeException e) {
+        } catch (PortalException e) {
             ShopProjectUtil.handleException(request, response, e);
         }
     }
@@ -55,6 +56,7 @@ public class EmployeePortlet extends MVCPortlet {
             Employee employee = EmployeeLocalServiceUtil.getEmployee(id);
             EmployeeModelMapper.map(request, employee);
             checkForeignKeys(employee);
+            ShopProjectUtil.validateDate(employee.getBirthDate());
             EmployeeLocalServiceUtil.updateEmployee(employee);
         } catch (PortalException e) {
             ShopProjectUtil.handleException(request, response, e);

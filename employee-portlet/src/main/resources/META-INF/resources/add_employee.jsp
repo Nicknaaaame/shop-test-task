@@ -10,9 +10,15 @@
 <aui:form method="POST" name="fm" action="<%=addEmployeeURL%>">
 
     <aui:fieldset>
-        <aui:input label="Last name" name="lastName" required="true"/>
-        <aui:input label="First name" name="firstName" required="true"/>
-        <aui:input label="Patronymic" name="patronymic" required="true"/>
+        <aui:input label="Last name" name="lastName" required="true">
+            <aui:validator name="maxLength">100</aui:validator>
+        </aui:input>
+        <aui:input label="First name" name="firstName" required="true">
+            <aui:validator name="maxLength">100</aui:validator>
+        </aui:input>
+        <aui:input label="Patronymic" name="patronymic" required="true">
+            <aui:validator name="maxLength">100</aui:validator>
+        </aui:input>
         <aui:select label="Gender" name="gender" required="true">
             <aui:option value="false">Male</aui:option>
             <aui:option value="true">Female</aui:option>

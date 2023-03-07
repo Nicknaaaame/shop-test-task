@@ -3,6 +3,7 @@ package util;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import exception.DateValidationException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -31,6 +32,11 @@ public class ShopProjectUtil {
         } catch (ParseException e) {
             throw new RuntimeException("Invalid date format");
         }
+    }
+
+    public static void validateDate(Date date) throws DateValidationException {
+        if (date.after(new Date()))
+            throw new DateValidationException();
     }
 
     public static void handleException(ActionRequest request, ActionResponse response, Exception ex) {

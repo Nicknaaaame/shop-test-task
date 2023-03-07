@@ -24,9 +24,15 @@
 
     <aui:fieldset>
         <aui:input name="id" value="<%=employee.getId()%>" type="hidden"/>
-        <aui:input label="Last name" name="lastName" value="<%=employee.getLastName()%>" required="true"/>
-        <aui:input label="First name" name="firstName" value="<%=employee.getFirstName()%>" required="true"/>
-        <aui:input label="Patronymic" name="patronymic" value="<%=employee.getPatronymic()%>" required="true"/>
+        <aui:input label="Last name" name="lastName" value="<%=employee.getLastName()%>" required="true">
+            <aui:validator name="maxLength">100</aui:validator>
+        </aui:input>
+        <aui:input label="First name" name="firstName" value="<%=employee.getFirstName()%>" required="true">
+            <aui:validator name="maxLength">100</aui:validator>
+        </aui:input>
+        <aui:input label="Patronymic" name="patronymic" value="<%=employee.getPatronymic()%>" required="true">
+            <aui:validator name="maxLength">100</aui:validator>
+        </aui:input>
         <aui:select label="Gender" name="gender" value="<%=employee.getGender()%>" required="true">
             <aui:option value="false">Male</aui:option>
             <aui:option value="true">Female</aui:option>
