@@ -24,6 +24,7 @@ public class ZipArchiveImporter {
         tableToImporterMap.put("shop_purchase.csv", new PurchaseCsvImporter());
         tableToImporterMap.put("shop_positiontype.csv", new PositionTypeCsvImporter());
         tableToImporterMap.put("shop_electrotype.csv", new ElectroTypeCsvImporter());
+        tableToImporterMap.put("shop_purchasetype.csv", new PurchaseTypeCsvImporter());
         tableToImporterMap.put("shop_electroemployee.csv", new ElectroEmployeeCsvImporter());
     }
 
