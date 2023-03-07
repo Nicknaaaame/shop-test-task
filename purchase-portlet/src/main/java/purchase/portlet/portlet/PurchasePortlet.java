@@ -43,6 +43,7 @@ public class PurchasePortlet extends MVCPortlet {
         Purchase purchase = PurchaseLocalServiceUtil.createPurchase(id);
         PurchaseModelMapper.map(request, purchase);
         try {
+            ShopProjectUtil.validateDate(purchase.getPurchaseDate());
             Electronics product = ElectronicsLocalServiceUtil.getElectronics(purchase.getElectroId());
             checkProductInStock(product);
             checkEmployeeHasEType(purchase);
@@ -62,6 +63,7 @@ public class PurchasePortlet extends MVCPortlet {
             long electroIdTmp = purchase.getElectroId();
             PurchaseModelMapper.map(request, purchase);
             purchase.setElectroId(electroIdTmp);
+            ShopProjectUtil.validateDate(purchase.getPurchaseDate());
             checkEmployeeHasEType(purchase);
             checkForeignKeys(purchase);
             PurchaseLocalServiceUtil.updatePurchase(purchase);
