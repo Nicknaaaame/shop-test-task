@@ -20,7 +20,7 @@ public class ElectroTypeCsvImporter extends BaseCsvImporterImpl<ElectroType> {
     @Override
     protected void initColumnSetterMap() {
         columnSetterMap = new HashMap<>();
-        columnSetterMap.put("id_", (electroType, s) -> {
+        columnSetterMap.put("id", (electroType, s) -> {
             electroType.setId(Long.parseLong(s));
         });
         columnSetterMap.put("name", (electroType, s) -> {

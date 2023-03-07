@@ -21,7 +21,7 @@ public class EmployeeCsvImporter extends BaseCsvImporterImpl<Employee> {
     @Override
     protected void initColumnSetterMap() {
         columnSetterMap = new HashMap<>();
-        columnSetterMap.put("id_", (employee, s) -> {
+        columnSetterMap.put("id", (employee, s) -> {
             employee.setId(Long.parseLong(s));
         });
         columnSetterMap.put("lastname", (employee, s) -> {

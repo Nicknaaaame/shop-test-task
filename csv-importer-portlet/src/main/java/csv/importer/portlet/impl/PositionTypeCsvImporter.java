@@ -20,7 +20,7 @@ public class PositionTypeCsvImporter extends BaseCsvImporterImpl<PositionType> {
     @Override
     protected void initColumnSetterMap() {
         columnSetterMap = new HashMap<>();
-        columnSetterMap.put("id_", (positionType, s) -> {
+        columnSetterMap.put("id", (positionType, s) -> {
             positionType.setId(Long.parseLong(s));
         });
         columnSetterMap.put("name", (positionType, s) -> {

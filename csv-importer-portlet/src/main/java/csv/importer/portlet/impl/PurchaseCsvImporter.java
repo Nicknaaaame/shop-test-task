@@ -21,14 +21,14 @@ public class PurchaseCsvImporter extends BaseCsvImporterImpl<Purchase> {
     @Override
     protected void initColumnSetterMap() {
         columnSetterMap = new HashMap<>();
-        columnSetterMap.put("id_", (purchase, s) -> {
+        columnSetterMap.put("id", (purchase, s) -> {
             purchase.setId(Long.parseLong(s));
         });
         columnSetterMap.put("birthdate", (purchase, s) -> {
             purchase.setPurchaseDate(ShopProjectUtil.parseDateFromDB(s));
         });
-        columnSetterMap.put("eTypeId", (purchase, s) -> {
-            purchase.setETypeId(Long.parseLong(s));
+        columnSetterMap.put("type", (purchase, s) -> {
+            purchase.setType(Long.parseLong(s));
         });
         columnSetterMap.put("employeeId", (purchase, s) -> {
             purchase.setElectroId(Long.parseLong(s));

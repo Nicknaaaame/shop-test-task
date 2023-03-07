@@ -15,6 +15,8 @@ import java.util.function.BiConsumer;
 public abstract class BaseCsvImporterImpl<T> implements CsvImporter {
     private static final String COMMA_DELIMITER = ",";
     private static final String COMMA_QUOTE = "\"";
+    private static final String COMMA_UNDERSCORE = "_";
+    private static final String COMMA_EMPTY = "";
     protected Map<String, BiConsumer<T, String>> columnSetterMap;
     private List<BiConsumer<T, String>> columnSetterList;
 
@@ -38,7 +40,7 @@ public abstract class BaseCsvImporterImpl<T> implements CsvImporter {
     }
 
     private void initColumnSetterList(String columnsLine) throws WrongColumnNameException {
-        String[] columns = removeQuote(columnsLine).split(COMMA_DELIMITER);
+        String[] columns = removeUnderscore(removeQuote(columnsLine)).split(COMMA_DELIMITER);
         columnSetterList = new ArrayList<>();
         for (String column : columns) {
             BiConsumer<T, String> setter = columnSetterMap.get(column.toLowerCase());
@@ -58,7 +60,11 @@ public abstract class BaseCsvImporterImpl<T> implements CsvImporter {
     }
 
     protected String removeQuote(String value) {
-        return value.replace(COMMA_QUOTE, "");
+        return value.replace(COMMA_QUOTE, COMMA_EMPTY);
+    }
+
+    protected String removeUnderscore(String value) {
+        return value.replace(COMMA_UNDERSCORE, COMMA_EMPTY);
     }
 
     protected abstract T createModel();

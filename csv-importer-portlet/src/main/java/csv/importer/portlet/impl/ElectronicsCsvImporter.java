@@ -20,7 +20,7 @@ public class ElectronicsCsvImporter extends BaseCsvImporterImpl<Electronics> {
     @Override
     protected void initColumnSetterMap() {
         columnSetterMap = new HashMap<>();
-        columnSetterMap.put("id_", (electronics, s) -> {
+        columnSetterMap.put("id", (electronics, s) -> {
             electronics.setId(Long.parseLong(s));
         });
         columnSetterMap.put("name", (electronics, s) -> {
@@ -35,10 +35,10 @@ public class ElectronicsCsvImporter extends BaseCsvImporterImpl<Electronics> {
         columnSetterMap.put("count", (electronics, s) -> {
             electronics.setCount(Integer.parseInt(s));
         });
-        columnSetterMap.put("isInStock", (electronics, s) -> {
+        columnSetterMap.put("isinstock", (electronics, s) -> {
             electronics.setIsInStock(Boolean.parseBoolean(s));
         });
-        columnSetterMap.put("isArchive", (electronics, s) -> {
+        columnSetterMap.put("isarchive", (electronics, s) -> {
             electronics.setIsArchive(Boolean.parseBoolean(s));
         });
         columnSetterMap.put("description", (electronics, s) -> {
