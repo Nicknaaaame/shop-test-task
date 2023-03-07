@@ -9,12 +9,12 @@ import java.util.Date;
 
 public class PurchaseModelMapper {
     public static void map(ActionRequest request, Purchase purchase) {
-        long eTypeId = ParamUtil.getLong(request, "eTypeId");
+        long type = ParamUtil.getLong(request, "type");
         long employeeId = ParamUtil.getLong(request, "employeeId");
         long electroId = ParamUtil.getLong(request, "electroId");
         Date purchaseDate = ShopProjectUtil.parseDateFromRequest(ParamUtil.getString(request, "purchaseDate"));
 
-        purchase.setETypeId(eTypeId);
+        purchase.setType(type);
         purchase.setEmployeeId(employeeId);
         purchase.setElectroId(electroId);
         purchase.setPurchaseDate(purchaseDate);

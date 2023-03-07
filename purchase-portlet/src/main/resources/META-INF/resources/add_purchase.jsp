@@ -18,7 +18,7 @@
 <aui:form method="POST" name="fm" action="<%=addPurchaseURL%>">
 
     <aui:fieldset>
-        <aui:input label="Electronic type id" name="eTypeId" required="true" type="number"/>
+        <aui:input label="Purchase type id" name="type" required="true" type="number"/>
         <aui:input label="Employee id" name="employeeId" required="true" type="number"/>
         <aui:input label="Electronic product id" name="electroId" required="true" type="number"/>
         <label>Purchase date</label>

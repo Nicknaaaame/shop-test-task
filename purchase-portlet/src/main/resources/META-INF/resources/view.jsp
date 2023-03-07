@@ -41,7 +41,7 @@
     <liferay-ui:search-container-results results="<%=purchases%>"/>
     <liferay-ui:search-container-row className="shop.model.Purchase" modelVar="purchase">
         <liferay-ui:search-container-column-text name="id" property="id"/>
-        <liferay-ui:search-container-column-text name="eTypeId" property="ETypeId"/>
+        <liferay-ui:search-container-column-text name="type" property="type"/>
         <liferay-ui:search-container-column-text name="employeeId" property="employeeId"/>
         <liferay-ui:search-container-column-text name="electroId" property="electroId"/>
         <liferay-ui:search-container-column-text name="purchaseDate" orderable="true" orderableProperty="purchaseDate"

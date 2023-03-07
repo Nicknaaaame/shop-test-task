@@ -82,19 +82,19 @@ public class PurchasePortlet extends MVCPortlet {
     }
 
     private void checkForeignKeys(Purchase purchase)
-            throws NoSuchElectronicsException, NoSuchEmployeeException, NoSuchElectroTypeException {
+            throws NoSuchElectronicsException, NoSuchEmployeeException, NoSuchPurchaseTypeException {
         if (ElectronicsLocalServiceUtil.fetchElectronics(purchase.getElectroId()) == null)
             throw new NoSuchElectronicsException(purchase.getElectroId());
 
         if (EmployeeLocalServiceUtil.fetchEmployee(purchase.getEmployeeId()) == null)
             throw new NoSuchEmployeeException(purchase.getEmployeeId());
 
-        if (ElectroTypeLocalServiceUtil.fetchElectroType(purchase.getETypeId()) == null)
-            throw new NoSuchElectroTypeException(purchase.getETypeId());
+        if (PurchaseTypeLocalServiceUtil.fetchPurchaseType(purchase.getType()) == null)
+            throw new NoSuchPurchaseTypeException(purchase.getType());
     }
 
     private void checkEmployeeHasEType(Purchase purchase) throws NoSuchElectroEmployeeException {
-        ElectroEmployeePK electroEmployeePK = new ElectroEmployeePK(purchase.getEmployeeId(), purchase.getETypeId());
+        ElectroEmployeePK electroEmployeePK = new ElectroEmployeePK(purchase.getEmployeeId(), purchase.getType());
         if (ElectroEmployeeLocalServiceUtil.fetchElectroEmployee(electroEmployeePK) == null)
             throw new NoSuchElectroEmployeeException(electroEmployeePK);
     }

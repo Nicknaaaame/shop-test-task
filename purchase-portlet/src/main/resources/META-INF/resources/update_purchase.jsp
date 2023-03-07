@@ -24,7 +24,7 @@
 
     <aui:fieldset>
         <aui:input name="id" value="<%=purchase.getId()%>" type="hidden"/>
-        <aui:input label="Electronic type id" name="eTypeId" value="<%=purchase.getETypeId()%>" required="true"
+        <aui:input label="Purchase type id" name="type" value="<%=purchase.getType()%>" required="true"
                    type="number"/>
         <aui:input label="Employee id" name="employeeId" value="<%=purchase.getEmployeeId()%>" required="true"
                    type="number"/>
