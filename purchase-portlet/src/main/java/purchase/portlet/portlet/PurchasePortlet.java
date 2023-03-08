@@ -88,8 +88,9 @@ public class PurchasePortlet extends MVCPortlet {
         PurchaseTypeLocalServiceUtil.getPurchaseType(purchase.getType());
     }
 
-    private void checkEmployeeHasEType(Purchase purchase) throws NoSuchElectroEmployeeException {
-        ElectroEmployeePK electroEmployeePK = new ElectroEmployeePK(purchase.getEmployeeId(), purchase.getType());
+    private void checkEmployeeHasEType(Purchase purchase) throws PortalException {
+        long eTypeId = ElectronicsLocalServiceUtil.getElectronics(purchase.getElectroId()).getETypeId();
+        ElectroEmployeePK electroEmployeePK = new ElectroEmployeePK(purchase.getEmployeeId(), eTypeId);
         if (ElectroEmployeeLocalServiceUtil.fetchElectroEmployee(electroEmployeePK) == null)
             throw new NoSuchElectroEmployeeException(electroEmployeePK);
     }
