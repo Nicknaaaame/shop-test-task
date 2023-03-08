@@ -35,8 +35,4 @@ public class NoSuchElectroTypeException extends NoSuchModelException {
         super(throwable);
     }
 
-    public NoSuchElectroTypeException(long id) {
-        super(String.format("Electro type with id: %d does not exist", id));
-    }
-
 }

@@ -35,7 +35,4 @@ public class NoSuchEmployeeException extends NoSuchModelException {
         super(throwable);
     }
 
-    public NoSuchEmployeeException(long id) {
-        super(String.format("Employee with id: %d does not exist", id));
-    }
 }

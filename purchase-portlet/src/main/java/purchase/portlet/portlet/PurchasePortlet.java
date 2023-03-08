@@ -8,7 +8,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import org.osgi.service.component.annotations.Component;
 import purchase.portlet.constants.PurchasePortletKeys;
 import purchase.portlet.mapper.PurchaseModelMapper;
-import shop.exception.*;
+import shop.exception.ElectronicsIsNotInStockException;
+import shop.exception.NoSuchElectroEmployeeException;
 import shop.model.Electronics;
 import shop.model.Purchase;
 import shop.service.*;
@@ -81,16 +82,10 @@ public class PurchasePortlet extends MVCPortlet {
         }
     }
 
-    private void checkForeignKeys(Purchase purchase)
-            throws NoSuchElectronicsException, NoSuchEmployeeException, NoSuchPurchaseTypeException {
-        if (ElectronicsLocalServiceUtil.fetchElectronics(purchase.getElectroId()) == null)
-            throw new NoSuchElectronicsException(purchase.getElectroId());
-
-        if (EmployeeLocalServiceUtil.fetchEmployee(purchase.getEmployeeId()) == null)
-            throw new NoSuchEmployeeException(purchase.getEmployeeId());
-
-        if (PurchaseTypeLocalServiceUtil.fetchPurchaseType(purchase.getType()) == null)
-            throw new NoSuchPurchaseTypeException(purchase.getType());
+    private void checkForeignKeys(Purchase purchase) throws PortalException {
+        ElectronicsLocalServiceUtil.getElectronics(purchase.getElectroId());
+        EmployeeLocalServiceUtil.getEmployee(purchase.getEmployeeId());
+        PurchaseTypeLocalServiceUtil.getPurchaseType(purchase.getType());
     }
 
     private void checkEmployeeHasEType(Purchase purchase) throws NoSuchElectroEmployeeException {

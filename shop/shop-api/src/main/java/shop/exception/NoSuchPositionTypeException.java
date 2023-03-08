@@ -23,10 +23,6 @@ public class NoSuchPositionTypeException extends NoSuchModelException {
     public NoSuchPositionTypeException() {
     }
 
-    public NoSuchPositionTypeException(long id) {
-        super(String.format("Position with id: %d does not exist", id));
-    }
-
     public NoSuchPositionTypeException(String msg) {
         super(msg);
     }

@@ -23,10 +23,6 @@ public class NoSuchElectronicsException extends NoSuchModelException {
     public NoSuchElectronicsException() {
     }
 
-    public NoSuchElectronicsException(long id) {
-        super(String.format("Product with id: %d does not exist", id));
-    }
-
     public NoSuchElectronicsException(String msg) {
         super(msg);
     }

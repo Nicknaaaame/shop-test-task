@@ -72,8 +72,7 @@ public class EmployeePortlet extends MVCPortlet {
         }
     }
 
-    private void checkForeignKeys(Employee employee) throws NoSuchPositionTypeException {
-        if (PositionTypeLocalServiceUtil.fetchPositionType(employee.getPositionId()) == null)
-            throw new NoSuchPositionTypeException(employee.getPositionId());
+    private void checkForeignKeys(Employee employee) throws PortalException {
+        PositionTypeLocalServiceUtil.getPositionType(employee.getPositionId());
     }
 }

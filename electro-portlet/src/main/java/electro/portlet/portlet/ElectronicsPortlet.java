@@ -8,7 +8,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import electro.portlet.constants.ElectroPortletKeys;
 import electro.portlet.mapper.ElectronicsModelMapper;
 import org.osgi.service.component.annotations.Component;
-import shop.exception.NoSuchElectroTypeException;
 import shop.model.Electronics;
 import shop.service.ElectroTypeLocalServiceUtil;
 import shop.service.ElectronicsLocalServiceUtil;
@@ -45,7 +44,7 @@ public class ElectronicsPortlet extends MVCPortlet {
             ElectronicsModelMapper.map(request, electronics);
             checkForeignKeys(electronics);
             ElectronicsLocalServiceUtil.addElectronics(electronics);
-        } catch (NoSuchElectroTypeException e) {
+        } catch (PortalException e) {
             throw new RuntimeException(e);
         }
     }
@@ -71,8 +70,7 @@ public class ElectronicsPortlet extends MVCPortlet {
         }
     }
 
-    private void checkForeignKeys(Electronics product) throws NoSuchElectroTypeException {
-        if (ElectroTypeLocalServiceUtil.fetchElectroType(product.getETypeId()) == null)
-            throw new NoSuchElectroTypeException(product.getETypeId());
+    private void checkForeignKeys(Electronics product) throws PortalException {
+        ElectroTypeLocalServiceUtil.getElectroType(product.getETypeId());
     }
 }

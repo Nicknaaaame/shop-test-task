@@ -35,7 +35,4 @@ public class NoSuchPurchaseTypeException extends NoSuchModelException {
         super(throwable);
     }
 
-    public NoSuchPurchaseTypeException(long id) {
-        super(String.format("Purchase type with id: %d does not exist", id));
-    }
 }
