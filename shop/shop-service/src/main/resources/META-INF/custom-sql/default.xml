@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<custom-sql>
+    <sql id="getTopEmployeeIdWithSumPriceAndPurchaseCountByPositionId">
+        <![CDATA[
+            select emp.id, sum(elec.price) as sum_price, count(emp.id_) as count_pur
+            from Employee emp
+                join Purchase pur on emp.id = pur.employeeId
+                join Electronics elec on pur.electroId = elec.id
+            group by emp.id
+            having emp.positionId=?
+            order by sum_price desc, count_pur limit 1
+        ]]>
+    </sql>
+</custom-sql>
