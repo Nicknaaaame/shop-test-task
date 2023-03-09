@@ -15,6 +15,8 @@
     }
     String employeesSmartWatchesAndTabletsFio = EmployeeUtil.getFio(EmployeeLocalServiceUtil.getEmployeesSmartWatchesAndTablets());
     long purchaseSumForLastMonth = PurchaseLocalServiceUtil.getPurchaseSumForLastMonth();
+    long purchaseSumForFridgesKettlesWaterHeater = PurchaseLocalServiceUtil.getPurchaseSumForFridgesKettlesWaterHeater();
+
 %>
 <liferay-ui:error key="<%=ShopProjectKeys.EXCEPTION_KEY%>"
                   message='<%=request.getParameter(ShopProjectKeys.EXCEPTION_MESSAGE)%>'/>
@@ -38,5 +40,5 @@
 <div class="separator"></div>
 <label>Profit of the shop for the month: <%=purchaseSumForLastMonth%></label>
 <div class="separator"></div>
-<label>Profit received by the Shop from the sale of refrigerators, kettles and water heaters</label>
+<label>Profit received by the Shop from the sale of fridges, kettles and water heaters: <%=purchaseSumForFridgesKettlesWaterHeater%></label>
 

@@ -29,4 +29,8 @@ public class PurchaseLocalServiceImpl extends PurchaseLocalServiceBaseImpl {
     public long getPurchaseSumForLastMonth() {
         return purchaseFinder.getPurchaseSumForLastMonth();
     }
+
+    public long getPurchaseSumForFridgesKettlesWaterHeater() {
+        return purchaseFinder.getPurchaseSumForFridgesKettlesWaterHeater();
+    }
 }

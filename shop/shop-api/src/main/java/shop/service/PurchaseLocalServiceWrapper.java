@@ -286,6 +286,12 @@ public class PurchaseLocalServiceWrapper
 	}
 
 	@Override
+	public long getPurchaseSumForFridgesKettlesWaterHeater() {
+		return _purchaseLocalService.
+			getPurchaseSumForFridgesKettlesWaterHeater();
+	}
+
+	@Override
 	public long getPurchaseSumForLastMonth() {
 		return _purchaseLocalService.getPurchaseSumForLastMonth();
 	}

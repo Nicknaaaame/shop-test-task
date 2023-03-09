@@ -32,4 +32,15 @@
             where pur.purchasedate >= CURRENT_DATE - 30
         ]]>
     </sql>
+    <sql id="getPurchaseSumForFridgesKettlesWaterHeater">
+        <![CDATA[
+            select sum(elec.price) from public.shop_purchase pur
+            join public.shop_electronics elec on pur.electroid = elec.id_
+            join public.shop_electrotype eltype on elec.etypeid = eltype.id_
+            where
+	            lower(eltype.name) like 'холодильник%'
+	            or lower(eltype.name) like 'чайник%'
+	            or lower(eltype.name) like 'водонагреватель%'
+        ]]>
+    </sql>
 </custom-sql>

@@ -265,6 +265,10 @@ public class PurchaseLocalServiceUtil {
 		return getService().getPurchasesCount();
 	}
 
+	public static long getPurchaseSumForFridgesKettlesWaterHeater() {
+		return getService().getPurchaseSumForFridgesKettlesWaterHeater();
+	}
+
 	public static long getPurchaseSumForLastMonth() {
 		return getService().getPurchaseSumForLastMonth();
 	}

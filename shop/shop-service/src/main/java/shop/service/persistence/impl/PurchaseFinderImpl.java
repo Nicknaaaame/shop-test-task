@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @Component(service = PurchaseFinder.class)
 public class PurchaseFinderImpl extends PurchaseFinderBaseImpl implements PurchaseFinder {
     static final String GET_PURCHASE_SUM_FOR_LAST_MONTH = "getPurchaseSumForLastMonth";
+    static final String GET_PURCHASE_SUM_FOR_FRIDGES_KETTLES_WATER_HEATER = "getPurchaseSumForFridgesKettlesWaterHeater";
 
     @Reference
     private CustomSQL customSQL;
@@ -19,6 +20,15 @@ public class PurchaseFinderImpl extends PurchaseFinderBaseImpl implements Purcha
     public long getPurchaseSumForLastMonth() {
         Session session = openSession();
         String sql = customSQL.get(getClass(), GET_PURCHASE_SUM_FOR_LAST_MONTH);
+        SQLQuery query = session.createSQLQuery(sql);
+        query.setCacheable(false);
+        BigDecimal result = (BigDecimal) query.iterateNext();
+        return result.longValue();
+    }
+
+    public long getPurchaseSumForFridgesKettlesWaterHeater() {
+        Session session = openSession();
+        String sql = customSQL.get(getClass(), GET_PURCHASE_SUM_FOR_FRIDGES_KETTLES_WATER_HEATER);
         SQLQuery query = session.createSQLQuery(sql);
         query.setCacheable(false);
         BigDecimal result = (BigDecimal) query.iterateNext();

@@ -247,6 +247,9 @@ public interface PurchaseLocalService
 	public int getPurchasesCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long getPurchaseSumForFridgesKettlesWaterHeater();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getPurchaseSumForLastMonth();
 
 	/**

@@ -25,4 +25,6 @@ public interface PurchaseFinder {
 
 	public long getPurchaseSumForLastMonth();
 
+	public long getPurchaseSumForFridgesKettlesWaterHeater();
+
 }
