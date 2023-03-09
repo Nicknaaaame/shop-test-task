@@ -16,9 +16,8 @@ import shop.service.*;
 import shop.service.persistence.ElectroEmployeePK;
 import util.ShopProjectUtil;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.Portlet;
+import javax.portlet.*;
+import java.io.IOException;
 
 /**
  * @author dlyar

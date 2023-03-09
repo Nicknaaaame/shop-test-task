@@ -285,6 +285,11 @@ public class EmployeeLocalServiceWrapper
 		return _employeeLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public Object getTopEmployeeByPositionId(long positionId) {
+		return _employeeLocalService.getTopEmployeeByPositionId(positionId);
+	}
+
 	/**
 	 * Updates the employee in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

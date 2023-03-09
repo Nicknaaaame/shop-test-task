@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <custom-sql>
-    <sql id="getTopEmployeePositionId">
+    <sql id="findTopEmployeePositionId">
         <![CDATA[
-            select emp.id, sum(elec.price) as sum_price, count(emp.id_) as count_pur
-            from Employee emp
-                join Purchase pur on emp.id = pur.employeeId
-                join Electronics elec on pur.electroId = elec.id
-            group by emp.id
+            select emp.*, sum(elec.price) as sum_price, count(emp.id_) as count_pur
+            from SHOP_Employee emp
+                join SHOP_Purchase pur on emp.id_ = pur.employeeId
+                join SHOP_Electronics elec on pur.electroId = elec.id_
+            group by emp.id_
             having emp.positionId=?
             order by sum_price desc, count_pur limit 1
         ]]>

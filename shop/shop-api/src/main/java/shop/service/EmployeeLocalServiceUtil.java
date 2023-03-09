@@ -265,6 +265,10 @@ public class EmployeeLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static Object getTopEmployeeByPositionId(long positionId) {
+		return getService().getTopEmployeeByPositionId(positionId);
+	}
+
 	/**
 	 * Updates the employee in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
