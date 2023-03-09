@@ -10,12 +10,14 @@ import shop.model.Employee;
 import shop.model.impl.EmployeeImpl;
 import shop.service.persistence.EmployeeFinder;
 
+import java.util.List;
+
 @Component(service = EmployeeFinder.class)
 public class EmployeeFinderImpl extends EmployeeFinderBaseImpl implements EmployeeFinder {
     static final String FIND_TOP_EMPLOYEE_POSITION_ID = "findTopEmployeePositionId";
     @Reference
     private CustomSQL customSQL;
-    public Employee findTopEmployeeByPositionId(long positionId) {
+    public List<Employee> findTopEmployeesByPositionId(long positionId) {
         Session session = openSession();
         String sql = customSQL.get(getClass(), FIND_TOP_EMPLOYEE_POSITION_ID);
         SQLQuery query = session.createSQLQuery(sql);
@@ -23,6 +25,6 @@ public class EmployeeFinderImpl extends EmployeeFinderBaseImpl implements Employ
         query.addEntity("Employee", EmployeeImpl.class);
         QueryPos queryPos = QueryPos.getInstance(query);
         queryPos.add(positionId);
-        return (Employee) query.iterateNext();
+        return (List<Employee>) query.list();
     }
 }

@@ -23,6 +23,7 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface EmployeeFinder {
 
-	public shop.model.Employee findTopEmployeeByPositionId(long positionId);
+	public java.util.List<shop.model.Employee> findTopEmployeesByPositionId(
+		long positionId);
 
 }

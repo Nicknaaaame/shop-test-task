@@ -9,7 +9,7 @@
                 join SHOP_Electronics elec on pur.electroId = elec.id_
             group by emp.id_
             having emp.positionId=?
-            order by sum_price desc, count_pur limit 1
+            order by sum_price desc, count_pur
         ]]>
     </sql>
 </custom-sql>

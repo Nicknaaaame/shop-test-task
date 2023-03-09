@@ -286,7 +286,9 @@ public class EmployeeLocalServiceWrapper
 	}
 
 	@Override
-	public Object getTopEmployeeByPositionId(long positionId) {
+	public java.util.List<shop.model.Employee> getTopEmployeeByPositionId(
+		long positionId) {
+
 		return _employeeLocalService.getTopEmployeeByPositionId(positionId);
 	}
 

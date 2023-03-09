@@ -265,7 +265,7 @@ public class EmployeeLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static Object getTopEmployeeByPositionId(long positionId) {
+	public static List<Employee> getTopEmployeeByPositionId(long positionId) {
 		return getService().getTopEmployeeByPositionId(positionId);
 	}
 
