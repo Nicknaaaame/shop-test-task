@@ -61,6 +61,7 @@ import shop.service.persistence.ElectronicsPersistence;
 import shop.service.persistence.EmployeeFinder;
 import shop.service.persistence.EmployeePersistence;
 import shop.service.persistence.PositionTypePersistence;
+import shop.service.persistence.PurchaseFinder;
 import shop.service.persistence.PurchasePersistence;
 import shop.service.persistence.PurchaseTypePersistence;
 
@@ -469,6 +470,9 @@ public abstract class ElectroTypeLocalServiceBaseImpl
 
 	@Reference
 	protected PurchasePersistence purchasePersistence;
+
+	@Reference
+	protected PurchaseFinder purchaseFinder;
 
 	@Reference
 	protected PurchaseTypePersistence purchaseTypePersistence;

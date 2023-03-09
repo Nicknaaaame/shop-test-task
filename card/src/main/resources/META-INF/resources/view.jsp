@@ -4,6 +4,7 @@
 <%@ page import="java.util.StringJoiner" %>
 <%@ page import="util.EmployeeUtil" %>
 <%@ page import="shop.service.EmployeeLocalServiceUtil" %>
+<%@ page import="shop.service.PurchaseLocalServiceUtil" %>
 <%@ include file="init.jsp" %>
 
 <%
@@ -13,7 +14,7 @@
         topEmployeesFio = EmployeeUtil.getFio(topEmployees);
     }
     String employeesSmartWatchesAndTabletsFio = EmployeeUtil.getFio(EmployeeLocalServiceUtil.getEmployeesSmartWatchesAndTablets());
-
+    long purchaseSumForLastMonth = PurchaseLocalServiceUtil.getPurchaseSumForLastMonth();
 %>
 <liferay-ui:error key="<%=ShopProjectKeys.EXCEPTION_KEY%>"
                   message='<%=request.getParameter(ShopProjectKeys.EXCEPTION_MESSAGE)%>'/>
@@ -35,7 +36,7 @@
 <div class="separator"></div>
 <label>All employees that sell smartwatches and tablets: <%=employeesSmartWatchesAndTabletsFio%></label>
 <div class="separator"></div>
-<label>Profit of the shop for the month</label>
+<label>Profit of the shop for the month: <%=purchaseSumForLastMonth%></label>
 <div class="separator"></div>
 <label>Profit received by the Shop from the sale of refrigerators, kettles and water heaters</label>
 

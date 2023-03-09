@@ -285,6 +285,11 @@ public class PurchaseLocalServiceWrapper
 		return _purchaseLocalService.getPurchasesCount();
 	}
 
+	@Override
+	public long getPurchaseSumForLastMonth() {
+		return _purchaseLocalService.getPurchaseSumForLastMonth();
+	}
+
 	/**
 	 * Updates the purchase in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

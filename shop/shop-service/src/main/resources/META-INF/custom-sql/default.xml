@@ -24,4 +24,12 @@
             order by count_pur desc
         ]]>
     </sql>
+    <sql id="getPurchaseSumForLastMonth">
+        <![CDATA[
+            select sum(elec.price)
+            from public.shop_purchase pur
+                join public.shop_electronics elec on pur.electroid = elec.id_
+            where pur.purchasedate >= CURRENT_DATE - 30
+        ]]>
+    </sql>
 </custom-sql>

@@ -246,6 +246,9 @@ public interface PurchaseLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getPurchasesCount();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long getPurchaseSumForLastMonth();
+
 	/**
 	 * Updates the purchase in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

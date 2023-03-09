@@ -265,6 +265,10 @@ public class PurchaseLocalServiceUtil {
 		return getService().getPurchasesCount();
 	}
 
+	public static long getPurchaseSumForLastMonth() {
+		return getService().getPurchaseSumForLastMonth();
+	}
+
 	/**
 	 * Updates the purchase in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
