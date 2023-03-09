@@ -40,6 +40,7 @@ import shop.service.PurchaseTypeServiceUtil;
 import shop.service.persistence.ElectroEmployeePersistence;
 import shop.service.persistence.ElectroTypePersistence;
 import shop.service.persistence.ElectronicsPersistence;
+import shop.service.persistence.EmployeeFinder;
 import shop.service.persistence.EmployeePersistence;
 import shop.service.persistence.PositionTypePersistence;
 import shop.service.persistence.PurchasePersistence;
@@ -153,6 +154,9 @@ public abstract class PurchaseTypeServiceBaseImpl
 
 	@Reference
 	protected EmployeePersistence employeePersistence;
+
+	@Reference
+	protected EmployeeFinder employeeFinder;
 
 	@Reference
 	protected PositionTypePersistence positionTypePersistence;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <custom-sql>
-    <sql id="getTopEmployeeIdWithSumPriceAndPurchaseCountByPositionId">
+    <sql id="getTopEmployeePositionId">
         <![CDATA[
             select emp.id, sum(elec.price) as sum_price, count(emp.id_) as count_pur
             from Employee emp
