@@ -240,6 +240,10 @@ public class EmployeeLocalServiceUtil {
 		return getService().getEmployeesCount();
 	}
 
+	public static List<Employee> getEmployeesSmartWatchesAndTablets() {
+		return getService().getEmployeesSmartWatchesAndTablets();
+	}
+
 	public static
 		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 			getIndexableActionableDynamicQuery() {

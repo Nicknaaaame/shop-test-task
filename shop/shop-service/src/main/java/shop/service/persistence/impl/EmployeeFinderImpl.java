@@ -15,8 +15,10 @@ import java.util.List;
 @Component(service = EmployeeFinder.class)
 public class EmployeeFinderImpl extends EmployeeFinderBaseImpl implements EmployeeFinder {
     static final String FIND_TOP_EMPLOYEE_POSITION_ID = "findTopEmployeePositionId";
+    static final String FIND_EMPLOYEES_SMART_WATCHES_AND_TABLETS = "findEmployeesSmartWatchesAndTablets";
     @Reference
     private CustomSQL customSQL;
+
     public List<Employee> findTopEmployeesByPositionId(long positionId) {
         Session session = openSession();
         String sql = customSQL.get(getClass(), FIND_TOP_EMPLOYEE_POSITION_ID);
@@ -25,6 +27,15 @@ public class EmployeeFinderImpl extends EmployeeFinderBaseImpl implements Employ
         query.addEntity("Employee", EmployeeImpl.class);
         QueryPos queryPos = QueryPos.getInstance(query);
         queryPos.add(positionId);
+        return (List<Employee>) query.list();
+    }
+
+    public List<Employee> findEmployeesSmartWatchesAndTablets() {
+        Session session = openSession();
+        String sql = customSQL.get(getClass(), FIND_EMPLOYEES_SMART_WATCHES_AND_TABLETS);
+        SQLQuery query = session.createSQLQuery(sql);
+        query.setCacheable(false);
+        query.addEntity("Employee", EmployeeImpl.class);
         return (List<Employee>) query.list();
     }
 }

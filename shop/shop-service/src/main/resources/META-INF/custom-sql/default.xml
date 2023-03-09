@@ -12,4 +12,16 @@
             order by sum_price desc, count_pur
         ]]>
     </sql>
+    <sql id="findEmployeesSmartWatchesAndTablets">
+        <![CDATA[
+            select emp.*, count(pur.id_) as count_pur
+            from public.shop_employee emp
+                join public.shop_electroemployee elemp on emp.id_ = elemp.employeeid
+                join public.shop_electrotype eltype on elemp.etypeid = eltype.id_
+                left join public.shop_purchase pur on emp.id_ = pur.employeeid
+            where lower(eltype.name) like 'планшет%' or lower(eltype.name) like 'умные часы%'
+            group by emp.id_
+            order by count_pur desc
+        ]]>
+    </sql>
 </custom-sql>

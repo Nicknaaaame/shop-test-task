@@ -258,6 +258,13 @@ public class EmployeeLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<shop.model.Employee>
+		getEmployeesSmartWatchesAndTablets() {
+
+		return _employeeLocalService.getEmployeesSmartWatchesAndTablets();
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 

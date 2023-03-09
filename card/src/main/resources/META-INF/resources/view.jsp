@@ -2,18 +2,17 @@
 <%@ page import="util.ShopProjectKeys" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.StringJoiner" %>
+<%@ page import="util.EmployeeUtil" %>
+<%@ page import="shop.service.EmployeeLocalServiceUtil" %>
 <%@ include file="init.jsp" %>
 
 <%
     List<Employee> topEmployees = (List<Employee>) request.getAttribute("employees");
     String topEmployeesFio = null;
     if (topEmployees != null) {
-        StringJoiner stringJoiner = new StringJoiner(", ");
-        for (Employee topEmployee : topEmployees) {
-            stringJoiner.add(String.format("%s %s %s", topEmployee.getLastName(), topEmployee.getFirstName(), topEmployee.getPatronymic()));
-        }
-        topEmployeesFio = stringJoiner.toString();
+        topEmployeesFio = EmployeeUtil.getFio(topEmployees);
     }
+    String employeesSmartWatchesAndTabletsFio = EmployeeUtil.getFio(EmployeeLocalServiceUtil.getEmployeesSmartWatchesAndTablets());
 
 %>
 <liferay-ui:error key="<%=ShopProjectKeys.EXCEPTION_KEY%>"
@@ -33,7 +32,10 @@
 
 <label><%=topEmployees == null ? "You need to enter position id" : "The best employees: " + topEmployeesFio%>
 </label>
-<label>All employees that sell smartwatches and tablets</label>
-<label>Profit of the shot for the month</label>
+<div class="separator"></div>
+<label>All employees that sell smartwatches and tablets: <%=employeesSmartWatchesAndTabletsFio%></label>
+<div class="separator"></div>
+<label>Profit of the shop for the month</label>
+<div class="separator"></div>
 <label>Profit received by the Shop from the sale of refrigerators, kettles and water heaters</label>
 

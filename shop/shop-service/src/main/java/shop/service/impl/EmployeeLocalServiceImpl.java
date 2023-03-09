@@ -32,4 +32,8 @@ public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
     public List<Employee> getTopEmployeeByPositionId(long positionId) {
         return employeeFinder.findTopEmployeesByPositionId(positionId);
     }
+
+    public List<Employee> getEmployeesSmartWatchesAndTablets() {
+        return employeeFinder.findEmployeesSmartWatchesAndTablets();
+    }
 }

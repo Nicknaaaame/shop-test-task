@@ -26,4 +26,7 @@ public interface EmployeeFinder {
 	public java.util.List<shop.model.Employee> findTopEmployeesByPositionId(
 		long positionId);
 
+	public java.util.List<shop.model.Employee>
+		findEmployeesSmartWatchesAndTablets();
+
 }
